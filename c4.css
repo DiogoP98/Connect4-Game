@@ -20,20 +20,20 @@ body {
 
 #footer {
 	position: absolute;
-    height: 60px;
-    margin-top: 80px;
     width: 100%;
     bottom: 0px;
 	z-index: 200;
 	background-color: rgb(235, 232, 232); 
-	display: inline-block;
+	display: inline;
+	align-items: center;
 }
 
 .footer-info > li {
 	float: right;
 	list-style-type: none;
 	display: inline-block;
-	padding-left: 20px;
+	margin-right: 50px;
+	color: red;
 }
 
 .footer-title {
@@ -43,24 +43,30 @@ body {
 	padding-right: 20px;
 	color: rgb(56, 137, 234);
 	font-size: 30px;
+	margin-left: 40px;
+	text-align: center;
 }
 
-.footer-info {
-	color: rgb(206, 204, 204);
+.footer-info a {
+	color: rgb(156, 155, 155);
 	font-size: 20px;
-}
+}	
 
 a {
 	color: white;
 	text-decoration:none; 
 }
 
-.footer-info > a:hover {
+.footer-info a:hover {
 	background-color: rgb(204, 202, 202);
 }
 
 li {
 	float: left;
 	list-style-type: disc;
+}
+
+ul { 
+	margin-top: 0; 
 }
 

@@ -38,21 +38,22 @@ h2 {
 	box-shadow: 0px 1px 0px rgba(0,0,0,0.3),inset 0px 1px 0px rgba(255,255,255,0.07)
   }
   
-  input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"] {
 	width: 250px;
-	padding: 25px 0px;
 	background: transparent;
 	border: 0;
-	border-bottom: 1px solid rgba(255,255,255,0.04);
+	border-bottom: 1px solid black;
 	outline: none;
 	color: #46485c;
-  }
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
 
-  input[type=checkbox] {
+input[type=checkbox] {
 	display: none;
-  }
+}
   
-  input[type="submit"] {
+input[type="submit"] {
 	background: rgb(56, 137, 234);
 	border: 0;
 	width: 250px;
@@ -61,11 +62,16 @@ h2 {
 	color: white;
 	cursor: pointer;
 	transition: background 0.3s ease-in-out;
-  }
+	margin-top: 10px;
+}
 
-  input[type="submit"]:hover {
+input[type="submit"]:hover {
 	background: rgb(31, 97, 177);
-  }
+}
+
+input[type="register"]:hover {
+	background: rgb(31, 97, 177);
+}
 
 #footer {
 	position: absolute;

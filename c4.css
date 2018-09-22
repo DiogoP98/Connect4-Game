@@ -18,36 +18,54 @@ body {
 	background-color: whitesmoke;
 }
 
-#login {
-	margin-top: 100px;
-}
-
-.container {
+h2 {
+	color: #46485c;
+	font-size: 15px;
+	font-weight: 600;
 	text-align: center;
+	margin-bottom: 10px;
 }
 
-input[type=text], input[type=password] {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-	box-sizing: border-box;
-}
+.login {
+	width: 250px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -184px 0px 0px -155px;
+	background: rgba(0,0,0,0.2);
+	padding: 20px 30px;
+	border-radius: 5px;
+	box-shadow: 0px 1px 0px rgba(0,0,0,0.3),inset 0px 1px 0px rgba(255,255,255,0.07)
+  }
+  
+  input[type="text"], input[type="password"] {
+	width: 250px;
+	padding: 25px 0px;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid rgba(255,255,255,0.04);
+	outline: none;
+	color: #46485c;
+  }
 
-button {
-    background-color: rgb(56, 137, 234);
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 25%;
-}
+  input[type=checkbox] {
+	display: none;
+  }
+  
+  input[type="submit"] {
+	background: rgb(56, 137, 234);
+	border: 0;
+	width: 250px;
+	height: 40px;
+	border-radius: 3px;
+	color: white;
+	cursor: pointer;
+	transition: background 0.3s ease-in-out;
+  }
 
-button:hover {
-    opacity: 0.8;
-}
+  input[type="submit"]:hover {
+	background: rgb(31, 97, 177);
+  }
 
 #footer {
 	position: absolute;

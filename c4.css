@@ -52,7 +52,7 @@ input[type=checkbox] {
 	display: none;
 }
   
-input[type="submit"] {
+input[type="button"] {
 	background: rgb(56, 137, 234);
 	border: 0;
 	width: 250px;
@@ -64,7 +64,7 @@ input[type="submit"] {
 	margin-top: 10px;
 }
 
-input[type="submit"]:hover {
+input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 

@@ -4,9 +4,11 @@
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
 	<link rel="stylesheet" type="text/css" href="c4.css">
+	<script src="board.js"></script>
 </head>
-<body>
-	<div id="loginPage">
+<body onload="showLoginPage()">
+
+	<div id="loginPageDiv">
 		<div id="title">
 			<span class = "game-name">Connect 4</span>
 		</div> 
@@ -15,10 +17,13 @@
 				<h2>Welcome</h2>
 				<input name='username' placeholder='Username' type='text'/>
 				<input id='pw' name='password' placeholder='Password' type='password'/>
-				<input type='submit' value='Sign In'/>
-				<input type='submit' value='Sign Up'/>
+				<input type='button' value='Sign In' onclick="userLogin()"/>
+				<input type='button' value='Sign Up'/>
 			</form>
 		</div>
+	</div>
+
+	<div id="gameOptionsDiv">
 	</div>
 	
 

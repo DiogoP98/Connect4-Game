@@ -25,8 +25,8 @@ function showLoginPage() {
     document.getElementById("loginPageDiv").style.display = "block";
 }
 
-function returnToMain() { 
-    if (login) {
+function returnToMain() {
+    if (!login) {
         showLoginPage();
     }
     else //A melhorar: nao permitir caso o jogo ainda esteja a decorrer

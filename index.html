@@ -4,14 +4,44 @@
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
 	<link rel="stylesheet" type="text/css" href="c4.css">
+	<script src="board.js"></script>
 </head>
-<body>
-	<div id = "loginPage">
+<body onload="showLoginPage()">
+
+	<div id="loginPageDiv">
 		<div id="title">
-			<span class="circle red-piece"></span>
 			<span class = "game-name">Connect 4</span>
-			<span class="circle blue-piece"></span>
 		</div> 
+		<div id="login" class="login">
+			<form>
+				<h2>Welcome</h2>
+				<input name='username' placeholder='Username' type='text'/>
+				<input id='pw' name='password' placeholder='Password' type='password'/>
+				<input type='button' value='Sign In' onclick="userLogin()"/>
+				<input type='button' value='Sign Up'/>
+			</form>
+		</div>
+	</div>
+
+	<div id="gameOptionsDiv">
+	</div>
+
+	<div id="logoutDiv">
+		<div class="username">User</div>
+		<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+	</div>
+	
+
+	<div id="footer">
+		<a href="#/" class="footer-title">Connect4</a>
+		<ul class="footer-info">
+			<li>
+				<a href="#/rules">Rules</a>
+			</li>
+			<li>
+				<a href="#/leaderboard">Leaderboard</a>
+			</li>
+		</ul>
 	</div>
 </body>
 </html>

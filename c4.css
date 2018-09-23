@@ -1,13 +1,12 @@
 .game-name {
 	font-family: 'Open Sans', sans-serif;
- 	color: #555;
- 	text-decoration: none;
+	color: rgb(56, 137, 234);
+	text-shadow: 2px 2px black;
   	text-transform: uppercase;
 	font-size: 100px;
 	font-weight: 800;
 	letter-spacing: -3px;
 	line-height: 1;
-	text-shadow: #EDEDED 3px 2px 0;
 	position: relative;
 }
 
@@ -15,18 +14,117 @@
 	text-align: center;
 }
 
-.circle {
-  	height: 25px;
-  	width: 25px;
-  	border-radius: 100%;
-  	display: inline-block;
+body {
+	background-color: whitesmoke;
 }
 
-.red-piece {
-	background: red;
+h2 {
+	color: #46485c;
+	font-size: 15px;
+	font-weight: 600;
+	text-align: center;
+	margin-bottom: 10px;
 }
 
-.blue-piece {
-	background: blue;
+.login {
+	width: 250px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -184px 0px 0px -155px;
+	background: rgb(235, 232, 232);
+	padding: 20px 30px;
+	border-radius: 5px;
+  }
+  
+input[type="text"], input[type="password"] {
+	width: 250px;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid black;
+	outline: none;
+	color: #46485c;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+input[type=checkbox] {
+	display: none;
+}
+  
+input[type="button"] {
+	background: rgb(56, 137, 234);
+	border: 0;
+	width: 250px;
+	height: 40px;
+	border-radius: 3px;
+	color: white;
+	cursor: pointer;
+	transition: background 0.3s ease-in-out;
+	margin-top: 10px;
+}
+
+input[type="button"]:hover {
+	background: rgb(31, 97, 177);
+}
+
+input[type="register"]:hover {
+	background: rgb(31, 97, 177);
+}
+
+#logoutDiv {
+	float: right;
+}
+
+#footer {
+	position: absolute;
+    width: 100%;
+    bottom: 0px;
+	z-index: 200;
+	background-color: rgb(235, 232, 232); 
+	display: inline;
+	align-items: center;
+}
+
+.footer-info > li {
+	float: right;
+	list-style-type: none;
+	display: inline-block;
+	margin-right: 50px;
+	color: red;
+}
+
+.footer-title {
+	padding-left: 20px;
+	vertical-align: middle;
+	text-align: center;
+	padding-right: 20px;
+	color: rgb(56, 137, 234);
+	font-size: 30px;
+	margin-left: 40px;
+	text-align: center;
+}
+
+.footer-info a {
+	color: rgb(156, 155, 155);
+	font-size: 20px;
+}	
+
+a {
+	color: white;
+	text-decoration:none; 
+}
+
+.footer-info a:hover {
+	background-color: rgb(204, 202, 202);
+}
+
+li {
+	float: left;
+	list-style-type: disc;
+}
+
+ul { 
+	margin-top: 0; 
 }
 

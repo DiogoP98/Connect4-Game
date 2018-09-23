@@ -72,6 +72,10 @@ input[type="register"]:hover {
 	background: rgb(31, 97, 177);
 }
 
+#logoutDiv {
+	float: right;
+}
+
 #footer {
 	position: absolute;
     width: 100%;

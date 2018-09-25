@@ -74,6 +74,18 @@ input[type="button"] {
 	margin-top: 10px;
 }
 
+#title > #logoutDiv > input[type="button"] {
+	background: rgb(56, 137, 234);
+	border: 0;
+	width: 100px;
+	height: 40px;
+	border-radius: 3px;
+	color: white;
+	cursor: pointer;
+	transition: background 0.3s ease-in-out;
+	margin-top: 10px;
+}
+
 input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
@@ -82,10 +94,8 @@ input[type="button"]:hover {
 	position: absolute;
     width: 100%;
     bottom: 0px;
-	z-index: 200;
 	background-color: rgb(235, 232, 232); 
 	display: inline;
-	align-items: center;
 }
 
 .footer-info > li {

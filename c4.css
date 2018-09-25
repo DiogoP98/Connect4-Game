@@ -12,6 +12,16 @@
 
 #title {
 	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.username {
+	text-align: initial;
+}
+
+#logoutDiv {
+	float: right;
+	margin-top: 15px;
 }
 
 body {
@@ -68,14 +78,6 @@ input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 
-input[type="register"]:hover {
-	background: rgb(31, 97, 177);
-}
-
-#logoutDiv {
-	float: right;
-}
-
 #footer {
 	position: absolute;
     width: 100%;
@@ -116,7 +118,7 @@ a {
 }
 
 .footer-info a:hover {
-	background-color: rgb(204, 202, 202);
+	text-decoration: underline;
 }
 
 li {

@@ -1,3 +1,9 @@
+/* changes the general color */
+body {
+	background-color: whitesmoke;
+}
+
+/* changes the title style and letter */
 .game-name {
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(56, 137, 234);
@@ -12,20 +18,16 @@
 
 #title {
 	text-align: center;
-	font-family: 'Open Sans', sans-serif;
 }
 
 .username {
 	text-align: initial;
 }
 
+/* puts logout button and the username on the right side of the page */
 #logoutDiv {
 	float: right;
 	margin-top: 15px;
-}
-
-body {
-	background-color: whitesmoke;
 }
 
 h2 {
@@ -36,7 +38,8 @@ h2 {
 	margin-bottom: 10px;
 }
 
-.login {
+/* creates the background box on the log in and gameOptions divs */
+.box {
 	width: 250px;
 	position: absolute;
 	top: 50%;
@@ -45,8 +48,9 @@ h2 {
 	background: rgb(235, 232, 232);
 	padding: 20px 30px;
 	border-radius: 5px;
-  }
-  
+}
+
+/* adds line below and changes configuration of the username and passwords boxes */
 input[type="text"], input[type="password"] {
 	width: 250px;
 	background: transparent;
@@ -58,10 +62,7 @@ input[type="text"], input[type="password"] {
 	margin-bottom: 20px;
 }
 
-input[type=checkbox] {
-	display: none;
-}
-  
+/* changes buttons background and overall look */
 input[type="button"] {
 	background: rgb(56, 137, 234);
 	border: 0;
@@ -74,22 +75,16 @@ input[type="button"] {
 	margin-top: 10px;
 }
 
+/* changes logout button size*/
 #title > #logoutDiv > input[type="button"] {
-	background: rgb(56, 137, 234);
-	border: 0;
 	width: 100px;
-	height: 40px;
-	border-radius: 3px;
-	color: white;
-	cursor: pointer;
-	transition: background 0.3s ease-in-out;
-	margin-top: 10px;
 }
 
 input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 
+/* puts the footer on the bootom of the page */
 #footer {
 	position: absolute;
     width: 100%;
@@ -98,12 +93,12 @@ input[type="button"]:hover {
 	display: inline;
 }
 
+/* puts the list of options on the footer in line*/
 .footer-info > li {
 	float: right;
 	list-style-type: none;
 	display: inline-block;
 	margin-right: 50px;
-	color: red;
 }
 
 .footer-title {

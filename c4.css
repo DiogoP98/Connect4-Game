@@ -84,6 +84,14 @@ input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 
+.label-text {
+	font-size: 30px;
+}
+
+.label-options {
+	margin-left: 30px;
+}
+
 /* puts the footer on the bootom of the page */
 #footer {
 	position: absolute;

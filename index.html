@@ -34,8 +34,61 @@
 	</div>
 
 	<div id="gameOptionsDiv" class="box">
-		<div></div>
-		<label></label>
+
+		<div id="GameTypeDiv">
+			<p><strong class="label-text">Game Type</strong></p>
+			<label class="label-options">
+				  <input type="checkbox" checked="checked" name="gametype" value="ai">
+				  <span>Against Computer</span>
+				  <br>
+			</label>
+			<label class="label-options">
+					<input type="checkbox" name="gametype" value="pvp">
+					<span>Multiplayer</span>
+			</label>
+		</div>
+
+		<div id="PlayerOrderDiv">
+				<p><strong class="label-text">First to Play</strong></p>
+				<label class="label-options">
+					  <input type="checkbox" checked="checked" name="playerorder" value="me">
+					  <span>You</span>
+					  <br>
+				</label>
+				<label class="label-options">
+						<input type="checkbox" name="playerorder" value="pc">
+						<span>Opponent</span>
+				</label>
+		</div>
+
+		<div id="DifficultyDiv">
+				<p><strong class="label-text">Game Difficulty</strong></p>
+				<label class="label-options">
+					  <input type="checkbox" checked="checked" name="difficulty" value="easy">
+					  <span>Easy</span>
+					  <br>
+				</label>
+				<label class="label-options">
+						<input type="checkbox" name="difficulty" value="medium">
+						<span>Medium</span>
+						<br>
+				</label>
+				<label class="label-options">
+						<input type="checkbox" name="difficulty" value="hard">
+						<span>Hard</span>
+						<br>
+				</label>
+				<label class="label-options">
+						<input type="checkbox" name="difficulty" value="legendary">
+						<span>Legendary</span>
+				</label>
+		</div>
+
+		<div id="BoardSizeDiv">
+			<p><strong class="label-text">Board Size</strong></p>
+			<input placeholder='Ex: 5' type='text'>
+		</div>
+
 	</div>
 	
 

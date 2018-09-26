@@ -44,14 +44,14 @@ h2 {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -184px 0px 0px -155px;
+	margin: -170px 0px 0px -155px;
 	background: rgb(235, 232, 232);
-	padding: 20px 30px;
+	padding: 30px 40px;
 	border-radius: 5px;
 }
 
 /* adds line below and changes configuration of the username and passwords boxes */
-input[type="text"], input[type="password"] {
+#loginPageDiv > #login.box input[type="text"], #loginPageDiv > #login.box input[type="password"] {
 	width: 250px;
 	background: transparent;
 	border: 0;
@@ -92,54 +92,68 @@ input[type="button"]:hover {
 	margin-left: 30px;
 }
 
+#gameOptionsDiv.box {
+	padding: 0px 50px;
+	position: relative;
+	margin-top: -20px;
+}
+
+#gameOptionsDiv > #boardSizeDiv input[type="text"] {
+	margin: 0px 0px 10px 30px;
+	width: 200px;
+}
+
+#gameOptionsDiv > #submitDiv input[type="button"] {
+	margin-bottom: 5px;
+}
+
 /* puts the footer on the bootom of the page */
 #footer {
-	position: absolute;
-    width: 100%;
-    bottom: 0px;
-	background-color: rgb(235, 232, 232); 
-	display: inline;
+	position: fixed;
+	left: 0;	
+	bottom: 0;
+	width: 100%;
+	background-color: rgb(235, 232, 232);
+	min-height: 60px;
 }
 
 /* puts the list of options on the footer in line*/
 .footer-info > li {
 	float: right;
 	list-style-type: none;
-	display: inline-block;
-	margin-right: 50px;
+	margin: -25px 70px 0px 0px;
+	padding: 2px;
+	display: block;
 }
 
 .footer-title {
 	padding-left: 20px;
-	vertical-align: middle;
-	text-align: center;
 	padding-right: 20px;
 	color: rgb(56, 137, 234);
 	font-size: 30px;
-	margin-left: 40px;
-	text-align: center;
+	margin: 10px 0px 0px 70px;
+	display: block;
 }
 
 .footer-info a {
 	color: rgb(156, 155, 155);
 	font-size: 20px;
-}	
-
-a {
-	color: white;
-	text-decoration:none; 
+	margin: 0px;
+	text-decoration: none;
 }
 
 .footer-info a:hover {
 	text-decoration: underline;
+	cursor: pointer;
 }
 
-li {
-	float: left;
-	list-style-type: disc;
+a:hover.footer-title {
+	cursor: pointer;
 }
 
-ul { 
-	margin-top: 0; 
+ul,li { 
+	margin-top: 0;
+	padding: 0; 
 }
+
 

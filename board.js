@@ -4,16 +4,19 @@ var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv"]
 var login;
 
 function userLogin() {
+    login = true;
+
     showGameOptions();
 }
 
 function showGameOptions() {
-    login = true;
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-    document.getElementById("logoutDiv").style.display = "block";
+
+    if(login)
+        document.getElementById("logoutDiv").style.display = "block";
 }
 
 function showLoginPage() {

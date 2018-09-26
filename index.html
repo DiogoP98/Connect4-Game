@@ -38,12 +38,12 @@
 		<div id="GameTypeDiv">
 			<p><strong class="label-text">Game Type</strong></p>
 			<label class="label-options">
-				  <input type="checkbox" checked="checked" name="gametype" value="ai">
+				  <input type="radio" checked="checked" name="gametype" value="ai">
 				  <span>Against Computer</span>
 				  <br>
 			</label>
 			<label class="label-options">
-					<input type="checkbox" name="gametype" value="pvp">
+					<input type="radio" name="gametype" value="pvp">
 					<span>Multiplayer</span>
 			</label>
 		</div>
@@ -51,12 +51,12 @@
 		<div id="PlayerOrderDiv">
 				<p><strong class="label-text">First to Play</strong></p>
 				<label class="label-options">
-					  <input type="checkbox" checked="checked" name="playerorder" value="me">
+					  <input type="radio" checked="checked" name="playerorder" value="me">
 					  <span>You</span>
 					  <br>
 				</label>
 				<label class="label-options">
-						<input type="checkbox" name="playerorder" value="pc">
+						<input type="radio" name="playerorder" value="pc">
 						<span>Opponent</span>
 				</label>
 		</div>
@@ -64,29 +64,34 @@
 		<div id="DifficultyDiv">
 				<p><strong class="label-text">Game Difficulty</strong></p>
 				<label class="label-options">
-					  <input type="checkbox" checked="checked" name="difficulty" value="easy">
+					  <input type="radio" checked="checked" name="difficulty" value="easy">
 					  <span>Easy</span>
 					  <br>
 				</label>
 				<label class="label-options">
-						<input type="checkbox" name="difficulty" value="medium">
+						<input type="radio" name="difficulty" value="medium">
 						<span>Medium</span>
 						<br>
 				</label>
 				<label class="label-options">
-						<input type="checkbox" name="difficulty" value="hard">
+						<input type="radio" name="difficulty" value="hard">
 						<span>Hard</span>
 						<br>
 				</label>
 				<label class="label-options">
-						<input type="checkbox" name="difficulty" value="legendary">
+						<input type="radio" name="difficulty" value="legendary">
 						<span>Legendary</span>
 				</label>
 		</div>
 
-		<div id="BoardSizeDiv">
+		<div id="boardSizeDiv">
 			<p><strong class="label-text">Board Size</strong></p>
-			<input placeholder='Ex: 5' type='text'>
+			<input placeholder='Numero de Colunas. Ex: 5' type='text'>
+			<input placeholder='Numero de Linhas. Ex: 5' type='text'>
+		</div>
+
+		<div id="submitDiv">
+			<input type='button' value='Start Game'/>
 		</div>
 
 	</div>
@@ -96,10 +101,10 @@
 		<a class="footer-title" onclick="returnToMain()">Connect4</a>
 		<ul class="footer-info">
 			<li>
-				<a href="#/rules">Rules</a>
+				<a onclick="returnToMain()">Rules</a>
 			</li>
 			<li>
-				<a href="#/leaderboard">Leaderboard</a>
+				<a onclick="returnToMain()">Leaderboard</a>
 			</li>
 		</ul>
 	</div>

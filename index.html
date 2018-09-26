@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="c4.css">
 
 	<script src="manager.js"></script>
-	<script src="selector.js"></script>
+	<script src="game.js"></script>
 </head>
 
 <body onload="showLoginPage()">
@@ -34,63 +34,53 @@
 
 	<div id="gameOptionsDiv" class="box">
 
-		<div id="GameTypeDiv">
-			<p><strong class="label-text">Game Type</strong></p>
-			<label class="label-options">
-				  <input type="radio" checked="checked" name="gametype" value="ai">
-				  <span>Against Computer</span>
-				  <br>
-			</label>
-			<label class="label-options">
-					<input type="radio" name="gametype" value="pvp">
-					<span>Multiplayer</span>
-			</label>
+		<div id="gameTypeDiv">
+			<p><strong class="form-text">Game Type</strong></p>
+			<form id='gameTypeForm' class="form-options">
+				<input type="radio" checked="checked" name="gametype" value="ai">
+				<span>Against Computer</span>
+				<br>
+				<input type="radio" name="gametype" value="pvp">
+				<span>Multiplayer</span>
+			</form>
 		</div>
 
-		<div id="PlayerOrderDiv">
-				<p><strong class="label-text">First to Play</strong></p>
-				<label class="label-options">
-					  <input type="radio" checked="checked" name="playerorder" value="me">
-					  <span>You</span>
-					  <br>
-				</label>
-				<label class="label-options">
-						<input type="radio" name="playerorder" value="pc">
-						<span>Opponent</span>
-				</label>
+		<div id="playerOrderDiv">
+				<p><strong class="form-text">First to Play</strong></p>
+				<form id='playerorderForm' class="form-options">
+					<input type="radio" checked="checked" name="playerorder" value="me">
+					<span>You</span>
+					 <br>
+					<input type="radio" name="playerorder" value="pc">
+					<span>Opponent</span>
+				</form>
 		</div>
 
-		<div id="DifficultyDiv">
-				<p><strong class="label-text">Game Difficulty</strong></p>
-				<label class="label-options">
-					  <input type="radio" checked="checked" name="difficulty" value="easy">
-					  <span>Easy</span>
-					  <br>
-				</label>
-				<label class="label-options">
-						<input type="radio" name="difficulty" value="medium">
-						<span>Medium</span>
-						<br>
-				</label>
-				<label class="label-options">
-						<input type="radio" name="difficulty" value="hard">
-						<span>Hard</span>
-						<br>
-				</label>
-				<label class="label-options">
-						<input type="radio" name="difficulty" value="legendary">
-						<span>Legendary</span>
-				</label>
+		<div id="difficultyDiv">
+				<p><strong class="form-text">Game Difficulty</strong></p>
+				<form id="difficultyForm" class="form-options">
+					<input type="radio" checked="checked" name="difficulty" value="easy">
+					<span>Easy</span>
+					<br>
+					<input type="radio" name="difficulty" value="medium">
+					<span>Medium</span>
+					<br>
+					<input type="radio" name="difficulty" value="hard">
+					<span>Hard</span>
+					<br>
+					<input type="radio" name="difficulty" value="legendary">
+					<span>Legendary</span>
+				</form>
 		</div>
 
 		<div id="boardSizeDiv">
-			<p><strong class="label-text">Board Size</strong></p>
-			<input placeholder='Numero de Colunas. Ex: 5' type='text'>
-			<input placeholder='Numero de Linhas. Ex: 5' type='text'>
+			<p><strong class="form-text">Board Size</strong></p>
+			<input id='col' placeholder='Numero de Colunas. Ex: 5' type='text'>
+			<input id='line' placeholder='Numero de Linhas. Ex: 5' type='text'>
 		</div>
 
 		<div id="submitDiv">
-			<input type='button' value='Start Game' onclick="showGamePage()"/>
+			<input type='button' value='Start Game' onclick="setupGame()"/>
 		</div>
 
 	</div>

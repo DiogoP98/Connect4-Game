@@ -85,11 +85,11 @@ input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 
-.label-text {
+.form-text {
 	font-size: 30px;
 }
 
-.label-options {
+.form-options {
 	margin-left: 30px;
 }
 

@@ -5,21 +5,20 @@
 	<title>Connect 4</title>
 	<link rel="stylesheet" type="text/css" href="c4.css">
 
-	<script src="board.js"></script>
+	<script src="manager.js"></script>
 	<script src="selector.js"></script>
 </head>
 
 <body onload="showLoginPage()">
 
-	<div id="title">
-		<span class = "game-name">Connect 4</span>
-
-		<div id="logoutDiv">
-			<div class="username">User</div>
-			<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
-		</div>
-		
+	<div id="titleDiv">
+		<span class = "game-name">Connect 4</span>		
 	</div> 
+
+	<div id="logoutDiv">
+		<div class="username">User</div>
+		<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+	</div>
 
 	<div id="loginPageDiv">
 		<div id="login" class="box">
@@ -91,7 +90,7 @@
 		</div>
 
 		<div id="submitDiv">
-			<input type='button' value='Start Game'/>
+			<input type='button' value='Start Game' onclick="showGamePage()"/>
 		</div>
 
 	</div>

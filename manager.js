@@ -1,6 +1,6 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv"]
+var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv","titleDiv"]
 var login;
 
 function userLogin() {
@@ -26,6 +26,7 @@ function showLoginPage() {
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("loginPageDiv").style.display = "block";
+    document.getElementById("titleDiv").style.display = "block";
 }
 
 function returnToMain() {

@@ -27,7 +27,7 @@ function showLoginPage() {
     document.getElementById("titleDiv").style.display = "block";
 }
 
-function showGamePage() {
+function showGamePage(column, line) {
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 

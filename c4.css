@@ -6,7 +6,7 @@ body {
 .header {
 	width: 100%;
 	position: fixed;
-	margin-top: 60px;
+	margin-top: 40px;
 	top: 0%;
 }
 
@@ -34,8 +34,7 @@ body {
 /* puts logout button and the username on the right side of the page */
 #logoutDiv {
 	float: right;
-	margin: -50px 10px 0px 0px;
-	position: block;
+	margin: -40px 10px 0px 0px;
 }
 
 h2 {
@@ -103,7 +102,7 @@ input[type="button"]:hover {
 #gameOptionsDiv.box {
 	padding: 0px 50px;
 	position: relative;
-	margin-top: 10%;
+	margin-top: 5%;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {

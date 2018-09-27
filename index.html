@@ -4,22 +4,24 @@
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
 	<link rel="stylesheet" type="text/css" href="c4.css">
-	<script src="board.js"></script>
+
+	<script src="manager.js"></script>
+	<script src="game.js"></script>
 </head>
+
 <body onload="showLoginPage()">
 
-	<div id="title">
-		<span class = "game-name">Connect 4</span>
-
-		<div id="logoutDiv">
-			<div class="username">User</div>
-			<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
-		</div>
-		
+	<div id="titleDiv">
+		<span class = "game-name">Connect 4</span>		
 	</div> 
 
+	<div id="logoutDiv">
+		<div class="username">User</div>
+		<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+	</div>
+
 	<div id="loginPageDiv">
-		<div id="login" class="login">
+		<div id="login" class="box">
 			<form>
 				<h2>Welcome</h2>
 				<input name='username' placeholder='Username' type='text'/>
@@ -30,20 +32,70 @@
 		</div>
 	</div>
 
-	<div id="gameOptionsDiv">
-	</div>
-	
+	<div id="gameOptionsDiv" class="box">
+
+		<div id="gameTypeDiv">
+			<p><strong class="form-text">Game Type</strong></p>
+			<form id='gameTypeForm' class="form-options">
+				<input type="radio" checked="checked" name="gametype" value="ai">
+				<span>Against Computer</span>
+				<br>
+				<input type="radio" name="gametype" value="pvp">
+				<span>Multiplayer</span>
+			</form>
+		</div>
+
+		<div id="playerOrderDiv">
+				<p><strong class="form-text">First to Play</strong></p>
+				<form id='playerorderForm' class="form-options">
+					<input type="radio" checked="checked" name="playerorder" value="me">
+					<span>You</span>
+					 <br>
+					<input type="radio" name="playerorder" value="pc">
+					<span>Opponent</span>
+				</form>
+		</div>
+
+		<div id="difficultyDiv">
+				<p><strong class="form-text">Game Difficulty</strong></p>
+				<form id="difficultyForm" class="form-options">
+					<input type="radio" checked="checked" name="difficulty" value="easy">
+					<span>Easy</span>
+					<br>
+					<input type="radio" name="difficulty" value="medium">
+					<span>Medium</span>
+					<br>
+					<input type="radio" name="difficulty" value="hard">
+					<span>Hard</span>
+					<br>
+					<input type="radio" name="difficulty" value="legendary">
+					<span>Legendary</span>
+				</form>
+		</div>
+
+		<div id="boardSizeDiv">
+			<p><strong class="form-text">Board Size</strong></p>
+			<input id='col' placeholder='Numero de Colunas. Ex: 5' type='text'>
+			<input id='line' placeholder='Numero de Linhas. Ex: 5' type='text'>
+		</div>
+
+		<div id="submitDiv">
+			<input type='button' value='Start Game' onclick="setupGame()"/>
+		</div>
+
+	</div>	
 
 	<div id="footer">
 		<a class="footer-title" onclick="returnToMain()">Connect4</a>
 		<ul class="footer-info">
 			<li>
-				<a href="#/rules">Rules</a>
+				<a onclick="returnToMain()">Rules</a>
 			</li>
 			<li>
-				<a href="#/leaderboard">Leaderboard</a>
+				<a onclick="returnToMain()">Leaderboard</a>
 			</li>
 		</ul>
 	</div>
+
 </body>
 </html>

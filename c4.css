@@ -1,3 +1,9 @@
+/* changes the general color */
+body {
+	background-color: whitesmoke;
+}
+
+/* changes the title style and letter */
 .game-name {
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(56, 137, 234);
@@ -7,47 +13,46 @@
 	font-weight: 800;
 	letter-spacing: -3px;
 	line-height: 1;
-	position: relative;
 }
 
-#title {
+#titleDiv {
 	text-align: center;
-	font-family: 'Open Sans', sans-serif;
 }
 
 .username {
 	text-align: initial;
+	width: 100%;
 }
 
+/* puts logout button and the username on the right side of the page */
 #logoutDiv {
 	float: right;
-	margin-top: 15px;
-}
-
-body {
-	background-color: whitesmoke;
+	margin: -50px 10px 0px 0px;
+	position: block;
 }
 
 h2 {
 	color: #46485c;
-	font-size: 15px;
+	font-size: 30px;
 	font-weight: 600;
 	text-align: center;
 	margin-bottom: 10px;
 }
 
-.login {
+/* creates the background box on the log in and gameOptions divs */
+.box {
 	width: 250px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -184px 0px 0px -155px;
+	margin: -190px 0px 0px -155px;
 	background: rgb(235, 232, 232);
-	padding: 20px 30px;
+	padding: 50px 50px;
 	border-radius: 5px;
-  }
-  
-input[type="text"], input[type="password"] {
+}
+
+/* adds line below and changes configuration of the username and passwords boxes */
+#loginPageDiv > #login.box input[type="text"], #loginPageDiv > #login.box input[type="password"] {
 	width: 250px;
 	background: transparent;
 	border: 0;
@@ -58,10 +63,7 @@ input[type="text"], input[type="password"] {
 	margin-bottom: 20px;
 }
 
-input[type=checkbox] {
-	display: none;
-}
-  
+/* changes buttons background and overall look */
 input[type="button"] {
 	background: rgb(56, 137, 234);
 	border: 0;
@@ -74,59 +76,85 @@ input[type="button"] {
 	margin-top: 10px;
 }
 
+/* changes logout button size*/
+#logoutDiv > input[type="button"] {
+	width: 100px;
+}
+
 input[type="button"]:hover {
 	background: rgb(31, 97, 177);
 }
 
-#footer {
-	position: absolute;
-    width: 100%;
-    bottom: 0px;
-	z-index: 200;
-	background-color: rgb(235, 232, 232); 
-	display: inline;
-	align-items: center;
+.form-text {
+	font-size: 30px;
 }
 
+.form-options {
+	margin-left: 30px;
+}
+
+#gameOptionsDiv.box {
+	padding: 0px 50px;
+	position: relative;
+	margin-top: 60px;
+}
+
+#gameOptionsDiv > #boardSizeDiv input[type="text"] {
+	margin: 0px 0px 10px 30px;
+	width: 200px;
+}
+
+#gameOptionsDiv > #submitDiv input[type="button"] {
+	margin-bottom: 5px;
+}
+
+/* puts the footer on the bootom of the page */
+#footer {
+	position: fixed;
+	left: 0;	
+	bottom: 0;
+	width: 100%;
+	background-color: rgb(235, 232, 232);
+	min-height: 60px;
+}
+
+/* puts the list of options on the footer in line*/
 .footer-info > li {
 	float: right;
 	list-style-type: none;
-	display: inline-block;
-	margin-right: 50px;
-	color: red;
+	margin: -25px 70px 0px 0px;
+	padding: 2px;
+	display: block;
 }
 
 .footer-title {
 	padding-left: 20px;
-	vertical-align: middle;
-	text-align: center;
 	padding-right: 20px;
 	color: rgb(56, 137, 234);
 	font-size: 30px;
-	margin-left: 40px;
-	text-align: center;
+	margin: 10px 0px 0px 70px;
+	display: block;
 }
 
 .footer-info a {
 	color: rgb(156, 155, 155);
 	font-size: 20px;
-}	
-
-a {
-	color: white;
-	text-decoration:none; 
+	margin: 0px;
+	text-decoration: none;
 }
 
 .footer-info a:hover {
 	text-decoration: underline;
+	cursor: pointer;
 }
 
-li {
-	float: left;
-	list-style-type: disc;
+a:hover.footer-title {
+	cursor: pointer;
 }
 
-ul { 
-	margin-top: 0; 
+ul,li { 
+	margin-top: 0;
+	padding: 0; 
 }
+
 

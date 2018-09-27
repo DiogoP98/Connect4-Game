@@ -1,14 +1,15 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv"]
+var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv","titleDiv"]
 var login;
 
 function userLogin() {
+    login = true;
+
     showGameOptions();
 }
 
 function showGameOptions() {
-    login = true;
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
@@ -23,6 +24,14 @@ function showLoginPage() {
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("loginPageDiv").style.display = "block";
+    document.getElementById("titleDiv").style.display = "block";
+}
+
+function showGamePage(column, line) {
+    for(var i=0; i<divs.length; i++)
+        document.getElementById(divs[i]).style.display = "none";
+
+    document.getElementById("logoutDiv").style.display = "block";
 }
 
 function returnToMain() {

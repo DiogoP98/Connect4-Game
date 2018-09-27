@@ -14,9 +14,7 @@ function showGameOptions() {
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-
-    if(login)
-        document.getElementById("logoutDiv").style.display = "block";
+    document.getElementById("logoutDiv").style.display = "block";
 }
 
 function showLoginPage() {
@@ -27,6 +25,13 @@ function showLoginPage() {
 
     document.getElementById("loginPageDiv").style.display = "block";
     document.getElementById("titleDiv").style.display = "block";
+}
+
+function showGamePage() {
+    for(var i=0; i<divs.length; i++)
+        document.getElementById(divs[i]).style.display = "none";
+
+    document.getElementById("logoutDiv").style.display = "block";
 }
 
 function returnToMain() {

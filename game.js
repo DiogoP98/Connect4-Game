@@ -18,5 +18,5 @@ function setupGame() {
     if (column == "" || line == "")
         alert('Please insert all the information');
     else
-        showGame();
+        showGamePage();
 }

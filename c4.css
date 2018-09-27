@@ -3,6 +3,13 @@ body {
 	background-color: whitesmoke;
 }
 
+.header {
+	width: 100%;
+	position: fixed;
+	margin-top: 60px;
+	top: 0%;
+}
+
 /* changes the title style and letter */
 .game-name {
 	font-family: 'Open Sans', sans-serif;
@@ -96,7 +103,7 @@ input[type="button"]:hover {
 #gameOptionsDiv.box {
 	padding: 0px 50px;
 	position: relative;
-	margin-top: 60px;
+	margin-top: 10%;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {

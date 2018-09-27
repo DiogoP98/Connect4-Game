@@ -27,7 +27,13 @@ function showLoginPage() {
     document.getElementById("titleDiv").style.display = "block";
 }
 
-function showGamePage(column, line) {
+//Objeto que representa cada buraco do tabuleiro
+function boardPiece() {
+
+}
+
+
+function showGamePage(column, line, board) {
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 

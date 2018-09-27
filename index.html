@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
+
 	<link rel="stylesheet" type="text/css" href="c4.css">
 
 	<script src="manager.js"></script>
@@ -10,14 +11,15 @@
 </head>
 
 <body onload="showLoginPage()">
+	<div class="header">
+		<div id="titleDiv">
+			<span class = "game-name">Connect 4</span>		
+		</div> 
 
-	<div id="titleDiv">
-		<span class = "game-name">Connect 4</span>		
-	</div> 
-
-	<div id="logoutDiv">
-		<div class="username">User</div>
-		<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+		<div id="logoutDiv">
+			<div class="username">User</div>
+			<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+		</div>
 	</div>
 
 	<div id="loginPageDiv">
@@ -84,6 +86,8 @@
 		</div>
 
 	</div>	
+
+	<div id="gameDiv"></div>
 
 	<div id="footer">
 		<a class="footer-title" onclick="returnToMain()">Connect4</a>

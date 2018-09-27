@@ -1,12 +1,11 @@
 "use strict";
 
-
 var type; //AI or pvp
 var turn; //check who's turn it is
 var difficulty; //difficulty of the game
 var column; //column size
 var line; //line size
-
+var board = [[]]
 
 function setupGame() {
     type = document.getElementById("gameTypeForm").elements["gametype"].value;
@@ -18,5 +17,5 @@ function setupGame() {
     if (column == "" || line == "")
         alert('Please insert all the information');
     else
-        showGamePage(column, line);
+        showGamePage(column, line, board);
 }

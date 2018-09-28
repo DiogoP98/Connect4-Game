@@ -21,7 +21,7 @@ function boardPiece() {
     document.getElementById("gamingDiv");
 }
 
-function SinglePlayerGame(firstToPlay, difficulty, column, line) {
+function SinglePlayerGame(firstToPlay, difficulty, columns, lines) {
     this.firstToPlay = firstToPlay
     this.difficulty = difficulty;
     this.columns = columns;

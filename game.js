@@ -1,21 +1,31 @@
 "use strict";
 
-var type; //AI or pvp
 var turn; //check who's turn it is
-var difficulty; //difficulty of the game
-var column; //column size
-var line; //line size
-var board = [[]]
+var game;
 
-function setupGame() {
-    type = document.getElementById("gameTypeForm").elements["gametype"].value;
-    turn = document.getElementById("playerorderForm").elements["playerorder"].value;
-    difficulty = document.getElementById("difficultyForm").elements["difficulty"].value;
-    column = document.getElementById('col').value;
-    line = document.getElementById('line').value;
+function setupBoard() {
+    var type = document.getElementById("gameTypeForm").elements["gametype"].value;
+    var firstToPlay = document.getElementById("playerorderForm").elements["playerorder"].value;
+    var difficulty = document.getElementById("difficultyForm").elements["difficulty"].value;
+    var columns = document.getElementById('col').value;
+    var lines = document.getElementById('line').value;
 
-    if (column == "" || line == "")
-        alert('Please insert all the information');
-    else
-        showGamePage(column, line, board);
+    if (type="ai") {
+        game = new SinglePlayerGame(firstToPlay, difficulty, columns, lines);
+        game.startGame();
+    }
+}
+
+//Objeto que representa cada buraco do tabuleiro
+function boardPiece() {
+    document.getElementById("gamingDiv");
+}
+
+function SinglePlayerGame(firstToPlay, difficulty, column, line) {
+    this.firstToPlay = firstToPlay
+    this.difficulty = difficulty;
+    this.columns = columns;
+    this.lines = lines
+
+    
 }

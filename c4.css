@@ -114,6 +114,58 @@ input[type="button"]:hover {
 	margin-bottom: 5px;
 }
 
+#gamDiv {
+	margin-top: 50px;
+	position: absolute;
+}
+
+.game-board {
+	background: #0074B3;
+	cursor: pointer;
+	left: 50%;
+	top: 50%;
+}
+
+.column {
+	width: 70px;
+	display: inline-block;
+}
+
+.column:hover  circle.free{
+	fill: #D5E4ED;
+}
+
+circle.free {
+	fill: #fff;
+}
+
+circle.red {
+	fill: #D50000;
+}
+
+circle.yellow {
+	fill: #DAD400;
+}
+
+.disc{
+	position:absolute;
+	z-index:-1;
+	top:-55px;
+	left:14px;
+	width:46px;
+	height:46px;
+	border-radius:46px;
+	transition:all .3s;
+  }
+  
+.disc.red{
+	background:red;
+}
+  
+  .disc.yellow{
+	background:yellow;
+  }
+
 /* puts the footer on the bootom of the page */
 #footer {
 	position: fixed;

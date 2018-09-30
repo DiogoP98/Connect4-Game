@@ -1,6 +1,6 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv","titleDiv"]
+var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv","titleDiv","gameDiv"]
 var login;
 
 function userLogin() {
@@ -27,11 +27,12 @@ function showLoginPage() {
     document.getElementById("titleDiv").style.display = "block";
 }
 
-function showGamePage(column, line, board) {
+function showGamePage() {
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("logoutDiv").style.display = "block";
+    document.getElementById("gameDiv").style.display = "block";
 }
 
 function returnToMain() {

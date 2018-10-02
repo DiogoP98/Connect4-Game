@@ -3,25 +3,24 @@
 var turn; //check who's turn it is. 0 for ai 1 for player
 var game;
 var color; //color of piece being played
+var boardHeightPerLine = 80;
+var boardWidthPerRow = 75;
 
 function setupGame() {
     var type = document.getElementById("gameTypeForm").elements["gametype"].value;
     var firstToPlay = document.getElementById("playerorderForm").elements["playerorder"].value;
     var difficulty = document.getElementById("difficultyForm").elements["difficulty"].value;
-    var columns = document.getElementById('col').value;
+    var rows = document.getElementById('col').value;
     var lines = document.getElementById('line').value;
 
-    if(columns <=3 || lines <=3) {
+    if(rows <=3 || lines <=3) {
         alert("Invalid board size");
         return;
     } 
     resetGameDiv();
-    showGamePage();
-    console.log(lines);
     if (type="ai") {
-        console.log('here');
-        game = new SinglePlayerGame(firstToPlay, difficulty, columns, lines);
-        console.log('here2');
+        game = new SinglePlayerGame(firstToPlay, difficulty, rows, lines);
+        showGamePage();
         game.startGame();
     }
 }
@@ -31,11 +30,10 @@ function boardPiece() {
     document.getElementById("gamingDiv");
 }
 
-function SinglePlayerGame(firstToPlay, difficulty, columns, lines) {
-    console.log("aquiii");
+function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
     this.firstToPlay = firstToPlay;
     this.difficulty = difficulty;
-    this.columns = columns;
+    this.rows = rows;
     this.lines = lines;
 
     if (this.firstToPlay == "pc")
@@ -44,13 +42,13 @@ function SinglePlayerGame(firstToPlay, difficulty, columns, lines) {
         turn = 1;
 
     this.startGame = function() {
-        this.board = new Board(this.columns, this.lines);
+        this.board = new Board(this.rows, this.lines);
         this.board.setupBoard();
     }
 }
 
-function Board(columns, lines) {
-    this.columns = columns;
+function Board(rows, lines) {
+    this.rows = rows;
     this.lines = lines;
     this.game = new Array();
     this.boardDiv;
@@ -59,12 +57,14 @@ function Board(columns, lines) {
         this.boardDiv = document.createElement("div");
         this.boardDiv.id = "game-board";
         this.boardDiv.className = "game-board";
-        this.boardDiv.style.width = "" + (80*this.columns) + "px";
-        console.log(this.columns);
+        this.boardDiv.style.width = "" + (boardWidthPerRow*this.rows) + "px";
+        this.boardDiv.style.height = "" + (boardHeightPerLine*this.lines) + "px";
 
-        document.getElementById("gameDiv").appendChild(this.boardDiv);
+        var gameDiv = document.getElementById("gameDiv");
+        gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
+        gameDiv.appendChild(this.boardDiv);
 
-        for (var i = 0; i < this.columns; i++) {
+        for (var i = 0; i < this.rows; i++) {
             var columnDiv = document.createElement("div");
             columnDiv.id = "column-" + i;
             columnDiv.className = "column";
@@ -81,12 +81,12 @@ function Board(columns, lines) {
                 var NS="http://www.w3.org/2000/svg";   
                 var svg=document.createElementNS(NS,"svg");
                 
-                svg.style.width = "80px";
-                svg.style.height = "80px";
+                svg.style.width = "90px";
+                svg.style.height = "70px";
                 svg.className.baseVal = "row-" + id;
 
                 columnDiv.appendChild(svg); 
-                svg.innerHTML += '<circle cx="50" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
+                svg.innerHTML += '<circle cx="30" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
 
                 this.game[i].push[0];
              }
@@ -137,7 +137,7 @@ function Disc() {
     
     document.onclick = function(evt){
         if(currentPlayer == 1){
-        if(possibleColumns().indexOf(currentCol) != -1){
+        if(possiblerows().indexOf(currentCol) != -1){
             dropDisc($this.id,$this.player);
         }
         }

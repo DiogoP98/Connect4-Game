@@ -32,9 +32,9 @@ body {
 }
 
 /* puts logout button and the username on the right side of the page */
-#logoutDiv {
+#managerDiv {
 	float: right;
-	margin: -40px 10px 0px 0px;
+	margin: -40px 20px 0px 0px;
 }
 
 h2 {
@@ -83,7 +83,7 @@ input[type="button"] {
 }
 
 /* changes logout button size*/
-#logoutDiv > input[type="button"] {
+#managerDiv > input[type="button"], #leaveDiv > input[type="button"] {
 	width: 100px;
 }
 
@@ -118,7 +118,7 @@ input[type="button"]:hover {
 	background: #0074B3;
 	cursor: pointer;
 	text-align: center;
-	margin: 0 auto; 
+	margin: 0 auto;
 }
 
 .column {

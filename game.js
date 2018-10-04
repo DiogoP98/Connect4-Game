@@ -61,7 +61,7 @@ function Board(rows, lines) {
         this.boardDiv.style.height = "" + (boardHeightPerLine*this.lines) + "px";
 
         var gameDiv = document.getElementById("gameDiv");
-        gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
+        //gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
         gameDiv.appendChild(this.boardDiv);
 
         for (var i = 0; i < this.rows; i++) {

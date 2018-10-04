@@ -114,6 +114,15 @@ input[type="button"]:hover {
 	margin-bottom: 5px;
 }
 
+#gameDiv {
+	position: fixed;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -700px;
+}
+
 #game-board{
 	background: #0074B3;
 	cursor: pointer;

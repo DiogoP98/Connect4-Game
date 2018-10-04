@@ -1,7 +1,8 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","logoutDiv","titleDiv"]
+var divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","leaveGame"]
 var login;
+var ingame;
 
 function userLogin() {
     login = true;
@@ -14,11 +15,12 @@ function showGameOptions() {
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-    document.getElementById("logoutDiv").style.display = "block";
+    document.getElementById("managerDiv").style.display = "block";
 }
 
 function showLoginPage() {
     login= false;
+    ingame = false;
 
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
@@ -27,18 +29,24 @@ function showLoginPage() {
     document.getElementById("titleDiv").style.display = "block";
 }
 
-function showGamePage(column, line) {
+function showGamePage() {
     for(var i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    document.getElementById("logoutDiv").style.display = "block";
+    ingame = true;
+    document.getElementById("managerDiv").style.display = "block";
+    document.getElementById("leaveGame").style.display = "block";
+    document.getElementById("gameDiv").style.display = "block";
 }
 
 function returnToMain() {
     if (!login) {
         showLoginPage();
     }
-    else //A melhorar: nao permitir caso o jogo ainda esteja a decorrer
-        showGameOptions();
-
+    else {
+        if (!ingame)
+            showGameOptions();
+        else
+            showGamePage();
+    }
 }

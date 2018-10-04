@@ -3,6 +3,13 @@ body {
 	background-color: whitesmoke;
 }
 
+.header {
+	width: 100%;
+	position: fixed;
+	margin-top: 40px;
+	top: 0%;
+}
+
 /* changes the title style and letter */
 .game-name {
 	font-family: 'Open Sans', sans-serif;
@@ -25,10 +32,9 @@ body {
 }
 
 /* puts logout button and the username on the right side of the page */
-#logoutDiv {
+#managerDiv {
 	float: right;
-	margin: -50px 10px 0px 0px;
-	position: block;
+	margin: -40px 20px 0px 0px;
 }
 
 h2 {
@@ -77,7 +83,7 @@ input[type="button"] {
 }
 
 /* changes logout button size*/
-#logoutDiv > input[type="button"] {
+#managerDiv > input[type="button"], #leaveDiv > input[type="button"] {
 	width: 100px;
 }
 
@@ -96,7 +102,7 @@ input[type="button"]:hover {
 #gameOptionsDiv.box {
 	padding: 0px 50px;
 	position: relative;
-	margin-top: 60px;
+	margin-top: 5%;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {
@@ -106,6 +112,43 @@ input[type="button"]:hover {
 
 #gameOptionsDiv > #submitDiv input[type="button"] {
 	margin-bottom: 5px;
+}
+
+#gameDiv {
+	position: fixed;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px;
+	margin-left: -700px;
+}
+
+#game-board{
+	background: #0074B3;
+	cursor: pointer;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.column {
+	width: 70px;
+	display: inline-block;
+}
+
+.column:hover  circle.free{
+	fill: #D5E4ED;
+}
+
+circle.free {
+	fill: #fff;
+}
+
+circle.red {
+	fill: #D50000;
+}
+
+circle.yellow {
+	fill: #DAD400;
 }
 
 /* puts the footer on the bootom of the page */

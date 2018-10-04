@@ -3,24 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
+
+	<!-- StyleSheets -->
 	<link rel="stylesheet" type="text/css" href="c4.css">
 
+	<!-- Scripts -->
 	<script src="manager.js"></script>
 	<script src="game.js"></script>
 </head>
 
 <body onload="showLoginPage()">
 
-	<div id="titleDiv">
-		<span class = "game-name">Connect 4</span>		
-	</div> 
+	<!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
+	<div class="header"> 
+		
+		<div id="titleDiv">
+			<span class = "game-name">Connect 4</span>		
+		</div> 
 
-	<div id="logoutDiv">
-		<div class="username">User</div>
-		<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+		<div id="managerDiv">
+			<div class="username">User</div>
+			<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
+			<input id="leaveGame" type='button' value='Leave Game' onclick="showLoginPage()"/>
+		</div>
 	</div>
 
-	<div id="loginPageDiv">
+	<!-- Login Div -->
+	<div id="loginPageDiv"> 
 		<div id="login" class="box">
 			<form>
 				<h2>Welcome</h2>
@@ -32,8 +41,8 @@
 		</div>
 	</div>
 
+	<!-- Div to choose the game options-->
 	<div id="gameOptionsDiv" class="box">
-
 		<div id="gameTypeDiv">
 			<p><strong class="form-text">Game Type</strong></p>
 			<form id='gameTypeForm' class="form-options">
@@ -84,7 +93,12 @@
 		</div>
 
 	</div>	
+	
+	<!-- Div where it is built the game board -->
+	<div id="gameDiv">
+	</div> 
 
+	<!-- Footer where there are the rules, name of the game and leaderboard -->
 	<div id="footer">
 		<a class="footer-title" onclick="returnToMain()">Connect4</a>
 		<ul class="footer-info">

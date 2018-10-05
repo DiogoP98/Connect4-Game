@@ -17,9 +17,10 @@ function setupGame() {
         alert("Invalid board size");
         return;
     } 
-    resetGameDiv();
+
     if (type="ai") {
         game = new SinglePlayerGame(firstToPlay, difficulty, rows, lines);
+        resetGameDiv();
         showGamePage();
         game.startGame();
     }
@@ -40,11 +41,12 @@ function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
         turn = 0;
     else
         turn = 1;
+}
 
-    this.startGame = function() {
-        this.board = new Board(this.rows, this.lines);
-        this.board.setupBoard();
-    }
+SinglePlayerGame.prototype.startGame = function() {
+    this.board = new Board(this.rows, this.lines);
+    this.board.setupBoard();
+    this.ai = new AI(this.difficulty);
 }
 
 function Board(rows, lines) {
@@ -52,46 +54,87 @@ function Board(rows, lines) {
     this.lines = lines;
     this.game = new Array();
     this.boardDiv;
+}
 
-    this.setupBoard = function() {
-        this.boardDiv = document.createElement("div");
-        this.boardDiv.id = "game-board";
-        this.boardDiv.className = "game-board";
-        this.boardDiv.style.width = "" + (boardWidthPerRow*this.rows) + "px";
-        this.boardDiv.style.height = "" + (boardHeightPerLine*this.lines) + "px";
+Board.prototype.setupBoard = function() {
+    this.boardDiv = document.createElement("div");
+    this.boardDiv.id = "game-board";
+    this.boardDiv.className = "game-board";
+    this.boardDiv.style.width = "" + (boardWidthPerRow*this.rows) + "px";
+    this.boardDiv.style.height = "" + (boardHeightPerLine*this.lines) + "px";
 
-        var gameDiv = document.getElementById("gameDiv");
-        //gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
-        gameDiv.appendChild(this.boardDiv);
+    var gameDiv = document.getElementById("gameDiv");
+    //gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
+    gameDiv.appendChild(this.boardDiv);
 
-        for (var i = 0; i < this.rows; i++) {
-            var columnDiv = document.createElement("div");
-            columnDiv.id = "column-" + i;
-            columnDiv.className = "column";
-            if (i == 0)
-                columnDiv.style.marginTop="10px";
+    for (var i = 0; i < this.rows; i++) {
+        var columnDiv = document.createElement("div");
+        columnDiv.id = "column-" + i;
+        columnDiv.className = "column";
+        if (i == 0)
+            columnDiv.style.marginTop="10px";
 
-            document.getElementById("game-board").appendChild(columnDiv);
+        document.getElementById("game-board").appendChild(columnDiv);
+
+        columnDiv.addEventListener("click", function() {
+            var j = this.findFirstFreeRow(id);
+            this.game[i][j] = turn;
+            var childDivs = document.getElementById(columnDiv).childNodes;
+            for (var k = 0; k < childDivs.length; k++) {
+                consle.log(k.className);
+            }
+        });
+        
+        this.game[i] = new Array();
+
+        for (var j = 0; j < this.lines; j++) {
+            var id = this.lines-j;
+
+            var NS="http://www.w3.org/2000/svg";   
+            var svg=document.createElementNS(NS,"svg");
             
-            this.game[i] = new Array();
+            svg.style.width = "90px";
+            svg.style.height = "70px";
+            svg.className.baseVal = "row-" + id;
 
-            for (var j = 0; j < this.lines; j++) {
-                var id = this.lines-j;
+            columnDiv.appendChild(svg); 
 
-                var NS="http://www.w3.org/2000/svg";   
-                var svg=document.createElementNS(NS,"svg");
-                
-                svg.style.width = "90px";
-                svg.style.height = "70px";
-                svg.className.baseVal = "row-" + id;
+            svg.innerHTML += '<circle cx="30" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
 
-                columnDiv.appendChild(svg); 
-                svg.innerHTML += '<circle cx="30" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
-
-                this.game[i].push[0];
-             }
-        }
+            this.game[i].push(0);
+         }
     }
+}
+
+Board.prototype.findFirstFreeRow = function (id) {
+    for(var i = 0; i < this.game[i].length ; i++ ) {
+        if (this.game[i][j] == 0)
+            return j;
+    }
+}
+
+function AI(difficulty) {
+    switch(difficulty) {
+        case "easy":
+            this.depth= 2;
+            break;
+        
+        case "medium": 
+            this.depth= 4;
+            break;
+
+        case "hard":
+            this.depth= 6;
+            break;
+
+        case "legendary":
+            this.depth= 8;
+            break;
+    }
+}
+
+AI.prototype.play = function() {
+
 }
 
 function Disc() {

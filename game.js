@@ -1,6 +1,6 @@
 "use strict";
 
-var turn; //check who's turn it is. 0 for ai 1 for player
+var turn; //check who's turn it is. 1 for ai 2 for player
 var game;
 var color; //color of piece being played
 var boardHeightPerLine = 80;
@@ -26,11 +26,6 @@ function setupGame() {
     }
 }
 
-//Objeto que representa cada buraco do tabuleiro
-function boardPiece() {
-    document.getElementById("gamingDiv");
-}
-
 function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
     this.firstToPlay = firstToPlay;
     this.difficulty = difficulty;
@@ -38,9 +33,9 @@ function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
     this.lines = lines;
 
     if (this.firstToPlay == "pc")
-        turn = 0;
-    else
         turn = 1;
+    else
+        turn = 2;
 }
 
 SinglePlayerGame.prototype.startGame = function() {
@@ -52,7 +47,7 @@ SinglePlayerGame.prototype.startGame = function() {
 function Board(rows, lines) {
     this.rows = rows;
     this.lines = lines;
-    this.game = new Array();
+    this.gameBoard = new Array();
     this.boardDiv;
 }
 
@@ -77,18 +72,25 @@ Board.prototype.setupBoard = function() {
         document.getElementById("game-board").appendChild(columnDiv);
 
         columnDiv.addEventListener("click", function() {
-            var j = this.findFirstFreeRow(id);
-            this.game[i][j] = turn;
-            var childDivs = document.getElementById(columnDiv).childNodes;
-            for (var k = 0; k < childDivs.length; k++) {
-                consle.log(k.className);
+            var columnNumber = this.id.match(/\d+/g)[0];
+            var freeRow = game.board.findFirstFreeRow(columnNumber);
+            var childDivs = this.childNodes;
+            for (var k = childDivs.length-1; k >=0 ; k--) {
+                var row = childDivs[k];
+                var rowNumber = row.className.baseVal.match(/\d+/g)[0];
+                if (rowNumber == freeRow) {
+                    var c = row.childNodes[0];
+                    c.className.baseVal = "yellow";
+                } 
             }
+            game.board.changePositionValue(columnNumber,freeRow);
+            turn = 1;
         });
         
-        this.game[i] = new Array();
+        this.gameBoard[i] = new Array();
 
         for (var j = 0; j < this.lines; j++) {
-            var id = this.lines-j;
+            var id = this.lines-j-1;
 
             var NS="http://www.w3.org/2000/svg";   
             var svg=document.createElementNS(NS,"svg");
@@ -101,16 +103,20 @@ Board.prototype.setupBoard = function() {
 
             svg.innerHTML += '<circle cx="30" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
 
-            this.game[i].push(0);
+            this.gameBoard[i].push(0);
          }
     }
 }
 
 Board.prototype.findFirstFreeRow = function (id) {
-    for(var i = 0; i < this.game[i].length ; i++ ) {
-        if (this.game[i][j] == 0)
+    for(var j = 0; j < this.gameBoard[id].length ; j++ ) {
+        if (this.gameBoard[id][j] == 0)
             return j;
     }
+}
+
+Board.prototype.changePositionValue = function(i,j) {
+    this.gameBoard[i][j] = turn;
 }
 
 function AI(difficulty) {

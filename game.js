@@ -6,6 +6,9 @@ var color; //color of piece being played
 var boardHeightPerLine = 80;
 var boardWidthPerRow = 75;
 
+/**
+ * Reads game information from gameSettings Div and starts a new game. 
+ */
 function setupGame() {
     var type = document.getElementById("gameTypeForm").elements["gametype"].value;
     var firstToPlay = document.getElementById("playerorderForm").elements["playerorder"].value;
@@ -26,6 +29,16 @@ function setupGame() {
     }
 }
 
+/**
+ * Creates an instance of a single player game.
+ * 
+ * @constructor
+ * @this {SinglePlayerGame}
+ * @param {String} firstToPlay The person that starts the game. 
+ * @param {Number} difficulty The level of difficulty.
+ * @param {Number} rows The number of rows.
+ * @param {Number} lines The number of lines.
+ */
 function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
     this.firstToPlay = firstToPlay;
     this.difficulty = difficulty;
@@ -38,12 +51,40 @@ function SinglePlayerGame(firstToPlay, difficulty, rows, lines) {
         turn = 2;
 }
 
+/**
+ * Creates a new board and setups AI.
+ */
 SinglePlayerGame.prototype.startGame = function() {
     this.board = new Board(this.rows, this.lines);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
 }
 
+/**
+ * Checks if the game finished.
+ */
+SinglePlayerGame.prototype.checkStatus = function() {
+    if (this.board.score() == -that.score)
+        alert("You have won!");
+
+    // Computer won
+    if (that.board.score() == that.score) 
+        alert("You have lost!");
+
+    // Tie
+    if (this.checkFull())
+        alert("Tie!");
+
+}
+
+/**
+ * Creates an instance of a game board.
+ * 
+ * @constructor
+ * @this {Board}
+ * @param {Number} rows The number of rows.
+ * @param {Number} lines The number of lines.
+ */
 function Board(rows, lines) {
     this.rows = rows;
     this.lines = lines;
@@ -51,6 +92,9 @@ function Board(rows, lines) {
     this.boardDiv;
 }
 
+/**
+ * Setups the board accordingly with the game settings given by the user.
+ */
 Board.prototype.setupBoard = function() {
     this.boardDiv = document.createElement("div");
     this.boardDiv.id = "game-board";
@@ -108,6 +152,11 @@ Board.prototype.setupBoard = function() {
     }
 }
 
+/**
+ * Finds the first free row of a certain column.
+ * 
+ * @param {Number} id the column which we want to search.
+ */
 Board.prototype.findFirstFreeRow = function (id) {
     for(var j = 0; j < this.gameBoard[id].length ; j++ ) {
         if (this.gameBoard[id][j] == 0)
@@ -115,10 +164,67 @@ Board.prototype.findFirstFreeRow = function (id) {
     }
 }
 
+/**
+ * Changes the value of the place where it was placed the new piece.
+ * 
+ * @param {Number} i Column in which the piece was placed
+ * @param {Number} j Row in which the piece was placed
+ */
 Board.prototype.changePositionValue = function(i,j) {
     this.gameBoard[i][j] = turn;
 }
 
+/**
+ * Analysis the board and gives a score accordingly.
+ */
+Board.prototype.score = function() {
+    if (this.board.score() == -that.score)
+        alert("You have won!");
+
+    // Computer won
+    if (that.board.score() == that.score) 
+        alert("You have lost!");
+
+    // Tie
+    if (this.checkFull())
+        alert("Tie!");
+}
+
+/**
+ * Determines if situation is finished.
+ *
+ * @param {number} depth
+ * @param {number} score
+ * @return {boolean}
+ */
+Board.prototype.isFinished = function(depth, score) {
+    if (depth == 0 || score == this.game.score || score == -this.game.score || this.isFull()) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Checks if board is full.
+ */
+Board.prototype.checkFull = function() {
+    for (var i = 0; i < this.columns; i++) {
+        for (var j = 0; j < this.lines; j++) {
+            if (this.gameBoard[i][j] == 0)
+                return -1;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * Creates an instace from AI.
+ * 
+ * @constructor
+ * @this {AI}
+ * @param {String} difficulty identifies the difficulty of the game
+ */
 function AI(difficulty) {
     switch(difficulty) {
         case "easy":
@@ -139,81 +245,100 @@ function AI(difficulty) {
     }
 }
 
+/**
+ * Makes AI move.
+ */
 AI.prototype.play = function() {
+    if (game.checkStatus != 0) {
 
-}
+        setTimeout(function() {
 
-function Disc() {
-    this.player = turn;
-    this.color = player == 1 ? 'red' : 'yellow';
+            // Algorithm call
+            var ai_move = that.maximizePlay(this.board, this.depth,Number.MIN_VALUE, Number.MAX_VALUE);
 
-    this.addToScene = function(){
-        board.innerHTML += '<div id="d'+this.id+'" class="disc '+this.color+'"></div>';
-        if(currentPlayer==2){
-          //computer move
-          var possibleMoves = think();
-          var cpuMove = Math.floor( Math.random() * possibleMoves.length);
-          currentCol = possibleMoves[cpuMove];
-          document.getElementById('d'+this.id).style.left = (14+60*currentCol)+"px";
-          dropDisc(this.id,currentPlayer);
-        }
-    }
+            // Place ai decision
+            that.place(ai_move[0]);
 
-    var $this = this;
-    document.onmousemove = function(evt){
-        if(currentPlayer == 1){
-        currentCol = Math.floor((evt.clientX - board.offsetLeft)/60);
-        if(currentCol<0){
-            currentCol=0;
-        }
-        if(currentCol>6){
-            currentCol=6;
-        }
-        document.getElementById('d'+$this.id).style.left = (14+60*currentCol)+"px";
-        document.getElementById('d'+$this.id).style.top = "-55px";
-        }
-    }
+            // Debug
+            document.getElementById('ai-column').innerHTML = 'Column: ' + parseInt(ai_move[0] + 1);
+            document.getElementById('ai-score').innerHTML = 'Score: ' + ai_move[1];
+            document.getElementById('ai-iterations').innerHTML = that.iterations;
 
-    document.onload = function(evt){
-        if(currentPlayer == 1){
-        currentCol = Math.floor((evt.clientX - board.offsetLeft)/60);
-        if(currentCol<0){currentCol=0;}
-        if(currentCol>6){currentCol=6;}
-        document.getElementById('d'+$this.id).style.left = (14+60*currentCol)+"px";
-        document.getElementById('d'+$this.id).style.top = "-55px";
-        }
-    }
-    
-    document.onclick = function(evt){
-        if(currentPlayer == 1){
-        if(possiblerows().indexOf(currentCol) != -1){
-            dropDisc($this.id,$this.player);
-        }
-        }
+            document.getElementById('loading').style.display = "none"; // Remove loading message
+        }, 100);   
     }
 }
 
-function dropDisc(cid,player){
-    currentRow = firstFreeRow(currentCol,player);
-    moveit(cid,(14+currentRow*60));
-    currentPlayer = player;
-    checkForMoveVictory();
-}
+/**
+ * Part of the Alpha-beta algorithm. It maximizes a play.
+ * 
+ * @param {Board} board the current board.
+ * @param {Number} depth the depth of the search.
+ * @param {number} alpha the smallest value found until now. 
+ * @param {number} beta the biggest value found until now. 
+ */
+AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
+    // Call score of our board
+    var score = board.score();
 
-function placeDisc(player){
-    currentPlayer = player;
-    var disc = new Disc(player);
-    disc.addToScene();
-}
+    // Break
+    if (board.isFinished(depth, score)) return [null, score];
 
-function firstFreeRow(col,player){
-    for(var i = 0; i<6; i++){
-      if(gameField[i][col]!=0){
-        break;
-      }
+    // Column, Score
+    var max = [null, -99999];
+
+    // For all possible moves
+    for (var column = 0; column < that.columns; column++) {
+        var new_board = board.copy(); // Create new board
+
+        if (new_board.place(column)) {
+
+            that.iterations++; // Debug
+
+            var next_move = that.minimizePlay(new_board, depth - 1, alpha, beta); // Recursive calling
+
+            // Evaluate new move
+            if (max[0] == null || next_move[1] > max[1]) {
+                max[0] = column;
+                max[1] = next_move[1];
+                alpha = next_move[1];
+            }
+
+            if (alpha >= beta) return max;
+        }
     }
-    game[i-1][col] = player;
-    return i-1;
+
+    return max;
+}
+
+AI.prototype.minimizePlay = function(board, depth, alpha, beta) {
+    var score = board.score();
+
+    if (board.isFinished(depth, score)) return [null, score];
+
+    // Column, score
+    var min = [null, 99999];
+
+    for (var column = 0; column < that.columns; column++) {
+        var new_board = board.copy();
+
+        if (new_board.place(column)) {
+
+            that.iterations++;
+
+            var next_move = that.maximizePlay(new_board, depth - 1, alpha, beta);
+
+            if (min[0] == null || next_move[1] < min[1]) {
+                min[0] = column;
+                min[1] = next_move[1];
+                beta = next_move[1];
+            }
+
+            if (alpha >= beta) return min;
+
+        }
+    }
+    return min;
 }
 
 function resetGameDiv(){

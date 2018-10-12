@@ -61,18 +61,25 @@ SinglePlayerGame.prototype.startGame = function() {
 
 /**
  * Checks if the game finished.
+ * @return {Boolean} true if the game has finished or false otherwise
  */
 SinglePlayerGame.prototype.checkStatus = function() {
-    if (this.board.score() == -that.score)
+    if (this.board.score() == -that.score){
         alert("You have won!");
+        return true;
+    }
 
-    // Computer won
-    if (this.board.score() == that.score) 
+    if (this.board.score() == that.score) {
         alert("You have lost!");
+        return true;
+    }
 
-    // Tie
-    if (this.board.checkFull())
+    if (this.board.checkFull()) {
         alert("Tie!");
+        return true;
+    }
+
+    return false;
 
 }
 
@@ -255,7 +262,7 @@ function AI(difficulty) {
  * Makes AI move.
  */
 AI.prototype.play = function() {
-    if (game.checkStatus != 0) {
+    if (game.checkStatus() != true) {
 
         setTimeout(function() {
 

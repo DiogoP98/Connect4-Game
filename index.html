@@ -23,8 +23,8 @@
 
 		<div id="managerDiv">
 			<div class="username">User</div>
-			<input type='button' value='LOG OUT' onclick="showLoginPage()"/>
-			<input id="leaveGame" type='button' value='Leave Game' onclick="showGameOptions()"/>
+			<input type='button' value='LOG OUT' onclick='showLoginPage()'/>
+			<input type='button' id='leaveGame' value='Leave Game' onclick='leaveGame()'/>
 		</div>
 	</div>
 
@@ -96,14 +96,24 @@
 	
 	<!-- Div where it is built the game board -->
 	<div id="gameDiv">
-	</div> 
+	</div>
+	
+	<!-- Div that shows the game rules-->
+	<div id="gameRulesDiv">
+		<h2 class="first">Description</h2>
+		<p>Connect 4 is a two-players game where the objective is to have 4 chips of the same color in a row, either horizontally, vertically or 
+			in the diagonal.
+		</p>
+		<h2>How To Play</h2>
+		<p></p>
+	</div>
 
 	<!-- Footer where there are the rules, name of the game and leaderboard -->
 	<div id="footer">
 		<a class="footer-title" onclick="returnToMain()">Connect4</a>
 		<ul class="footer-info">
 			<li>
-				<a onclick="returnToMain()">Rules</a>
+				<a onclick="showRules()">Rules</a>
 			</li>
 			<li>
 				<a onclick="returnToMain()">Leaderboard</a>

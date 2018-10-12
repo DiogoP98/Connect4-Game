@@ -1,6 +1,6 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","leaveGame"]
+const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","leaveGame"]
 var login;
 var ingame;
 
@@ -11,18 +11,19 @@ function userLogin() {
 }
 
 function showGameOptions() {
-    for(var i=0; i<divs.length; i++)
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
     document.getElementById("managerDiv").style.display = "block";
+    resetGameDiv();
 }
 
 function showLoginPage() {
     login= false;
     ingame = false;
 
-    for(var i=0; i<divs.length; i++)
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("loginPageDiv").style.display = "block";
@@ -30,7 +31,7 @@ function showLoginPage() {
 }
 
 function showGamePage() {
-    for(var i=0; i<divs.length; i++)
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     ingame = true;

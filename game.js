@@ -57,6 +57,11 @@ SinglePlayerGame.prototype.startGame = function() {
     this.board = new Board(this.columns, this.rows);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
+
+    if(turn == 1)
+        document.getElementById('turn').innerHTML = "AI's Turn";
+    else
+        document.getElementById('turn').innerHTML = "Your Turn";
 }
 
 /**
@@ -140,6 +145,7 @@ Board.prototype.setupBoard = function() {
             }
             game.board.changePositionValue(columnNumber,freeRow);
             turn = 1;
+            document.getElementById('turn').innerHTML = "AI's Turn";
         });
         
         this.gameBoard[i] = new Array();

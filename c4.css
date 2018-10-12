@@ -1,6 +1,7 @@
 /* changes the general color */
 body {
 	background-color: whitesmoke;
+	min-height: 100%;
 }
 
 .header {
@@ -31,10 +32,17 @@ body {
 	width: 100%;
 }
 
+#turn {
+	color: rgb(56, 137, 234);
+	float: initial;
+	font-size: 40px;
+	text-align: center;
+}
+
 /* puts logout button and the username on the right side of the page */
 #managerDiv {
 	float: right;
-	margin: -40px 20px 0px 0px;
+	margin-right: 20px;
 }
 
 h2 {
@@ -43,6 +51,10 @@ h2 {
 	font-weight: 600;
 	text-align: center;
 	margin-bottom: 10px;
+}
+
+#gameRulesDiv {
+	min-height: 100%;
 }
 
 #gameRulesDiv h2 {
@@ -59,6 +71,13 @@ h2 {
 	text-indent: 5%;
 	font-size: 20px;
 	margin-top: 0;
+}
+
+.gameRulesImgs {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 /* creates the background box on the log in and gameOptions divs */
@@ -169,6 +188,7 @@ circle.yellow {
 
 /* puts the footer on the bootom of the page */
 #footer {
+	z-index: 10;
 	position: fixed;
 	left: 0;	
 	bottom: 0;

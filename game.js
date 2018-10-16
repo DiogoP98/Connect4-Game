@@ -17,11 +17,6 @@ function setupGame() {
     let columns = size.charAt(0);
     let rows = size.charAt(2);
 
-    if(rows <=3 || columns <=3) {
-        alert("Invalid board size");
-        return;
-    } 
-
     if (type="ai") {
         game = new SinglePlayerGame(firstToPlay, difficulty, columns, rows);
         showGamePage();

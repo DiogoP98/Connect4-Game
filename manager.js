@@ -1,6 +1,6 @@
 "use strict";
 
-var divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","leaveGame"]
+const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv"]
 var login;
 var ingame;
 
@@ -11,18 +11,24 @@ function userLogin() {
 }
 
 function showGameOptions() {
-    for(var i=0; i<divs.length; i++)
+    if (ingame)
+        removeChild(document.getElementById("managerDiv"));
+
+    ingame = false;
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
+    document.getElementById("managerDiv").style.marginTop = "-40px";
     document.getElementById("managerDiv").style.display = "block";
+    resetGameDiv();
 }
 
 function showLoginPage() {
     login= false;
     ingame = false;
 
-    for(var i=0; i<divs.length; i++)
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("loginPageDiv").style.display = "block";
@@ -30,13 +36,25 @@ function showLoginPage() {
 }
 
 function showGamePage() {
-    for(var i=0; i<divs.length; i++)
+    for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     ingame = true;
+    document.getElementById("managerDiv").style.marginTop = "-40px";  
+    let leave = new leaveGameButton();
+    document.getElementById("managerDiv").appendChild(leave.element);
     document.getElementById("managerDiv").style.display = "block";
-    document.getElementById("leaveGame").style.display = "block";
     document.getElementById("gameDiv").style.display = "block";
+}
+
+function showRules() {
+    if (ingame)
+        removeChild(document.getElementById("managerDiv"));
+
+    for(let i=0; i<divs.length; i++)
+        document.getElementById(divs[i]).style.display = "none";
+
+    document.getElementById("gameRulesDiv").style.display = "block";
 }
 
 function returnToMain() {
@@ -46,7 +64,29 @@ function returnToMain() {
     else {
         if (!ingame)
             showGameOptions();
-        else
+        else 
             showGamePage();
     }
 }
+
+function leaveGameButton() {
+    this.element = document.createElement("input");
+
+    this.element.type = "button";
+    this.element.id = "leaveGame";
+    this.element.value = "Leave Game";
+
+    this.element.addEventListener("click", function() {
+        let leave = confirm("Are you sure you want to leave?");
+        if (leave) {
+            alert("You've left the game. You lose.");
+            showGameOptions();
+        }
+    });
+}
+
+function removeChild(element) {  
+    element.removeChild(element.childNodes[7]);
+}
+
+

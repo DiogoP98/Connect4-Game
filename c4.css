@@ -1,6 +1,13 @@
 /* changes the general color */
-body {
+html, body {
+	height: 100%;
+	margin: 0;
 	background-color: whitesmoke;
+}
+
+#wrapper {
+	min-height: 100%;
+	margin-bottom: -70px;
 }
 
 .header {
@@ -31,10 +38,18 @@ body {
 	width: 100%;
 }
 
+#turn {
+	color: rgb(56, 137, 234);
+	float: initial;
+	font-size: 40px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
 /* puts logout button and the username on the right side of the page */
 #managerDiv {
 	float: right;
-	margin: -40px 20px 0px 0px;
+	margin-right: 20px;
 }
 
 h2 {
@@ -45,13 +60,36 @@ h2 {
 	margin-bottom: 10px;
 }
 
+#gameRulesDiv h2 {
+	color: rgb(56, 137, 234);
+	text-align: initial;
+	margin-top: 2px;
+}
+
+#gameRulesDiv h2.first {
+	margin-top: 1%;
+}
+
+#gameRulesDiv p {
+	text-indent: 5%;
+	font-size: 20px;
+	margin-top: 0;
+}
+
+.gameRulesImgs {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 /* creates the background box on the log in and gameOptions divs */
 .box {
 	width: 250px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -190px 0px 0px -155px;
+	transform: translate(-50%, -50%);
 	background: rgb(235, 232, 232);
 	padding: 50px 50px;
 	border-radius: 5px;
@@ -83,7 +121,7 @@ input[type="button"] {
 }
 
 /* changes logout button size*/
-#managerDiv > input[type="button"], #leaveDiv > input[type="button"] {
+#managerDiv > input[type="button"] {
 	width: 100px;
 }
 
@@ -100,9 +138,8 @@ input[type="button"]:hover {
 }
 
 #gameOptionsDiv.box {
-	padding: 0px 50px;
-	position: relative;
-	margin-top: 5%;
+	margin-top: -30px;
+	padding: 30px 50px;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {
@@ -116,11 +153,10 @@ input[type="button"]:hover {
 
 #gameDiv {
 	position: fixed;
-	width: 100%;
 	top: 50%;
 	left: 50%;
-	margin-top: -300px;
-	margin-left: -700px;
+	transform: translate(-50%, -50%);
+	margin-top: -30px;
 }
 
 #game-board{
@@ -151,14 +187,12 @@ circle.yellow {
 	fill: #DAD400;
 }
 
+#push, #footer {
+	height: 70px;
+}
 /* puts the footer on the bootom of the page */
 #footer {
-	position: fixed;
-	left: 0;	
-	bottom: 0;
-	width: 100%;
 	background-color: rgb(235, 232, 232);
-	min-height: 60px;
 }
 
 /* puts the list of options on the footer in line*/

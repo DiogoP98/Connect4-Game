@@ -1,7 +1,13 @@
 /* changes the general color */
-body {
+html, body {
+	height: 100%;
+	margin: 0;
 	background-color: whitesmoke;
+}
+
+#wrapper {
 	min-height: 100%;
+	margin-bottom: -70px;
 }
 
 .header {
@@ -37,6 +43,7 @@ body {
 	float: initial;
 	font-size: 40px;
 	text-align: center;
+	margin-bottom: 20px;
 }
 
 /* puts logout button and the username on the right side of the page */
@@ -53,10 +60,6 @@ h2 {
 	margin-bottom: 10px;
 }
 
-#gameRulesDiv {
-	min-height: 100%;
-}
-
 #gameRulesDiv h2 {
 	color: rgb(56, 137, 234);
 	text-align: initial;
@@ -64,7 +67,7 @@ h2 {
 }
 
 #gameRulesDiv h2.first {
-	margin-top: 5%;
+	margin-top: 1%;
 }
 
 #gameRulesDiv p {
@@ -150,10 +153,10 @@ input[type="button"]:hover {
 
 #gameDiv {
 	position: fixed;
-	width: 100%;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	margin-top: -30px;
 }
 
 #game-board{
@@ -184,15 +187,12 @@ circle.yellow {
 	fill: #DAD400;
 }
 
+#push, #footer {
+	height: 70px;
+}
 /* puts the footer on the bootom of the page */
 #footer {
-	z-index: 10;
-	position: absolute;
-	left: 0;	
-	bottom: 0;
-	width: 100%;
 	background-color: rgb(235, 232, 232);
-	min-height: 60px;
 }
 
 /* puts the list of options on the footer in line*/

@@ -3,18 +3,19 @@
 var turn; //check who's turn it is. 1 for ai 2 for player
 var game;
 var color; //color of piece being played
-const boardHeightPerLine = 80;
-const boardWidthPerRow = 75;
+const boardWidthPerColumn = 90;
+const boardHeightPerRow = 90;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
  */
 function setupGame() {
-    var type = document.getElementById("gameTypeForm").elements["gametype"].value;
-    var firstToPlay = document.getElementById("playerorderForm").elements["playerorder"].value;
-    var difficulty = document.getElementById("difficultyForm").elements["difficulty"].value;
-    var columns = document.getElementById('col').value;
-    var rows = document.getElementById('line').value;
+    let type = document.getElementById("gameTypeForm").elements["gametype"].value;
+    let firstToPlay = document.getElementById("playerorderForm").elements["playerorder"].value;
+    let difficulty = document.getElementById("difficultyForm").elements["difficulty"].value;
+    let size = document.getElementById("sizeForm").elements["size"].value;
+    let columns = size.charAt(0);
+    let rows = size.charAt(2);
 
     if(rows <=3 || columns <=3) {
         alert("Invalid board size");
@@ -107,22 +108,28 @@ function Board(columns, rows) {
  * Setups the board accordingly with the game settings given by the user.
  */
 Board.prototype.setupBoard = function() {
+    let turnDiv = document.createElement("div");
+    turnDiv.id = "turn";
     this.boardDiv = document.createElement("div");
     this.boardDiv.id = "game-board";
     this.boardDiv.className = "game-board";
-    this.boardDiv.style.width = "" + (boardWidthPerRow*this.rows) + "px";
-    this.boardDiv.style.height = "" + (boardHeightPerLine*this.lines) + "px";
+    this.boardDiv.style.width = "" + (boardWidthPerColumn*this.columns) + "px";
+    this.boardDiv.style.height = "" + (boardHeightPerRow*this.rows) + "px";
 
     var gameDiv = document.getElementById("gameDiv");
-    //gameDiv.style.marginTop = "" + (50*(8-this.lines)) + "px";
+   
+    gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
 
     for (let i = 0; i < this.columns; i++) {
-        var columnDiv = document.createElement("div");
+        let columnDiv = document.createElement("div");
         columnDiv.id = "column-" + i;
         columnDiv.className = "column";
         if (i == 0)
-            columnDiv.style.marginTop="10px";
+            columnDiv.style.marginTop="20px";
+        
+        if(i != this.columns-1) 
+            columnDiv.style.marginRight = "10px";
 
         document.getElementById("game-board").appendChild(columnDiv);
 
@@ -132,9 +139,11 @@ Board.prototype.setupBoard = function() {
                 alert("It's computer's turn.");
                 return;
             }
-            var columnNumber = this.id.match(/\d+/g)[0];
-            var freeRow = game.board.findFirstFreeRow(columnNumber);
-            var childDivs = this.childNodes;
+            
+            let columnNumber = columnDiv.id.match(/\d+/g)[0];
+            let freeRow = game.board.findFirstFreeRow(columnNumber);
+            let childDivs = columnDiv.childNodes;
+
             for (let k = childDivs.length-1; k >=0 ; k--) {
                 let row = childDivs[k];
                 let rowNumber = row.className.baseVal.match(/\d+/g)[0];
@@ -147,7 +156,7 @@ Board.prototype.setupBoard = function() {
             turn = 1;
             document.getElementById('turn').innerHTML = "AI's Turn";
         });
-        
+
         this.gameBoard[i] = new Array();
 
         for (let j = 0; j < this.rows; j++) {
@@ -156,13 +165,14 @@ Board.prototype.setupBoard = function() {
             let NS="http://www.w3.org/2000/svg";   
             let svg=document.createElementNS(NS,"svg");
             
-            svg.style.width = "90px";
+            svg.style.width = "70px";
             svg.style.height = "70px";
+            svg.style.marginBottom = "10px";
             svg.className.baseVal = "row-" + id;
 
             columnDiv.appendChild(svg); 
 
-            svg.innerHTML += '<circle cx="30" cy="40" r="30" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
+            svg.innerHTML += '<circle cx="35" cy="35" r="35" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
 
             this.gameBoard[i].push(0);
          }

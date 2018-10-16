@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv", "turn"]
+const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv"]
 var login;
 var ingame;
 
@@ -40,12 +40,11 @@ function showGamePage() {
         document.getElementById(divs[i]).style.display = "none";
 
     ingame = true;
-    document.getElementById("managerDiv").style.marginTop = "-80px";  
+    document.getElementById("managerDiv").style.marginTop = "-40px";  
     let leave = new leaveGameButton();
     document.getElementById("managerDiv").appendChild(leave.element);
     document.getElementById("managerDiv").style.display = "block";
     document.getElementById("gameDiv").style.display = "block";
-    document.getElementById("turn").style.display = "block";
 }
 
 function showRules() {

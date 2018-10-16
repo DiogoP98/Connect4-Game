@@ -65,7 +65,7 @@ function returnToMain() {
     else {
         if (!ingame)
             showGameOptions();
-        else
+        else 
             showGamePage();
     }
 }
@@ -86,9 +86,7 @@ function leaveGameButton() {
     });
 }
 
-function removeChild(element) {
-    for(let i = 0; i < element.childNodes.length; i++)
-        console.log(element.childNodes[i]);
+function removeChild(element) {  
     element.removeChild(element.childNodes[7]);
 }
 

@@ -135,7 +135,8 @@ input[type="button"]:hover {
 }
 
 #gameOptionsDiv.box {
-	margin-top: -20px;
+	margin-top: -30px;
+	padding: 30px 50px;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {
@@ -186,7 +187,7 @@ circle.yellow {
 /* puts the footer on the bootom of the page */
 #footer {
 	z-index: 10;
-	position: fixed;
+	position: absolute;
 	left: 0;	
 	bottom: 0;
 	width: 100%;

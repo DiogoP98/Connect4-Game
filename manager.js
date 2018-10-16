@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","leaveGame","gameRulesDiv", "turn"]
+const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv", "turn"]
 var login;
 var ingame;
 
@@ -11,12 +11,15 @@ function userLogin() {
 }
 
 function showGameOptions() {
+    if (ingame)
+        removeChild(document.getElementById("managerDiv"));
+
     ingame = false;
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-    document.getElementById("managerDiv").style.marginTop = "-40px"; 
+    document.getElementById("managerDiv").style.marginTop = "-40px";
     document.getElementById("managerDiv").style.display = "block";
     resetGameDiv();
 }
@@ -38,24 +41,21 @@ function showGamePage() {
 
     ingame = true;
     document.getElementById("managerDiv").style.marginTop = "-80px";  
+    let leave = new leaveGameButton();
+    document.getElementById("managerDiv").appendChild(leave.element);
     document.getElementById("managerDiv").style.display = "block";
-    document.getElementById("leaveGame").style.display = "block";
     document.getElementById("gameDiv").style.display = "block";
     document.getElementById("turn").style.display = "block";
 }
 
 function showRules() {
+    if (ingame)
+        removeChild(document.getElementById("managerDiv"));
+
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameRulesDiv").style.display = "block";
-    if (login)
-        document.getElementById("managerDiv").style.display = "block";
-}
-
-function leaveGame() {
-    alert("You've left the game. The computer won.");
-    showGameOptions();
 }
 
 function returnToMain() {
@@ -69,3 +69,27 @@ function returnToMain() {
             showGamePage();
     }
 }
+
+function leaveGameButton() {
+    this.element = document.createElement("input");
+
+    this.element.type = "button";
+    this.element.id = "leaveGame";
+    this.element.value = "Leave Game";
+
+    this.element.addEventListener("click", function() {
+        let leave = confirm("Are you sure you want to leave?");
+        if (leave) {
+            alert("You've left the game. You lose.");
+            showGameOptions();
+        }
+    });
+}
+
+function removeChild(element) {
+    for(let i = 0; i < element.childNodes.length; i++)
+        console.log(element.childNodes[i]);
+    element.removeChild(element.childNodes[7]);
+}
+
+

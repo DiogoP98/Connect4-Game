@@ -86,7 +86,7 @@ h2 {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -190px 0px 0px -155px;
+	transform: translate(-50%, -50%);
 	background: rgb(235, 232, 232);
 	padding: 50px 50px;
 	border-radius: 5px;
@@ -118,7 +118,7 @@ input[type="button"] {
 }
 
 /* changes logout button size*/
-#managerDiv > input[type="button"], #leaveDiv > input[type="button"] {
+#managerDiv > input[type="button"] {
 	width: 100px;
 }
 
@@ -135,9 +135,7 @@ input[type="button"]:hover {
 }
 
 #gameOptionsDiv.box {
-	padding: 0px 50px;
-	position: relative;
-	margin-top: 5%;
+	margin-top: -20px;
 }
 
 #gameOptionsDiv > #boardSizeDiv input[type="text"] {
@@ -154,8 +152,7 @@ input[type="button"]:hover {
 	width: 100%;
 	top: 50%;
 	left: 50%;
-	margin-top: -300px;
-	margin-left: -700px;
+	transform: translate(-50%, -50%);
 }
 
 #game-board{

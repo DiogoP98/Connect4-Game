@@ -1,10 +1,12 @@
 "use strict";
 
-var turn; //check who's turn it is. 1 for ai 2 for player
 var game;
 var color; //color of piece being played
-const boardWidthPerColumn = 90;
-const boardHeightPerRow = 90;
+const boardWidthPerColumn = 80;
+const boardHeightPerRow = 70;
+const circleWidth = 60;
+const circleHeight = 55;
+const circleMarginBottom = 7;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -39,25 +41,15 @@ function SinglePlayerGame(firstToPlay, difficulty, columns, rows) {
     this.difficulty = difficulty;
     this.columns = columns;
     this.rows = rows;
-
-    if (this.firstToPlay == "pc")
-        turn = 1;
-    else
-        turn = 2;
 }
 
 /**
  * Creates a new board and setups AI.
  */
 SinglePlayerGame.prototype.startGame = function() {
-    this.board = new Board(this.columns, this.rows);
+    this.board = new Board(this.columns, this.rows, this.firstToPlay);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
-
-    if(turn == 1)
-        document.getElementById('turn').innerHTML = "AI's Turn";
-    else
-        document.getElementById('turn').innerHTML = "Your Turn";
 }
 
 /**
@@ -91,12 +83,20 @@ SinglePlayerGame.prototype.checkStatus = function() {
  * @this {Board}
  * @param {Number} columns The number of columns.
  * @param {Number} rows The number of rows.
+ * @param {String} firstToPlay Teh first player to play
  */
-function Board(columns, rows) {
+function Board(columns, rows, firstToPlay) {
     this.columns = columns;
     this.rows = rows;
     this.gameBoard = new Array();
     this.boardDiv;
+    this.turn;
+
+    if (firstToPlay == "pc") 
+        this.turn = 1;
+    else
+        this.turn = 2;
+
 }
 
 /**
@@ -115,6 +115,12 @@ Board.prototype.setupBoard = function() {
    
     gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
+
+    if(this.turn == 1)
+        document.getElementById('turn').innerHTML = "AI's Turn";
+    else
+        document.getElementById('turn').innerHTML = "Your Turn";
+
 
     for (let i = 0; i < this.columns; i++) {
         let columnDiv = document.createElement("div");
@@ -137,6 +143,12 @@ Board.prototype.setupBoard = function() {
             
             let columnNumber = columnDiv.id.match(/\d+/g)[0];
             let freeRow = game.board.findFirstFreeRow(columnNumber);
+
+            if (freeRow == -1) {
+                alert("Invalid move! Try again.");
+                return;
+            }
+
             let childDivs = columnDiv.childNodes;
 
             for (let k = childDivs.length-1; k >=0 ; k--) {
@@ -148,7 +160,6 @@ Board.prototype.setupBoard = function() {
                 } 
             }
             game.board.changePositionValue(columnNumber,freeRow);
-            turn = 1;
             document.getElementById('turn').innerHTML = "AI's Turn";
         });
 
@@ -160,14 +171,14 @@ Board.prototype.setupBoard = function() {
             let NS="http://www.w3.org/2000/svg";   
             let svg=document.createElementNS(NS,"svg");
             
-            svg.style.width = "70px";
-            svg.style.height = "70px";
-            svg.style.marginBottom = "10px";
+            svg.style.width = circleWidth + "px";
+            svg.style.height = circleHeight + "px";
+            svg.style.marginBottom = circleMarginBottom + "px";
             svg.className.baseVal = "row-" + id;
 
             columnDiv.appendChild(svg); 
 
-            svg.innerHTML += '<circle cx="35" cy="35" r="35" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
+            svg.innerHTML += '<circle cx="27" cy="27" r="27" stroke="#0B4E72" stroke-width="1" class="free" />' + '\n';
 
             this.gameBoard[i].push(0);
          }
@@ -184,6 +195,8 @@ Board.prototype.findFirstFreeRow = function (id) {
         if (this.gameBoard[id][j] == 0)
             return j;
     }
+
+    return -1;
 }
 
 /**
@@ -193,7 +206,12 @@ Board.prototype.findFirstFreeRow = function (id) {
  * @param {Number} j Row in which the piece was placed
  */
 Board.prototype.changePositionValue = function(i,j) {
-    this.gameBoard[i][j] = turn;
+    this.gameBoard[i][j] = this.turn;
+    
+    if(this.turn == 1)
+        this.turn = 2;
+    else
+        this.turn = 1;
 }
 
 /**
@@ -297,7 +315,7 @@ AI.prototype.play = function() {
  */
 AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
     // Call score of our board
-    var score = board.score();
+    let score = board.score();
 
     // Break
     if (board.isFinished(depth, score)) return [null, score];
@@ -307,9 +325,11 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
 
     // For all possible moves
     for (let column = 0; column < game.columns; column++) {
-        var new_board = board.copy(); // Create new board
+        let new_board = board.copy(); // Create new board
 
-        if (new_board.place(column)) {
+        let k = new_board.findFirstFreeRow(column);
+        if (k != -1) {
+            new_baord.changePositionValue(column,k);
 
             var next_move = that.minimizePlay(new_board, depth - 1, alpha, beta); 
 
@@ -336,9 +356,13 @@ AI.prototype.minimizePlay = function(board, depth, alpha, beta) {
     var min = [null, 99999];
 
     for (let column = 0; column < game.columns; column++) {
-        var new_board = board.copy();
+        let new_board = board.copy();
 
-        if (new_board.place(column)) {
+        let k = new_board.findFirstFreeRow(column);
+
+        if (k != -1) {
+
+            new_baord.changePositionValue(column,k);
 
             var next_move = that.maximizePlay(new_board, depth - 1, alpha, beta);
 

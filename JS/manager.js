@@ -19,7 +19,6 @@ function showGameOptions() {
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-    document.getElementById("managerDiv").style.marginTop = "-40px";
     document.getElementById("managerDiv").style.display = "block";
     resetGameDiv();
 }
@@ -39,8 +38,7 @@ function showGamePage() {
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    ingame = true;
-    document.getElementById("managerDiv").style.marginTop = "-40px";  
+    ingame = true; 
     let leave = new leaveGameButton();
     document.getElementById("managerDiv").appendChild(leave.element);
     document.getElementById("managerDiv").style.display = "block";

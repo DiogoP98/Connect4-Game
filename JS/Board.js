@@ -120,8 +120,10 @@ Board.prototype.scorePosition = function(row, column, delta_y, delta_x) {
         }
 
         // Moving through our board
-        row += delta_y;
-        column += delta_x;
+        if (row + delta_y < this.rows)
+            row += delta_y;
+        if (column + delta_y < this.columns)
+            column += delta_x;
     }
 
     // Marking winning/returning score

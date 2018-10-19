@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv"]
+const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv","leaderboardDiv"];
 var login;
 var ingame;
 
@@ -81,6 +81,16 @@ function leaveGameButton() {
             showGameOptions();
         }
     });
+}
+
+function showLeaderboard() {
+    if (ingame)
+        removeChild(document.getElementById("managerDiv"));
+
+    for(let i=0; i<divs.length; i++)
+        document.getElementById(divs[i]).style.display = "none";
+
+    document.getElementById("leaderboardDiv").style.display = "block";
 }
 
 function removeChild(element) {  

@@ -186,6 +186,32 @@ circle.yellow {
 #push, #footer {
 	height: 60px;
 }
+
+#players {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+	width: 75%;
+	margin-top: 10%;
+	transform: translate(-50%, -50%);
+}
+
+#players td, #players th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#players tr:nth-child(even){background-color: #f2f2f2;}
+
+#players tr:hover {background-color: #ddd;}
+
+#players th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(56, 137, 234);
+    color: white;
+}
+
 /* puts the footer on the bootom of the page */
 #footer {
 	background-color: rgb(235, 232, 232);

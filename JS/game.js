@@ -72,6 +72,9 @@ SinglePlayerGame.prototype.checkStatus = function() {
 
 }
 
+/**
+ * Eliminates every element of the board.
+ */
 function resetGameDiv(){
     var elem = document.getElementById("gameDiv");
     while (elem.firstChild)

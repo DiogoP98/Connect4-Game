@@ -30,17 +30,24 @@ function AI(difficulty) {
 /**
  * Makes AI move.
  */
-AI.prototype.play = function() {
+AI.prototype.play = function(game) {
+
     if (game.checkStatus() != true) {
 
         setTimeout(function() {
-
             // Algorithm call
-            var ai_move = this.maximizePlay(this.board, this.depth,Number.MIN_VALUE, Number.MAX_VALUE);
+
+            let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
 
             // Place ai decision
-            var j = game.gameBoard.findFirstFreeRow(ai_move[0]);
-            game.gameBoard.changePositionValue(ai_move[0],j);
+            let j = game.board.findFirstFreeRow(ai_move[0]);
+
+            console.log("column: " + ai_move[0] + "   row: " + j);
+            
+            game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]);
+
+            game.checkStatus();
+
         }, 100);   
     }
 }
@@ -53,7 +60,7 @@ AI.prototype.play = function() {
  * @param {number} alpha the smallest value found until now. 
  * @param {number} beta the biggest value found until now. 
  */
-AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
+AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
     // Call score of our board
     let score = board.score();
 
@@ -71,7 +78,7 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
         if (k != -1) {
             new_board.changePositionValue(column,k);
 
-            var next_move = this.minimizePlay(new_board, depth - 1, alpha, beta); 
+            var next_move = ai.minimizePlay(new_board, depth - 1, alpha, beta,ai); 
 
             // Evaluate new move
             if (max[0] == null || next_move[1] > max[1]) {
@@ -87,13 +94,13 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta) {
     return max;
 }
 
-AI.prototype.minimizePlay = function(board, depth, alpha, beta) {
-    var score = board.score();
+AI.prototype.minimizePlay = function(board, depth, alpha, beta, ai) {
+    let score = board.score();
 
     if (board.isFinished(depth, score)) return [null, score];
 
     // Column, score
-    var min = [null, 99999];
+    let min = [null, 99999];
 
     for (let column = 0; column < game.columns; column++) {
         let new_board = board.copy();
@@ -104,7 +111,7 @@ AI.prototype.minimizePlay = function(board, depth, alpha, beta) {
 
             new_board.changePositionValue(column,k);
 
-            var next_move = this.maximizePlay(new_board, depth - 1, alpha, beta);
+            let next_move = ai.maximizePlay(new_board, depth - 1, alpha, beta,ai);
 
             if (min[0] == null || next_move[1] < min[1]) {
                 min[0] = column;

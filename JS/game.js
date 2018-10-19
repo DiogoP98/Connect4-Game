@@ -1,11 +1,6 @@
 "use strict";
 
 var game;
-const boardWidthPerColumn = 80;
-const boardHeightPerRow = 70;
-const circleWidth = 60;
-const circleHeight = 55;
-const circleMarginBottom = 7;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -58,7 +53,6 @@ SinglePlayerGame.prototype.startGame = function() {
  * @return {Boolean} true if the game has finished or false otherwise
  */
 SinglePlayerGame.prototype.checkStatus = function() {
-
     if (this.board.score() == -this.score){
         alert("You have won!");
         return true;

@@ -1,5 +1,8 @@
 "use strict";
 
+
+//MELHORAR CONDICAO DE VITORIA EM CASO VERTICAL E DIAGONAL
+
 /**
  * Creates an instace from AI.
  * 

@@ -24,7 +24,7 @@
 			</div>
 
 			<div id="managerDiv">
-				<div class="username">User</div>
+				<div id="usernameDiv"></div>
 				<input type='button' value='Log Out' onclick='showLoginPage()'/>
 				<br>
 			</div>
@@ -35,7 +35,7 @@
 			<div id="login" class="box">
 				<form>
 					<h2>Welcome</h2>
-					<input name='username' placeholder='Username' type='text'/>
+					<input id='user' name='username' placeholder='Username' type='text'/>
 					<input id='pw' name='password' placeholder='Password' type='password'/>
 					<input type='button' value='Sign In' onclick="userLogin()"/>
 					<input type='button' value='Sign Up'/>
@@ -110,6 +110,9 @@
 			<span id="turn"></span>
 			<br>
 		</div>
+
+		<div id="gameFinishDiv">
+		</div>
 		
 		<!-- Div that shows the game rules-->
 		<div id="gameRulesDiv">
@@ -128,18 +131,6 @@
 		</div>
 		
 		<div id="leaderboardDiv">
-			<table id="players">
-				<tr>
-					<th>Player Name</th>
-					<th>W/L Ratio</th>
-					<th>Points</th>
-				</tr>
-				<tr>
-					<td>Alfreds Futterkiste</td>
-					<td>Maria Anders</td>
-					<td>Germany</td>
-				</tr>
-			</table>
 		</div>
 
 		<div id="push"></div>

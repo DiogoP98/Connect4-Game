@@ -34,25 +34,15 @@ function AI(difficulty) {
  * Makes AI move.
  */
 AI.prototype.play = function(game) {
+    setTimeout(function() {
+    // Algorithm call
 
-    if (game.checkStatus() != true) {
+    let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
 
-        setTimeout(function() {
-            // Algorithm call
-
-            let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
-
-            // Place ai decision
-            let j = game.board.findFirstFreeRow(ai_move[0]);
-
-            console.log("column: " + ai_move[0] + "   row: " + j);
+    // Place ai decision
+    let j = game.board.findFirstFreeRow(ai_move[0]);
             
-            game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]);
-
-            game.checkStatus();
-
-        }, 100);   
-    }
+    game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]); }, 100);
 }
 
 /**
@@ -79,7 +69,7 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
 
         let k = new_board.findFirstFreeRow(column);
         if (k != -1) {
-            new_board.changePositionValue(column,k);
+            new_board.changePositionValueForAi(column,k);
 
             var next_move = ai.minimizePlay(new_board, depth - 1, alpha, beta,ai); 
 
@@ -112,7 +102,7 @@ AI.prototype.minimizePlay = function(board, depth, alpha, beta, ai) {
 
         if (k != -1) {
 
-            new_board.changePositionValue(column,k);
+            new_board.changePositionValueForAi(column,k);
 
             let next_move = ai.maximizePlay(new_board, depth - 1, alpha, beta,ai);
 

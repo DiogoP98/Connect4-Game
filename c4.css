@@ -33,7 +33,7 @@ html, body {
 	text-align: center;
 }
 
-.username {
+#username {
 	text-align: initial;
 	width: 100%;
 }
@@ -192,7 +192,6 @@ circle.yellow {
     border-collapse: collapse;
 	width: 75%;
 	margin-top: 10%;
-	transform: translate(-50%, -50%);
 }
 
 #players td, #players th {
@@ -210,6 +209,20 @@ circle.yellow {
     text-align: left;
     background-color: rgb(56, 137, 234);
     color: white;
+}
+
+#gameFinsihDiv {
+	text-align: center;
+}
+
+#gameFinishDiv .number {
+	color: rgb(56, 137, 234);
+	font-weight: 900;
+}
+
+#gameFinishDiv h2 {
+	color: rgb(56, 137, 234);
+	font-size: 40px;
 }
 
 /* puts the footer on the bootom of the page */

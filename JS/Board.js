@@ -90,15 +90,35 @@ Board.prototype.findFirstFreeRow = function (id) {
 Board.prototype.changePositionValue = function(i,j) {
     this.gameBoard[i][j] = this.turn;
 
-    if(this.turn == 1) {
-        this.turn = 2;
-        document.getElementById('turn').innerHTML = "Your Turn";
-    }
-    else {
-        this.turn = 1;
-        document.getElementById('turn').innerHTML = "AI's Turn";
-    }
+    let k = game.checkStatus();
     
+    if (k != -1) {
+        document.getElementById('turn').innerHTML = "Game Ended";
+        setTimeout(function() {
+            gameFinish(k, game.ai.depth);
+        },5000); 
+    }
+
+    else {
+        if(this.turn == 1) {
+            this.turn = 2;
+            document.getElementById('turn').innerHTML = "Your Turn";
+        }
+        else {
+            this.turn = 1;
+            document.getElementById('turn').innerHTML = "AI's Turn";
+            game.ai.play(game);
+        }
+    }
+}
+
+Board.prototype.changePositionValueForAi = function(i,j) {
+    this.gameBoard[i][j] = this.turn; 
+
+    if(this.turn == 1)
+        this.turn = 2;
+    else
+        this.turn = 1;
 }
 
 Board.prototype.scorePosition = function(row, column, delta_y, delta_x) {
@@ -277,22 +297,14 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
         let rowNumber = row.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == freeRow) {
             let c = row.childNodes[0];
-            console.log("here");
-            if (this.turn == 1){
-                console.log(c);
+            if (this.turn == 1)
                 c.className.baseVal = "yellow";
-                console.log("entrou");
-            }
-            else {
+            else 
                 c.className.baseVal = "red";
-                console.log("entrou2");
-            }
         } 
     }
 
     this.changePositionValue(columnNumber,freeRow);
-    if(this.turn == 1)
-        this.game.ai.play(game);
 }
 
 Column.prototype.addSVG = function(id) {

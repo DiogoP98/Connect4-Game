@@ -53,30 +53,15 @@ SinglePlayerGame.prototype.startGame = function() {
  * @return {Boolean} true if the game has finished or false otherwise
  */
 SinglePlayerGame.prototype.checkStatus = function() {
-    if (this.board.score() == -this.score){
-        alert("You have won!");
-        return true;
-    }
+    if (this.board.score() == -this.score)
+        return 2;
 
-    if (this.board.score() == this.score) {
-        alert("You have lost!");
-        return true;
-    }
+    if (this.board.score() == this.score)
+        return 1;
 
-    if (this.board.checkFull()) {
-        alert("Tie!");
-        return true;
-    }
+    if (this.board.checkFull())
+        return 0;
 
-    return false;
+    return -1;
 
-}
-
-/**
- * Eliminates every element of the board.
- */
-function resetGameDiv(){
-    var elem = document.getElementById("gameDiv");
-    while (elem.firstChild)
-        elem.removeChild(elem.firstChild);
 }

@@ -10,19 +10,19 @@
 function AI(difficulty) {
     switch(difficulty) {
         case "easy":
-            this.depth= 2;
+            this.depth= 1;
             break;
         
         case "medium": 
-            this.depth= 4;
+            this.depth= 3;
             break;
 
         case "hard":
-            this.depth= 6;
+            this.depth= 5;
             break;
 
         case "legendary":
-            this.depth= 8;
+            this.depth= 6;
             break;
     }
 }
@@ -54,25 +54,36 @@ AI.prototype.play = function(game) {
  */
 AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
     // Call score of our board
-    let score = board.score();
+    let string = "";
+    for(let i = 0; i < board.columns; i++ ) {
+        for(let j = 0; j < board.rows; j++ ) {
+            string += board.gameBoard[i][j] + " ";
+        }
+        string += "\n";
+    }
 
+    console.log(string);
+    let score = board.score();
+    console.log(score);
     // Break
-    if (board.isFinished(depth, score)) return [null, score];
+    if (board.isFinished(depth, score)) 
+        return [null, score];
 
     // Column, Score
     var max = [null, -99999];
 
     // For all possible moves
-    for (let column = 0; column < game.columns; column++) {
+    for (let column = 0; column < board.columns; column++) {
         let new_board = board.copy(); // Create new board
 
         let k = new_board.findFirstFreeRow(column);
+
         if (k != -1) {
-            new_board.changePositionValueForAi(column,k);
+            new_board.changePositionValueForAi(column,k,1);
 
             var next_move = ai.minimizePlay(new_board, depth - 1, alpha, beta,ai); 
-
-            // Evaluate new move
+            //console.log("max: " + next_move+ "    " + max);
+            // Evaluate new move    
             if (max[0] == null || next_move[1] > max[1]) {
                 max[0] = column;
                 max[1] = next_move[1];
@@ -89,7 +100,8 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
 AI.prototype.minimizePlay = function(board, depth, alpha, beta, ai) {
     let score = board.score();
 
-    if (board.isFinished(depth, score)) return [null, score];
+    if (board.isFinished(depth, score)) 
+        return [null, score];
 
     // Column, score
     let min = [null, 99999];
@@ -101,9 +113,11 @@ AI.prototype.minimizePlay = function(board, depth, alpha, beta, ai) {
 
         if (k != -1) {
 
-            new_board.changePositionValueForAi(column,k);
+            new_board.changePositionValueForAi(column,k,2);
 
             let next_move = ai.maximizePlay(new_board, depth - 1, alpha, beta,ai);
+
+            //console.log("min: " + next_move + "    " + min);
 
             if (min[0] == null || next_move[1] < min[1]) {
                 min[0] = column;

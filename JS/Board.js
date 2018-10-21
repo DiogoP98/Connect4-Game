@@ -90,12 +90,12 @@ Board.prototype.findFirstFreeRow = function (id) {
 Board.prototype.changePositionValue = function(i,j) {
     this.gameBoard[i][j] = this.turn;
 
-    let k = game.checkStatus();
+    let ended = game.checkStatus();
     
-    if (k != -1) {
+    if (ended != -1) {
         document.getElementById('turn').innerHTML = "Game Ended";
         setTimeout(function() {
-            gameFinish(k, game.ai.depth);
+            gameFinish(ended, game.ai.depth);
         },5000); 
     }
 
@@ -112,13 +112,8 @@ Board.prototype.changePositionValue = function(i,j) {
     }
 }
 
-Board.prototype.changePositionValueForAi = function(i,j) {
-    this.gameBoard[i][j] = this.turn; 
-
-    if(this.turn == 1)
-        this.turn = 2;
-    else
-        this.turn = 1;
+Board.prototype.changePositionValueForAi = function(i,j, turnAI) {
+    this.gameBoard[i][j] = turnAI; 
 }
 
 Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
@@ -147,18 +142,17 @@ Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
     }
     
     // Marking winning/returning score
+
     if (human_points == 4) {
         this.game.winning_array = this.game.winning_array_human;
-        // Computer won (100000)
         return -this.game.score;
-    } else if (computer_points == 4) {
+    } 
+    else if (computer_points == 4) {
         this.game.winning_array = this.game.winning_array_cpu;
-        // Human won (-100000)
         return this.game.score;
-    } else {
-        // Return normal points
+    } 
+    else
         return computer_points;
-    }
 }
 
 
@@ -166,17 +160,17 @@ Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
  * Analysis the board and gives a score accordingly.
  */
 Board.prototype.score = function() {
-    var points = 0;
+    let points = 0;
 
-    var vertical_points = 0;
-    var horizontal_points = 0;
-    var diagonal_points1 = 0;
-    var diagonal_points2 = 0;
+    let vertical_points = 0;
+    let horizontal_points = 0;
+    let diagonal_points1 = 0;
+    let diagonal_points2 = 0;
 
     //horizontal check
     for (let i = 0; i<this.rows-3 ; i++ ){
         for (let j = 0; j<this.columns; j++){
-            var score = this.scorePosition(j, i, 0, 1);
+            let score = this.scorePosition(j, i, 0, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             vertical_points += score;
@@ -184,9 +178,9 @@ Board.prototype.score = function() {
     }
 
     //vertical search
-    for (var i = 0; i<this.columns-3 ; i++ ){
+    for (let i = 0; i<this.columns-3 ; i++ ){
         for (let j = 0; j<this.rows; j++){
-            var score = this.scorePosition(i, j, 1, 0);   
+            let score = this.scorePosition(i, j, 1, 0);   
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             horizontal_points += score;
@@ -196,7 +190,7 @@ Board.prototype.score = function() {
     //ascendingDiagonalCheck 
     for (let i=3; i<this.columns; i++){
         for (let j=0; j<this.rows-3; j++){
-            var score = this.scorePosition(i, j, -1, 1);
+            let score = this.scorePosition(i, j, -1, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points1 += score;
@@ -206,7 +200,7 @@ Board.prototype.score = function() {
     // descendingDiagonalCheck
     for (let i=3; i<this.columns; i++){
         for (let j=3; j<this.rows; j++){
-            var score = this.scorePosition(i, j, -1, -1);
+            let score = this.scorePosition(i, j, -1, -1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points2 += score;
@@ -235,8 +229,8 @@ Board.prototype.isFinished = function(depth, score) {
  * Checks if board is full.
  */
 Board.prototype.checkFull = function() {
-    for (var i = 0; i < this.columns; i++) {
-        for (var j = 0; j < this.rows; j++) {
+    for (let i = 0; i < this.columns; i++) {
+        for (let j = 0; j < this.rows; j++) {
             if (this.gameBoard[i][j] == 0)
                 return false;
         }
@@ -246,11 +240,11 @@ Board.prototype.checkFull = function() {
 }
 
 Board.prototype.copy = function() {
-    var c = new Board(this.game,this.columns, this.rows, this.turn);
+    let c = new Board(this.game,this.columns, this.rows, this.turn);
 
-    for (var i = 0; i < this.columns; i++) {
+    for (let i = 0; i < this.columns; i++) {
         c.gameBoard[i] = new Array();
-        for (var j = 0; j < this.rows; j++) {
+        for (let j = 0; j < this.rows; j++) {
             c.gameBoard[i][j] = this.gameBoard[i][j];
         }
     }

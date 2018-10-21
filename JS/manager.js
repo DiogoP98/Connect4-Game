@@ -140,7 +140,7 @@ function showLeaderboard() {
 				"<tr>" +
 					"<th>Player</th>" +
 					"<th>Games Played</th>" +
-					"<th>W/L Ratio</th>" +
+					"<th>W/L Ratio (%)</th>" +
 					"<th>Points</th>" +
 				"</tr>";
 	for(var i=0; i<localStorage.length; i++){
@@ -150,7 +150,7 @@ function showLeaderboard() {
 			"<tr>" +
 				"<td>" + jsonUser + "</td>" +
 				"<td>" + json.games + "</td>" +
-				"<td>" + json.victories + "</td>" +
+				"<td>" + parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0) + "</td>" +
 				"<td>" + json.points + "</td>";
 		finalText += "</tr>";
 	}

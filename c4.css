@@ -61,7 +61,7 @@ h2 {
 	margin-bottom: 10px;
 }
 
-#gameRulesDiv h2 {
+#gameRulesDiv h2, #leaderboardDiv h2 {
 	color: rgb(56, 137, 234);
 	text-align: initial;
 	margin-top: 2px;
@@ -187,11 +187,15 @@ circle.yellow {
 	height: 60px;
 }
 
+#leaderboardDiv {
+	margin-left: 40px;
+}
+
 #players {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
 	width: 75%;
-	margin-top: 10%;
+	margin-left: 60px;
 }
 
 #players td, #players th {

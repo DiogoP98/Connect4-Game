@@ -4,6 +4,7 @@ const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv",
 var login;
 var ingame;
 var user;
+var before = false; //check if the leaderboard was shown before
 
 /**
  * Shows login box, with the game name on top
@@ -14,11 +15,10 @@ function showLoginPage() {
 
     resetDiv(document.getElementById("gameDiv"));
     resetDiv(document.getElementById("gameFinishDiv"));
-    resetDiv(document.getElementById("usernameDiv"));
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
-
+    
     document.getElementById("loginPageDiv").style.display = "block";
     document.getElementById("titleDiv").style.display = "block";
 }
@@ -32,7 +32,7 @@ function userLogin() {
     if(user == "")
         user = "User";
     
-    document.getElementById("usernameDiv").innerHTML += "<span>"+user+"</span>";
+    document.getElementById("usernameDiv").innerHTML = "<span>"+user+"</span>";
 
     if(localStorage[user] == null)
         localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
@@ -47,7 +47,7 @@ function userLogin() {
  */
 function showGameOptions() {
     if (ingame)
-        removeChild(document.getElementById("managerDiv"));
+        removeChild(document.getElementById("managerDiv"),7);
 
     ingame = false;
     for(let i=0; i<divs.length; i++)
@@ -78,7 +78,7 @@ function showGamePage() {
  */
 function showRules() {
     if (ingame)
-        removeChild(document.getElementById("managerDiv"));
+        removeChild(document.getElementById("managerDiv"),7);
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
@@ -122,12 +122,17 @@ function leaveGameButton() {
  * Shows the leaderboard
  */
 function showLeaderboard() {
+    let leaderboard = document.getElementById("leaderboardDiv");
+
     if (ingame)
-        removeChild(document.getElementById("managerDiv"));
+        removeChild(document.getElementById("managerDiv"),7);
+
+    if (before) 
+        removeChild(leaderboard,9);
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
-
+    
     var finalText = 
 			"<table id='players'>" +
 				"<tr>" +
@@ -138,7 +143,6 @@ function showLeaderboard() {
 				"</tr>";
 	for(var i=0; i<localStorage.length; i++){
         var jsonUser = localStorage.key(i);
-        console.log(jsonUser);
 		var json = JSON.parse(localStorage.getItem(localStorage.key(i)));
 		finalText += 
 			"<tr>" +
@@ -150,24 +154,21 @@ function showLeaderboard() {
 	}
 	finalText += "</table>"
     
-    console.log(finalText);
-    document.getElementById("leaderboardDiv").innerHTML = finalText;
-
-    document.getElementById("leaderboardDiv").style.display = "block";
+    leaderboard.innerHTML += finalText;
+    leaderboard.style.display = "block";
+    before = true;
 }
 
 function gameFinish(player,depth) {
     resetDiv(document.getElementById("gameDiv"));
+    removeChild(document.getElementById("managerDiv"),7);
     ingame = false;
-
-
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    removeChild(document.getElementById("managerDiv"));
     addFinishSpans(player,depth);
-    changeJSON();
+
     document.getElementById("managerDiv").style.display = "block";
     document.getElementById("gameFinishDiv").style.display = "block";
 }
@@ -208,23 +209,19 @@ function addFinishSpans(player,depth) {
 
 }
 
-function changeJSON() {
-
-}
-
 /**
  * Eliminates every element of the board.
  */
 function resetDiv(element){
-    while (element.firstChild)
+    while (element.firstChild) 
         element.removeChild(element.firstChild);
 }
 
 /**
  * Removes leave game button after game finishes.
  */
-function removeChild(element) {  
-    element.removeChild(element.childNodes[7]);
+function removeChild(element, id) {
+    element.removeChild(element.childNodes[id]);
 }
 
 

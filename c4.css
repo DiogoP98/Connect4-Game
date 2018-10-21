@@ -222,8 +222,13 @@ circle.yellow {
     color: white;
 }
 
-#gameFinsihDiv {
+#gameFinishDiv {
 	text-align: center;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	margin-top: -5%;
 }
 
 #gameFinishDiv .number {
@@ -234,6 +239,9 @@ circle.yellow {
 #gameFinishDiv h2 {
 	color: rgb(56, 137, 234);
 	font-size: 40px;
+}
+
+#scoreDiv {
 }
 
 /* puts the footer on the bootom of the page */

@@ -87,6 +87,8 @@ Board.prototype.changePositionValue = function(i,j) {
     
     if (ended != -1) {
         document.getElementById('turn').innerHTML = "Game Ended";
+        if (ended != 0)
+            this.highlightWinner();
         setTimeout(function() {
             gameFinish(ended, game.ai.depth);
         },5000); 
@@ -240,6 +242,41 @@ Board.prototype.copy = function() {
     return c;
 }
 
+Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
+    let childDivs = columnDiv.childNodes;
+
+    for (let k = childDivs.length-1; k >=0 ; k--) {
+        let row = childDivs[k];
+        let rowNumber = row.className.baseVal.match(/\d+/g)[0];
+        if (rowNumber == freeRow) {
+            let c = row.childNodes[0];
+            if (turn == 1)
+                c.className.baseVal = "yellow";
+            else 
+                c.className.baseVal = "red";
+        } 
+    }
+
+    this.changePositionValue(columnNumber,freeRow);
+}
+
+Board.prototype.highlightWinner = function() {
+    for (let i = 0; i < 4; i++) {
+        let columnDiv = document.getElementById("column-"+this.game.winning_array[i][0]);
+        let freeRow = this.game.winning_array[i][1];
+        let childDivs = columnDiv.childNodes;
+
+        for (let k = childDivs.length-1; k >=0 ; k--) {
+            let row = childDivs[k];
+            let rowNumber = row.className.baseVal.match(/\d+/g)[0];
+            if (rowNumber == freeRow) {
+                let c = row.childNodes[0];
+                c.className.baseVal += " winner";
+            }
+        }
+    }
+}
+
 function Column(id) {
     this.id = id;
     this.div = document.createElement("div");
@@ -272,24 +309,6 @@ Column.prototype.findPlaceToPlay = function() {
     }
 
     game.board.play(this, freeRow, columnNumber);
-}
-
-Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
-    let childDivs = columnDiv.childNodes;
-
-    for (let k = childDivs.length-1; k >=0 ; k--) {
-        let row = childDivs[k];
-        let rowNumber = row.className.baseVal.match(/\d+/g)[0];
-        if (rowNumber == freeRow) {
-            let c = row.childNodes[0];
-            if (turn == 1)
-                c.className.baseVal = "yellow";
-            else 
-                c.className.baseVal = "red";
-        } 
-    }
-
-    this.changePositionValue(columnNumber,freeRow);
 }
 
 Column.prototype.addSVG = function(id) {

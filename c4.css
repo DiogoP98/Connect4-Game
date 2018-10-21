@@ -191,8 +191,14 @@ circle.yellow {
 }
 
 circle.winner {
-	
+	animation: blinker 1s linear infinite;
 }
+
+@keyframes blinker {
+	50% {
+	  opacity: 25%;
+	}
+  }
 
 #push, #footer {
 	height: 60px;

@@ -46,6 +46,8 @@ SinglePlayerGame.prototype.startGame = function() {
     this.board = new Board(this, this.columns, this.rows, this.firstToPlay);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
+    if (this.board.turn == 1)
+        this.ai.play(this);
 }
 
 /**

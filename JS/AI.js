@@ -1,8 +1,5 @@
 "use strict";
 
-
-//MELHORAR CONDICAO DE VITORIA EM CASO VERTICAL E DIAGONAL
-
 /**
  * Creates an instace from AI.
  * 
@@ -42,7 +39,9 @@ AI.prototype.play = function(game) {
     // Place ai decision
     let j = game.board.findFirstFreeRow(ai_move[0]);
             
-    game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]); }, 100);
+    game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]); 
+
+    }, 100);
 }
 
 /**

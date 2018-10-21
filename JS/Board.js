@@ -121,7 +121,7 @@ Board.prototype.changePositionValueForAi = function(i,j) {
         this.turn = 1;
 }
 
-Board.prototype.scorePosition = function(row, column, delta_y, delta_x) {
+Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
     var human_points = 0;
     var computer_points = 0;
 
@@ -131,21 +131,21 @@ Board.prototype.scorePosition = function(row, column, delta_y, delta_x) {
 
     // Determine score through amount of available chips
     for (var i = 0; i < 4; i++) {
-        if (this.gameBoard[row][column] == 2) {
-            this.game.winning_array_human.push([row, column]);
+        if (this.gameBoard[column][row] == 2) {
+            this.game.winning_array_human.push([column, row]);
             human_points++; // Add for each human chip
-        } else if (this.gameBoard[row][column] == 1) {
-            this.game.winning_array_cpu.push([row, column]);
+        } else if (this.gameBoard[column][row] == 1) {
+            this.game.winning_array_cpu.push([column, row]);
             computer_points++; // Add for each computer chip
         }
 
         // Moving through our board
         if (row + delta_y < this.rows)
             row += delta_y;
-        if (column + delta_y < this.columns)
+        if (column + delta_x < this.columns)
             column += delta_x;
     }
-
+    
     // Marking winning/returning score
     if (human_points == 4) {
         this.game.winning_array = this.game.winning_array_human;
@@ -173,36 +173,40 @@ Board.prototype.score = function() {
     var diagonal_points1 = 0;
     var diagonal_points2 = 0;
 
-    for (var row = 0; row < this.rows - 3; row++) {
-        for (var column = 0; column < this.columns; column++) {
-            var score = this.scorePosition(row, column, 1, 0);
+    //horizontal check
+    for (let i = 0; i<this.rows-3 ; i++ ){
+        for (let j = 0; j<this.columns; j++){
+            var score = this.scorePosition(j, i, 0, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             vertical_points += score;
         }            
     }
 
-    for (var row = 0; row < this.rows; row++) {
-        for (var column = 0; column < this.columns - 3; column++) { 
-            var score = this.scorePosition(row, column, 0, 1);   
+    //vertical search
+    for (var i = 0; i<this.columns-3 ; i++ ){
+        for (let j = 0; j<this.rows; j++){
+            var score = this.scorePosition(i, j, 1, 0);   
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             horizontal_points += score;
         } 
     }
 
-    for (var row = 0; row < this.rows - 3; row++) {
-        for (var column = 0; column < this.columns - 3; column++) {
-            var score = this.scorePosition(row, column, 1, 1);
+    //ascendingDiagonalCheck 
+    for (let i=3; i<this.columns; i++){
+        for (let j=0; j<this.rows-3; j++){
+            var score = this.scorePosition(i, j, -1, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points1 += score;
         }            
     }
 
-    for (var row = 3; row < this.rows; row++) {
-        for (var column = 0; column <= this.columns - 4; column++) {
-            var score = this.scorePosition(row, column, -1, +1);
+    // descendingDiagonalCheck
+    for (let i=3; i<this.columns; i++){
+        for (let j=3; j<this.rows; j++){
+            var score = this.scorePosition(i, j, -1, -1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points2 += score;

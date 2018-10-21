@@ -8,8 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="c4.css">
 
 	<!-- Scripts -->
-	<script src="manager.js"></script>
-	<script src="game.js"></script>
+	<script src="JS/Manager.js"></script>
+	<script src="JS/Game.js"></script>
+	<script src="JS/AI.js"></script>
+	<script src="JS/Board.js"></script>
 </head>
 
 <body onload="showLoginPage()">
@@ -22,7 +24,7 @@
 			</div>
 
 			<div id="managerDiv">
-				<div class="username">User</div>
+				<div id="usernameDiv"></div>
 				<input type='button' value='Log Out' onclick='showLoginPage()'/>
 				<br>
 			</div>
@@ -33,7 +35,7 @@
 			<div id="login" class="box">
 				<form>
 					<h2>Welcome</h2>
-					<input name='username' placeholder='Username' type='text'/>
+					<input id='user' name='username' placeholder='Username' type='text'/>
 					<input id='pw' name='password' placeholder='Password' type='password'/>
 					<input type='button' value='Sign In' onclick="userLogin()"/>
 					<input type='button' value='Sign Up'/>
@@ -91,6 +93,9 @@
 					<input type="radio" name="size" value="7*6">
 					<span>7*6</span>
 					<br>
+					<input type="radio" name="size" value="8*7">
+					<span>8*7</span>
+					<br>
 				</form>
 			</div>
 
@@ -105,9 +110,15 @@
 			<span id="turn"></span>
 			<br>
 		</div>
+
+		<div id="gameFinishDiv">
+		</div>
 		
 		<!-- Div that shows the game rules-->
 		<div id="gameRulesDiv">
+			<h2 class="small-title">Connect4</h2>
+			<hr>
+			<br>
 			<h2 class="first">Description</h2>
 			<p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same. 
 				Sounds easy but it's not! The vertical strategy creates an unique challenge: you must think in a whole new way to block your opponent's moves!
@@ -121,6 +132,12 @@
 				the game you have a button near the log out button where you can do so.</p>
 			<p>When the game finishes it shows up the game options screen again where you can start a new game if you wish.</p>
 		</div>
+		
+		<div id="leaderboardDiv">
+			<h2 class="small-title">Connect4</h2>
+			<hr>
+			<h2 class= "first">LeaderBoard</h2>
+		</div>
 
 		<div id="push"></div>
 	</div>
@@ -133,7 +150,7 @@
 				<a onclick="showRules()">Rules</a>
 			</li>
 			<li>
-				<a onclick="returnToMain()">Leaderboard</a>
+				<a onclick="showLeaderboard()">Leaderboard</a>
 			</li>
 		</ul>
 	</div>

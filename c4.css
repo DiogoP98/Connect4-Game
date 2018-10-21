@@ -7,7 +7,7 @@ html, body {
 
 #wrapper {
 	min-height: 100%;
-	margin-bottom: -70px;
+	margin-bottom: -60px;
 }
 
 .header {
@@ -26,14 +26,18 @@ html, body {
 	font-size: 100px;
 	font-weight: 800;
 	letter-spacing: -3px;
-	line-height: 1;
+	line-height: 1; 
+}
+
+.small-title {
+	margin-top: 10px;
 }
 
 #titleDiv {
 	text-align: center;
 }
 
-.username {
+#username {
 	text-align: initial;
 	width: 100%;
 }
@@ -50,6 +54,7 @@ html, body {
 #managerDiv {
 	float: right;
 	margin-right: 20px;
+	margin-top: -40px;
 }
 
 h2 {
@@ -60,10 +65,13 @@ h2 {
 	margin-bottom: 10px;
 }
 
-#gameRulesDiv h2 {
+#gameRulesDiv {
+	margin-left: 40px;
+}
+
+#gameRulesDiv h2, #leaderboardDiv h2 {
 	color: rgb(56, 137, 234);
 	text-align: initial;
-	margin-top: 2px;
 }
 
 #gameRulesDiv h2.first {
@@ -139,12 +147,7 @@ input[type="button"]:hover {
 
 #gameOptionsDiv.box {
 	margin-top: -30px;
-	padding: 30px 50px;
-}
-
-#gameOptionsDiv > #boardSizeDiv input[type="text"] {
-	margin: 0px 0px 10px 30px;
-	width: 200px;
+	padding: 20px 50px 30px 50px;
 }
 
 #gameOptionsDiv > #submitDiv input[type="button"] {
@@ -188,8 +191,51 @@ circle.yellow {
 }
 
 #push, #footer {
-	height: 70px;
+	height: 60px;
 }
+
+#leaderboardDiv {
+	margin-left: 40px;
+}
+
+#players {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+	width: 75%;
+	margin-left: 60px;
+}
+
+#players td, #players th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#players tr:nth-child(even){background-color: #f2f2f2;}
+
+#players tr:hover {background-color: #ddd;}
+
+#players th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(56, 137, 234);
+    color: white;
+}
+
+#gameFinsihDiv {
+	text-align: center;
+}
+
+#gameFinishDiv .number {
+	color: rgb(56, 137, 234);
+	font-weight: 900;
+}
+
+#gameFinishDiv h2 {
+	color: rgb(56, 137, 234);
+	font-size: 40px;
+}
+
 /* puts the footer on the bootom of the page */
 #footer {
 	background-color: rgb(235, 232, 232);

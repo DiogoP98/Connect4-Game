@@ -128,7 +128,7 @@ function showLeaderboard() {
         removeChild(document.getElementById("managerDiv"),7);
 
     if (before) 
-        removeChild(leaderboard,9);
+        removeChild(leaderboard,7);
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";

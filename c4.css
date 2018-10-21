@@ -29,6 +29,10 @@ html, body {
 	line-height: 1; 
 }
 
+.small-title {
+	margin-top: 10px;
+}
+
 #titleDiv {
 	text-align: center;
 }
@@ -61,10 +65,13 @@ h2 {
 	margin-bottom: 10px;
 }
 
+#gameRulesDiv {
+	margin-left: 40px;
+}
+
 #gameRulesDiv h2, #leaderboardDiv h2 {
 	color: rgb(56, 137, 234);
 	text-align: initial;
-	margin-top: 2px;
 }
 
 #gameRulesDiv h2.first {

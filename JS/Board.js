@@ -15,20 +15,13 @@ const circleMarginBottom = 7;
  * @param {Number} rows The number of rows.
  * @param {String} firstToPlay Teh first player to play
  */
-function Board(game ,columns, rows, firstToPlay) {
+function Board(game ,columns, rows) {
     this.game = game;
     this.columns = columns;
     this.rows = rows;
     this.gameBoard = new Array();
     this.boardDiv;
-    this.turn;
     this.columnsDivs = [];
-
-    if (firstToPlay == "pc") 
-        this.turn = 1;
-    else
-        this.turn = 2;
-
 }
 
 /**
@@ -48,7 +41,7 @@ Board.prototype.setupBoard = function() {
     gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
 
-    if(this.turn == 1)
+    if(turn == 1)
         document.getElementById('turn').innerHTML = "AI's Turn";
     else
         document.getElementById('turn').innerHTML = "Your Turn";
@@ -56,7 +49,7 @@ Board.prototype.setupBoard = function() {
     for (let i = 0; i < this.columns; i++) {
         this.gameBoard[i] = new Array();
 
-        let columnDiv = new Column(i, this.turn);
+        let columnDiv = new Column(i);
         this.columnsDivs[i] = columnDiv.div;
 
         for (let j = 0; j < this.rows; j++) {
@@ -88,7 +81,7 @@ Board.prototype.findFirstFreeRow = function (id) {
  * @param {Number} j Row in which the piece was placed
  */
 Board.prototype.changePositionValue = function(i,j) {
-    this.gameBoard[i][j] = this.turn;
+    this.gameBoard[i][j] = turn;
 
     let ended = game.checkStatus();
     
@@ -100,12 +93,12 @@ Board.prototype.changePositionValue = function(i,j) {
     }
 
     else {
-        if(this.turn == 1) {
-            this.turn = 2;
+        if(turn == 1) {
+            turn = 2;
             document.getElementById('turn').innerHTML = "Your Turn";
         }
         else {
-            this.turn = 1;
+            turn = 1;
             document.getElementById('turn').innerHTML = "AI's Turn";
             game.ai.play(game);
         }
@@ -120,28 +113,23 @@ Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
     var human_points = 0;
     var computer_points = 0;
 
-    // Save winning positions to arrays for later usage
     this.game.winning_array_human = [];
     this.game.winning_array_cpu = [];
 
-    // Determine score through amount of available chips
     for (var i = 0; i < 4; i++) {
         if (this.gameBoard[column][row] == 2) {
             this.game.winning_array_human.push([column, row]);
-            human_points++; // Add for each human chip
+            human_points++;
         } else if (this.gameBoard[column][row] == 1) {
             this.game.winning_array_cpu.push([column, row]);
-            computer_points++; // Add for each computer chip
+            computer_points++;
         }
 
-        // Moving through our board
         if (row + delta_y < this.rows)
             row += delta_y;
         if (column + delta_x < this.columns)
             column += delta_x;
     }
-    
-    // Marking winning/returning score
 
     if (human_points == 4) {
         this.game.winning_array = this.game.winning_array_human;
@@ -240,7 +228,7 @@ Board.prototype.checkFull = function() {
 }
 
 Board.prototype.copy = function() {
-    let c = new Board(this.game,this.columns, this.rows, this.turn);
+    let c = new Board(this.game,this.columns, this.rows);
 
     for (let i = 0; i < this.columns; i++) {
         c.gameBoard[i] = new Array();
@@ -252,13 +240,12 @@ Board.prototype.copy = function() {
     return c;
 }
 
-function Column(id, turn) {
+function Column(id) {
     this.id = id;
     this.div = document.createElement("div");
     this.div.id = "column-" + id;
     this.div.className = "column";
     this.div.parent = this;
-    this.turn = turn;
 
     if (id == 0) 
         this.div.style.marginTop="20px";
@@ -271,7 +258,7 @@ function Column(id, turn) {
 }
 
 Column.prototype.findPlaceToPlay = function() {
-    if (this.turn == 1) {
+    if (turn == 1) {
         alert("It's computer's turn.");
         return;
     }
@@ -295,7 +282,7 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
         let rowNumber = row.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == freeRow) {
             let c = row.childNodes[0];
-            if (this.turn == 1)
+            if (turn == 1)
                 c.className.baseVal = "yellow";
             else 
                 c.className.baseVal = "red";

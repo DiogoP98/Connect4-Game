@@ -1,6 +1,7 @@
 "use strict";
 
 var game;
+var turn;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -37,16 +38,21 @@ function SinglePlayerGame(firstToPlay, difficulty, columns, rows) {
     this.rows = rows;
     this.score = 100000;
     this.winning_array = [];
+
+    if (firstToPlay == "pc") 
+        turn = 1;
+    else
+        turn = 2;
 }
 
 /**
  * Creates a new board and setups AI.
  */
 SinglePlayerGame.prototype.startGame = function() {
-    this.board = new Board(this, this.columns, this.rows, this.firstToPlay);
+    this.board = new Board(this, this.columns, this.rows);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
-    if (this.board.turn == 1)
+    if (turn == 1)
         this.ai.play(this);
 }
 

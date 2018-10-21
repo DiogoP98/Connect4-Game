@@ -190,6 +190,10 @@ circle.yellow {
 	fill: #DAD400;
 }
 
+circle.winner {
+	
+}
+
 #push, #footer {
 	height: 60px;
 }

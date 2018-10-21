@@ -66,6 +66,8 @@ function showGamePage() {
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
+    document.getElementById("logout").disabled = true;
+
     ingame = true; 
     let leave = new leaveGameButton();
     document.getElementById("managerDiv").appendChild(leave.element);
@@ -114,7 +116,7 @@ function leaveGameButton() {
     this.element.addEventListener("click", function() {
         let leave = confirm("Are you sure you want to leave?");
         if (leave)
-            gameFinish(1);
+            gameFinish(1,game.ai.depth);
     });
 }
 
@@ -162,34 +164,43 @@ function showLeaderboard() {
 function gameFinish(player,depth) {
     resetDiv(document.getElementById("gameDiv"));
     removeChild(document.getElementById("managerDiv"),7);
+    document.getElementById("logout").disabled = false;
     ingame = false;
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    addFinishSpans(player,depth);
+    showGameFinishPage(player,depth);
 
     document.getElementById("managerDiv").style.display = "block";
     document.getElementById("gameFinishDiv").style.display = "block";
 }
 
-function addFinishSpans(player,depth) {
+function showGameFinishPage(player,depth) {
     let div = document.getElementById("gameFinishDiv");
-    console.log(depth);
+
     if (player == 1) {
-        div.innerHTML += "<h2>You Lost!</h2>";
-        div.innerHTML += "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        div.innerHTML += "<p>Result factor:                   <bold class='number'>0</br></p>";
-        div.innerHTML += "<p>Total points obatined:           <bold class='number'>0</br></p>";
+        let text = "<h2>You Lost!</h2>";
+        let scoreDiv = "<div id='scoreDiv'>"
+        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
+        scoreDiv+= "<p>Result factor:                   <bold class='number'>0</br></p>";
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>0</br></p>";
+        scoreDiv+= "</div>";
+
+        div.innerHTML = text + scoreDiv;
         var json = JSON.parse(localStorage[user])
 		json["games"]++;
 		localStorage[user] = JSON.stringify(json);
     }
     else if (player == 2) {
-        div.innerHTML += "<h2>You Won!</h2>";
-        div.innerHTML += "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        div.innerHTML += "<p>Result factor:                   <bold class='number'>1</br></p>";
-        div.innerHTML += "<p>Total points obatined:           <bold class='number'>"+depth+"</br></p>";
+        let text = "<h2>You Won!</h2>";
+        let scoreDiv = "<div id='scoreDiv'>"
+        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
+        scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</br></p>";
+        scoreDiv+= "</div>";
+
+        div.innerHTML = text + scoreDiv;
         var json = JSON.parse(localStorage[user])
         json["games"]++;
         json["victories"]++;
@@ -197,16 +208,30 @@ function addFinishSpans(player,depth) {
 		localStorage[user] = JSON.stringify(json);
     }
     else {
-        div.innerHTML += "<h2>Tied!</h2>";
-        div.innerHTML += "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        div.innerHTML += "<p>Result factor:                   <bold class='number'>0.5</br></p>";
-        div.innerHTML += "<p>Total points obatined:           <bold class='number'>"+depth*0.5+"</br></p>";
+        let text = "<h2>Tied!</h2>";
+        let scoreDiv = "<div id='scoreDiv'>"
+        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
+        scoreDiv+= "<p>Result factor:                   <bold class='number'>0.5</br></p>";
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+0.5*depth+"</br></p>";
+        scoreDiv+= "</div>";
+
+        div.innerHTML = text + scoreDiv;
         var json = JSON.parse(localStorage[user])
         json["games"]++;
         json["points"]+=depth*0.5;
 		localStorage[user] = JSON.stringify(json);
     }
 
+    let playAgainButton = document.createElement("input");
+
+    playAgainButton.type = "button";
+    playAgainButton.value = "Play Again";
+
+    playAgainButton.addEventListener("click", function() {
+        showGameOptions();
+    });
+
+    div.appendChild(playAgainButton);
 }
 
 /**

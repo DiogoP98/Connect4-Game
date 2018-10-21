@@ -196,7 +196,7 @@ circle.winner {
 
 @keyframes blinker {
 	50% {
-	  opacity: 25%;
+	  opacity: 0;
 	}
   }
 

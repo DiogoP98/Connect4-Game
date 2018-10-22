@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  
 <head>
 	<meta charset="UTF-8">
 	<title>Connect 4</title>
@@ -17,10 +18,10 @@
 <body onload="showLoginPage()">
 	<div id="wrapper">
 		<!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
-		<div class="header"> 
-			
+		<div class="header">
+
 			<div id="titleDiv">
-				<span class = "game-name">Connect 4</span>		
+				<span class = "game-name">Connect 4</span>
 			</div>
 
 			<div id="managerDiv">
@@ -31,7 +32,7 @@
 		</div>
 
 		<!-- Login Div -->
-		<div id="loginPageDiv"> 
+		<div id="loginPageDiv">
 			<div id="login" class="box">
 				<form>
 					<h2>Welcome</h2>
@@ -103,8 +104,8 @@
 				<input type='button' value='Start Game' onclick="setupGame()"/>
 			</div>
 
-		</div>	
-		
+		</div>
+
 		<!-- Div where it is built the game board -->
 		<div id="gameDiv">
 			<span id="turn"></span>
@@ -113,26 +114,26 @@
 
 		<div id="gameFinishDiv">
 		</div>
-		
+
 		<!-- Div that shows the game rules-->
 		<div id="gameRulesDiv">
 			<h2 class="small-title">Connect4</h2>
 			<hr>
 			<br>
 			<h2 class="first">Description</h2>
-			<p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same. 
+			<p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same.
 				Sounds easy but it's not! The vertical strategy creates an unique challenge: you must think in a whole new way to block your opponent's moves!
 			</p>
 			<h2>How To Play</h2>
 			<p>After you login you're going to see the game options as you can see in the picture below.</p>
-			<img src="Images/gameOptions.png" class="gameRulesImgs">
+			<img src="Images/gameOptions.png" alt="gameOption" class="gameRulesImgs">
 			<br>
 			<p>Here you can change the game options as you wish. After choosing all the options you can start the game by pressin the button.</p>
-			<p>Once in the game each player is going to have a turn, and you can only play once it is your turn. If you feel like quitting 
+			<p>Once in the game each player is going to have a turn, and you can only play once it is your turn. If you feel like quitting
 				the game you have a button near the log out button where you can do so.</p>
 			<p>When the game finishes it shows up the game options screen again where you can start a new game if you wish.</p>
 		</div>
-		
+
 		<div id="leaderboardDiv">
 			<h2 class="small-title">Connect4</h2>
 			<hr>

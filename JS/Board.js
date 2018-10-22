@@ -92,7 +92,7 @@ Board.prototype.changePositionValue = function(i,j) {
             this.highlightWinner();
         setTimeout(function() {
             gameFinish(ended, game.ai.depth);
-        },5000); 
+        },3000); 
     }
 
     else {

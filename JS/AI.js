@@ -22,7 +22,7 @@ function AI(difficulty) {
             break;
 
         case "legendary":
-            this.depth= 6;
+            this.depth= 7;
             break;
     }
 }
@@ -33,12 +33,12 @@ function AI(difficulty) {
  */
 AI.prototype.play = function(game) {
     setTimeout(function() {
+        console.log(game.ai.depth);
+        let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
 
-    let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
-
-    let j = game.board.findFirstFreeRow(ai_move[0]);
+        let j = game.board.findFirstFreeRow(ai_move[0]);
             
-    game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]); 
+        game.board.play(game.board.columnsDivs[ai_move[0]], j, ai_move[0]); 
 
     }, 100);
 }

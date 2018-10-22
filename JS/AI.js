@@ -10,19 +10,19 @@
 function AI(difficulty) {
     switch(difficulty) {
         case "easy":
-            this.depth= 1;
+            this.depth= 3;
             break;
         
         case "medium": 
-            this.depth= 3;
-            break;
-
-        case "hard":
             this.depth= 5;
             break;
 
-        case "legendary":
+        case "hard":
             this.depth= 7;
+            break;
+
+        case "legendary":
+            this.depth= 8;
             break;
     }
 }

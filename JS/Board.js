@@ -11,9 +11,9 @@ const circleMarginBottom = 7;
  * 
  * @constructor
  * @this {Board}
+ * @param {Game} game The current game
  * @param {Number} columns The number of columns.
  * @param {Number} rows The number of rows.
- * @param {String} firstToPlay Teh first player to play
  */
 function Board(game ,columns, rows) {
     this.game = game;
@@ -36,7 +36,7 @@ Board.prototype.setupBoard = function() {
     this.boardDiv.style.width = "" + (boardWidthPerColumn*this.columns) + "px";
     this.boardDiv.style.height = "" + (boardHeightPerRow*this.rows) + "px";
 
-    var gameDiv = document.getElementById("gameDiv");
+    let gameDiv = document.getElementById("gameDiv");
    
     gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
@@ -64,9 +64,10 @@ Board.prototype.setupBoard = function() {
  * Finds the first free row of a certain column.
  * 
  * @param {Number} id the column which we want to search.
+ * @return {Number} the first freew row. -1 when column is full.
  */
 Board.prototype.findFirstFreeRow = function (id) {
-    for(var j = 0; j < this.gameBoard[id].length ; j++ ) {
+    for(let j = 0; j < this.gameBoard[id].length ; j++ ) {
         if (this.gameBoard[id][j] == 0)
             return j;
     }
@@ -107,23 +108,36 @@ Board.prototype.changePositionValue = function(i,j) {
     }
 }
 
+/**
+ * Changes Position of cell in current board
+ * @param {Number} i the number of the column
+ * @param {Number} j the number of the row
+ * @param {Number} turn which player's turn it is
+ */
 Board.prototype.changePositionValueForAi = function(i,j, turnAI) {
     this.gameBoard[i][j] = turnAI; 
 }
 
-Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
-    var human_points = 0;
-    var computer_points = 0;
+/**
+ * Tells the current state of the board on each section of the game board.
+ * @param {Number} column the current column
+ * @param {Number} row the current row
+ * @param {Number} delta_x where to move in the next iteration on x axis.
+ * @param {Number} delta_y where to move in the next iteration on y axis
+ */
+Board.prototype.ScorePerDirection = function(column, row, delta_x, delta_y) {
+    let human_points = 0;
+    let computer_points = 0;
 
-    this.game.winning_array_human = [];
-    this.game.winning_array_cpu = [];
+    let winning_human = [];
+    let winning_pc = [];
 
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         if (this.gameBoard[column][row] == 2) {
-            this.game.winning_array_human.push([column, row]);
+            winning_human.push([column, row]);
             human_points++;
         } else if (this.gameBoard[column][row] == 1) {
-            this.game.winning_array_cpu.push([column, row]);
+            winning_pc.push([column, row]);
             computer_points++;
         }
 
@@ -134,11 +148,11 @@ Board.prototype.scorePosition = function(column, row, delta_x, delta_y) {
     }
 
     if (human_points == 4) {
-        this.game.winning_array = this.game.winning_array_human;
+        this.game.winning_array = winning_human;
         return -this.game.score;
     } 
     else if (computer_points == 4) {
-        this.game.winning_array = this.game.winning_array_cpu;
+        this.game.winning_array = winning_pc;
         return this.game.score;
     } 
     else
@@ -160,7 +174,7 @@ Board.prototype.score = function() {
     //horizontal check
     for (let i = 0; i<this.rows-3 ; i++ ){
         for (let j = 0; j<this.columns; j++){
-            let score = this.scorePosition(j, i, 0, 1);
+            let score = this.ScorePerDirection(j, i, 0, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             vertical_points += score;
@@ -170,7 +184,7 @@ Board.prototype.score = function() {
     //vertical search
     for (let i = 0; i<this.columns-3 ; i++ ){
         for (let j = 0; j<this.rows; j++){
-            let score = this.scorePosition(i, j, 1, 0);   
+            let score = this.ScorePerDirection(i, j, 1, 0);   
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             horizontal_points += score;
@@ -180,7 +194,7 @@ Board.prototype.score = function() {
     //ascendingDiagonalCheck 
     for (let i=3; i<this.columns; i++){
         for (let j=0; j<this.rows-3; j++){
-            let score = this.scorePosition(i, j, -1, 1);
+            let score = this.ScorePerDirection(i, j, -1, 1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points1 += score;
@@ -190,7 +204,7 @@ Board.prototype.score = function() {
     // descendingDiagonalCheck
     for (let i=3; i<this.columns; i++){
         for (let j=3; j<this.rows; j++){
-            let score = this.scorePosition(i, j, -1, -1);
+            let score = this.ScorePerDirection(i, j, -1, -1);
             if (score == this.game.score) return this.game.score;
             if (score == -this.game.score) return -this.game.score;
             diagonal_points2 += score;
@@ -203,10 +217,10 @@ Board.prototype.score = function() {
 
 /**
  * Determines if situation is finished.
- *
- * @param {number} depth
- * @param {number} score
- * @return {boolean}
+ * 
+ * @param {number} depth the current search depth
+ * @param {number} score the current board score
+ * @return {boolean} True if the search ended
  */
 Board.prototype.isFinished = function(depth, score) {
     if (depth == 0 || score == this.game.score || score == -this.game.score || this.checkFull()) {
@@ -229,6 +243,9 @@ Board.prototype.checkFull = function() {
     return true;
 }
 
+/**
+ * Copies the current board to another
+ */
 Board.prototype.copy = function() {
     let c = new Board(this.game,this.columns, this.rows);
 
@@ -242,6 +259,12 @@ Board.prototype.copy = function() {
     return c;
 }
 
+/**
+ * Makes the play, changing the value on game board and css color of the cell.
+ * @param {Column} columnDiv the div of the column we want to change.
+ * @param {Number} freeRow the number of the free row.
+ * @param {Number} columnNumber the number of the column where the play was made.
+ */
 Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
     let childDivs = columnDiv.childNodes;
 
@@ -260,6 +283,9 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
     this.changePositionValue(columnNumber,freeRow);
 }
 
+/**
+ * Highlight winner cells when the game finishes.
+ */
 Board.prototype.highlightWinner = function() {
     for (let i = 0; i < 4; i++) {
         let columnDiv = document.getElementById("column-"+this.game.winning_array[i][0]);
@@ -277,6 +303,12 @@ Board.prototype.highlightWinner = function() {
     }
 }
 
+/**
+ * Creates an instance of a Column.
+ * 
+ * @constructor
+ * @param {Number} id The number of the column.
+ */
 function Column(id) {
     this.id = id;
     this.div = document.createElement("div");
@@ -308,17 +340,23 @@ Column.prototype.findPlaceToPlay = function() {
         return;
     }
 
-    game.board.play(this, freeRow, columnNumber);
+    if (game.checkStatus() == -1)
+        game.board.play(this, freeRow, columnNumber);
+
 }
 
-Column.prototype.addSVG = function(id) {
+/**
+ * Adds a cell to the column.
+ * @param {Number} row the number of the row
+ */
+Column.prototype.addSVG = function(row) {
     let NS="http://www.w3.org/2000/svg";   
     let svg=document.createElementNS(NS,"svg");
             
     svg.style.width = circleWidth + "px";
     svg.style.height = circleHeight + "px";
     svg.style.marginBottom = circleMarginBottom + "px";
-    svg.className.baseVal = "row-" + id;
+    svg.className.baseVal = "row-" + row;
 
     this.div.appendChild(svg); 
 

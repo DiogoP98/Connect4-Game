@@ -71,5 +71,4 @@ SinglePlayerGame.prototype.checkStatus = function() {
         return 0;
 
     return -1;
-
 }

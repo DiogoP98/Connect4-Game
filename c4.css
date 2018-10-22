@@ -42,6 +42,7 @@ html, body {
 	width: 100%;
 }
 
+/* turn text that shows on top of the game board */
 #turn {
 	color: rgb(56, 137, 234);
 	float: initial;
@@ -208,6 +209,7 @@ circle.winner {
 	margin-left: 40px;
 }
 
+/* changes column style */
 #players {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;

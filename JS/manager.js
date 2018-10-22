@@ -135,7 +135,7 @@ function showLeaderboard() {
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
     
-    var finalText = 
+    let finalText = 
 			"<table id='players'>" +
 				"<tr>" +
 					"<th>Player</th>" +
@@ -143,9 +143,9 @@ function showLeaderboard() {
 					"<th>W/L Ratio (%)</th>" +
 					"<th>Points</th>" +
 				"</tr>";
-	for(var i=0; i<localStorage.length; i++){
-        var jsonUser = localStorage.key(i);
-		var json = JSON.parse(localStorage.getItem(localStorage.key(i)));
+	for(let i=0; i<localStorage.length; i++){
+        let jsonUser = localStorage.key(i);
+		let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
 		finalText += 
 			"<tr>" +
 				"<td>" + jsonUser + "</td>" +
@@ -161,6 +161,11 @@ function showLeaderboard() {
     before = true;
 }
 
+/**
+ * Shows the end of the game screen
+ * @param {Number} player the player that won the game. 0 in case of a draw.
+ * @param {Number} depth Difficulty of the game
+ */
 function gameFinish(player,depth) {
     resetDiv(document.getElementById("gameDiv"));
     removeChild(document.getElementById("managerDiv"),7);
@@ -176,6 +181,11 @@ function gameFinish(player,depth) {
     document.getElementById("gameFinishDiv").style.display = "block";
 }
 
+/**
+ * Adds elements to the div that shows the end of the game.
+ * @param {Number} player the player that won the game. 0 in case of a draw.
+ * @param {Number} depth Difficulty of the game
+ */
 function showGameFinishPage(player,depth) {
     let div = document.getElementById("gameFinishDiv");
 
@@ -188,7 +198,7 @@ function showGameFinishPage(player,depth) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        var json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[user])
 		json["games"]++;
 		localStorage[user] = JSON.stringify(json);
     }
@@ -201,7 +211,7 @@ function showGameFinishPage(player,depth) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        var json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[user])
         json["games"]++;
         json["victories"]++;
         json["points"]+=depth;
@@ -216,7 +226,7 @@ function showGameFinishPage(player,depth) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        var json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[user])
         json["games"]++;
         json["points"]+=depth*0.5;
 		localStorage[user] = JSON.stringify(json);

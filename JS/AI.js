@@ -28,7 +28,8 @@ function AI(difficulty) {
 }
 
 /**
- * Makes AI move.
+ * Makes AI move with AlphaBeta.
+ * @param {SinglePlayerGame} game the current game 
  */
 AI.prototype.play = function(game) {
     setTimeout(function() {
@@ -49,6 +50,7 @@ AI.prototype.play = function(game) {
  * @param {Number} depth the depth of the search.
  * @param {number} alpha the smallest value found until now. 
  * @param {number} beta the biggest value found until now. 
+ * @param {AI} ai the game ai instance
  */
 AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
     let score = board.score();
@@ -56,7 +58,7 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
     if (board.isFinished(depth, score)) 
         return [null, score];
 
-    var max = [null, -99999];
+    let max = [null, -99999];
 
     for (let column = 0; column < board.columns; column++) {
         let new_board = board.copy();
@@ -66,7 +68,7 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
         if (k != -1) {
             new_board.changePositionValueForAi(column,k,1);
 
-            var next_move = ai.minimizePlay(new_board, depth - 1, alpha, beta,ai); 
+            let next_move = ai.minimizePlay(new_board, depth - 1, alpha, beta,ai); 
                
             if (max[0] == null || next_move[1] > max[1]) {
                 max[0] = column;
@@ -81,6 +83,15 @@ AI.prototype.maximizePlay = function(board, depth, alpha, beta,ai) {
     return max;
 }
 
+/**
+ * Part of the Alpha-beta algorithm. It minimazes a play.
+ * 
+ * @param {Board} board the current board.
+ * @param {Number} depth the depth of the search.
+ * @param {number} alpha the smallest value found until now. 
+ * @param {number} beta the biggest value found until now. 
+ * @param {AI} ai the game ai instance
+ */
 AI.prototype.minimizePlay = function(board, depth, alpha, beta, ai) {
     let score = board.score();
 

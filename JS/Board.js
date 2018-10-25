@@ -258,7 +258,7 @@ Board.prototype.copy = function() {
         }
     }
 
-    return c;
+    return new_board;
 }
 
 /**

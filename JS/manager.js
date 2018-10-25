@@ -191,13 +191,14 @@ function gameFinish(player,depth) {
  */
 function showGameFinishPage(player,depth) {
     const div = document.getElementById("gameFinishDiv");
-
+    console.log("here");
     if (player == 1) {
         let text = "<h2>You Lost!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>0</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>0</br></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <b class='number'>0</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -210,7 +211,8 @@ function showGameFinishPage(player,depth) {
         let scoreDiv = "<div id='scoreDiv'>"
         scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
         scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</br></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -223,9 +225,10 @@ function showGameFinishPage(player,depth) {
     else {
         let text = "<h2>Tied!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>0.5</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+0.5*depth+"</br></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*depth+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;

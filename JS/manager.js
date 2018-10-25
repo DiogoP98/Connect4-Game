@@ -63,6 +63,7 @@ function showGameOptions() {
  * Shows the game board 
  */
 function showGamePage() {
+    const manager = document.getElementById("managerDiv");
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
@@ -70,8 +71,9 @@ function showGamePage() {
 
     ingame = true; 
     let leave = new leaveGameButton();
-    document.getElementById("managerDiv").appendChild(leave.element);
-    document.getElementById("managerDiv").style.display = "block";
+
+    manager.appendChild(leave.element);
+    manager.style.display = "block";
     document.getElementById("gameDiv").style.display = "block";
 }
 
@@ -124,7 +126,7 @@ function leaveGameButton() {
  * Shows the leaderboard
  */
 function showLeaderboard() {
-    let leaderboard = document.getElementById("leaderboardDiv");
+    const leaderboard = document.getElementById("leaderboardDiv");
 
     if (ingame)
         removeChild(document.getElementById("managerDiv"),7);
@@ -170,6 +172,7 @@ function gameFinish(player,depth) {
     resetDiv(document.getElementById("gameDiv"));
     removeChild(document.getElementById("managerDiv"),7);
     document.getElementById("logout").disabled = false;
+
     ingame = false;
 
     for(let i=0; i<divs.length; i++)
@@ -187,7 +190,7 @@ function gameFinish(player,depth) {
  * @param {Number} depth Difficulty of the game
  */
 function showGameFinishPage(player,depth) {
-    let div = document.getElementById("gameFinishDiv");
+    const div = document.getElementById("gameFinishDiv");
 
     if (player == 1) {
         let text = "<h2>You Lost!</h2>";

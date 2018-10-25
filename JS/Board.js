@@ -36,7 +36,7 @@ Board.prototype.setupBoard = function() {
     this.boardDiv.style.width = "" + (boardWidthPerColumn*this.columns) + "px";
     this.boardDiv.style.height = "" + (boardHeightPerRow*this.rows) + "px";
 
-    let gameDiv = document.getElementById("gameDiv");
+    const gameDiv = document.getElementById("gameDiv");
    
     gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
@@ -85,9 +85,11 @@ Board.prototype.changePositionValue = function(i,j) {
     this.gameBoard[i][j] = turn;
 
     let ended = game.checkStatus();
+
+    const turnDiv = document.getElementById('turn');
     
     if (ended != -1) {
-        document.getElementById('turn').innerHTML = "Game Ended";
+        turnDiv.innerHTML = "Game Ended";
         if (ended != 0)
             this.highlightWinner();
         setTimeout(function() {
@@ -98,11 +100,11 @@ Board.prototype.changePositionValue = function(i,j) {
     else {
         if(turn == 1) {
             turn = 2;
-            document.getElementById('turn').innerHTML = "Your Turn";
+            turnDiv.innerHTML = "Your Turn";
         }
         else {
             turn = 1;
-            document.getElementById('turn').innerHTML = "AI's Turn";
+            turnDiv.innerHTML = "AI's Turn";
             game.ai.play(game);
         }
     }
@@ -247,16 +249,16 @@ Board.prototype.checkFull = function() {
  * Copies the current board to another
  */
 Board.prototype.copy = function() {
-    let c = new Board(this.game,this.columns, this.rows);
+    let new_board = new Board(this.game,this.columns, this.rows);
 
     for (let i = 0; i < this.columns; i++) {
-        c.gameBoard[i] = new Array();
+        new_board.gameBoard[i] = new Array();
         for (let j = 0; j < this.rows; j++) {
-            c.gameBoard[i][j] = this.gameBoard[i][j];
+            new_board.gameBoard[i][j] = this.gameBoard[i][j];
         }
     }
 
-    return c;
+    return new_board;
 }
 
 /**
@@ -272,11 +274,11 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
         let row = childDivs[k];
         let rowNumber = row.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == freeRow) {
-            let c = row.childNodes[0];
+            let child = row.childNodes[0];
             if (turn == 1)
-                c.className.baseVal = "yellow";
+                child.className.baseVal = "yellow";
             else 
-                c.className.baseVal = "red";
+                child.className.baseVal = "red";
         } 
     }
 

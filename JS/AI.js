@@ -33,7 +33,6 @@ function AI(difficulty) {
  */
 AI.prototype.play = function(game) {
     setTimeout(function() {
-        console.log(game.ai.depth);
         let ai_move = game.ai.maximizePlay(game.board, game.ai.depth, Number.MIN_VALUE, Number.MAX_VALUE, game.ai);
 
         let j = game.board.findFirstFreeRow(ai_move[0]);

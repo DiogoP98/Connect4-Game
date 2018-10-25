@@ -63,6 +63,7 @@ function showGameOptions() {
  * Shows the game board 
  */
 function showGamePage() {
+    const manager = document.getElementById("managerDiv");
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
@@ -70,8 +71,9 @@ function showGamePage() {
 
     ingame = true; 
     let leave = new leaveGameButton();
-    document.getElementById("managerDiv").appendChild(leave.element);
-    document.getElementById("managerDiv").style.display = "block";
+
+    manager.appendChild(leave.element);
+    manager.style.display = "block";
     document.getElementById("gameDiv").style.display = "block";
 }
 
@@ -124,7 +126,7 @@ function leaveGameButton() {
  * Shows the leaderboard
  */
 function showLeaderboard() {
-    let leaderboard = document.getElementById("leaderboardDiv");
+    const leaderboard = document.getElementById("leaderboardDiv");
 
     if (ingame)
         removeChild(document.getElementById("managerDiv"),7);
@@ -170,6 +172,7 @@ function gameFinish(player,depth) {
     resetDiv(document.getElementById("gameDiv"));
     removeChild(document.getElementById("managerDiv"),7);
     document.getElementById("logout").disabled = false;
+
     ingame = false;
 
     for(let i=0; i<divs.length; i++)
@@ -187,14 +190,15 @@ function gameFinish(player,depth) {
  * @param {Number} depth Difficulty of the game
  */
 function showGameFinishPage(player,depth) {
-    let div = document.getElementById("gameFinishDiv");
-
+    const div = document.getElementById("gameFinishDiv");
+    console.log("here");
     if (player == 1) {
         let text = "<h2>You Lost!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>0</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>0</br></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <b class='number'>0</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -207,7 +211,8 @@ function showGameFinishPage(player,depth) {
         let scoreDiv = "<div id='scoreDiv'>"
         scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
         scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</br></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -220,9 +225,10 @@ function showGameFinishPage(player,depth) {
     else {
         let text = "<h2>Tied!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>0.5</br></p>";
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+0.5*depth+"</br></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
+        scoreDiv += '<hr>';
+        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*depth+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;

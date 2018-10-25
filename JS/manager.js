@@ -166,9 +166,9 @@ function showLeaderboard() {
 /**
  * Shows the end of the game screen
  * @param {Number} player the player that won the game. 0 in case of a draw.
- * @param {Number} depth Difficulty of the game
+ * @param {Number} difficulty Difficulty of the game
  */
-function gameFinish(player,depth) {
+function gameFinish(player,difficulty) {
     resetDiv(document.getElementById("gameDiv"));
     removeChild(document.getElementById("managerDiv"),7);
     document.getElementById("logout").disabled = false;
@@ -178,7 +178,7 @@ function gameFinish(player,depth) {
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    showGameFinishPage(player,depth);
+    showGameFinishPage(player,difficulty);
 
     document.getElementById("managerDiv").style.display = "block";
     document.getElementById("gameFinishDiv").style.display = "block";
@@ -187,15 +187,15 @@ function gameFinish(player,depth) {
 /**
  * Adds elements to the div that shows the end of the game.
  * @param {Number} player the player that won the game. 0 in case of a draw.
- * @param {Number} depth Difficulty of the game
+ * @param {Number} difficulty Difficulty of the game
  */
-function showGameFinishPage(player,depth) {
+function showGameFinishPage(player,difficulty) {
     const div = document.getElementById("gameFinishDiv");
     console.log("here");
     if (player == 1) {
         let text = "<h2>You Lost!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
         scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
         scoreDiv += '<hr>';
         scoreDiv+= "<p>Total points obatined:           <b class='number'>0</b></p>";
@@ -209,32 +209,32 @@ function showGameFinishPage(player,depth) {
     else if (player == 2) {
         let text = "<h2>You Won!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ depth+"</bold></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ difficulty+"</bold></p>";
         scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
         scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+depth+"</b></p>";
+        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+difficulty+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
         let json = JSON.parse(localStorage[user])
         json["games"]++;
         json["victories"]++;
-        json["points"]+=depth;
+        json["points"]+=difficulty;
 		localStorage[user] = JSON.stringify(json);
     }
     else {
         let text = "<h2>Tied!</h2>";
         let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ depth+"</b></p>";
+        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
         scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
         scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*depth+"</b></p>";
+        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*difficulty+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
         let json = JSON.parse(localStorage[user])
         json["games"]++;
-        json["points"]+=depth*0.5;
+        json["points"]+=difficulty*0.5;
 		localStorage[user] = JSON.stringify(json);
     }
 
@@ -252,6 +252,7 @@ function showGameFinishPage(player,depth) {
 
 /**
  * Eliminates every element of the board.
+ * @param element the element from which you want to remove all the child elements
  */
 function resetDiv(element){
     while (element.firstChild) 
@@ -260,6 +261,8 @@ function resetDiv(element){
 
 /**
  * Removes leave game button after game finishes.
+ * @param element the element from which you want to remove the child element
+ * @param id the element you want to remove 
  */
 function removeChild(element, id) {
     element.removeChild(element.childNodes[id]);

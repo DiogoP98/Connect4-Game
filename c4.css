@@ -24,16 +24,18 @@ html, body {
 .header-title {
 	color: rgb(56, 137, 234);
 	font-size: 30px;
-	width: 25%;
+	width: 20%;
 	margin-left: 20px;
-	margin-top: 20px;
+	margin-top: 10px;
+	position: fixed;
 }
 
 .listFunctions {
 	text-align: center;
 	vertical-align: middle;
 	width: 50%;
-  	margin: 0 auto;
+	margin-top: 20px;
+	margin-left: -10px;  
   	display: inline-block;
   	position: absolute;
 }

@@ -19,26 +19,24 @@ html, body {
 	position: relative;
 	min-height: 8%;
 	max-height: 8%;
-	margin-bottom: 100px;
+	margin-bottom: 50px;
 }
 
 .header-title {
 	color: rgb(56, 137, 234);
 	font-size: 30px;
-	width: 20%;
+	max-width: 20%;
 	margin-left: 20px;
-	margin-top: 10px;
-	position: fixed;
+	margin-top: 1%;
+	display: inline-block;
 }
 
-.listFunctions {
-	text-align: center;
+.list-functions {
+	text-align: initial;
 	vertical-align: middle;
-	width: 100%;
-	margin-top: 20px;
-	margin-left: -400px;  
-  	display: inline-block;
-  	position: absolute;
+	max-width: 60%;
+	min-width: 60%; 
+	display: inline-block;
 }
 
 .header-info {
@@ -48,23 +46,22 @@ html, body {
 #avatar {
 	width: 30px;
 	height: 30px;
-	margin-bottom: 40px;
-	position: absolute;
 }
 
-.dropdown {
-    position: absolute;
-	display: inline-block;
-	width: 50%;
+#dropdown {
+	max-width: 10%;
+	min-width: 10%;
+	padding-bottom: -100px;
 	text-align: right;
+	display: inline-block;
 }
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: rgb(235, 232, 232);
-	min-width: 25%;
-	max-width: 25%;
+	min-width: 10%;
+	max-width: 10%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
     z-index: 4;
@@ -108,18 +105,6 @@ a:hover.header-title {
 	cursor: pointer;
 }
 
-/* changes the title style and letter */
-.game-name {
-	font-family: 'Open Sans', sans-serif;
-	color: rgb(56, 137, 234);
-	text-shadow: 2px 2px black;
-  	text-transform: uppercase;
-	font-size: 100px;
-	font-weight: 800;
-	letter-spacing: -3px;
-	line-height: 1; 
-}
-
 .small-title {
 	margin-top: 10px;
 }
@@ -133,26 +118,6 @@ a:hover.header-title {
 	width: 100%;
 }
 
-/* turn text that shows on top of the game board */
-#turn {
-	color: rgb(56, 137, 234);
-	float: initial;
-	font-size: 40px;
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-/* puts logout button and the username on the right side of the page */
-#managerDiv {
-	float: right;
-	margin-right: 20px;
-}
-
-/* changes logout button size*/
-#managerDiv > input[type="button"] {
-	width: 100px;
-}
-
 h2 {
 	color: #46485c;
 	font-size: 30px;
@@ -163,7 +128,7 @@ h2 {
 
 /**-------Game Rules-------*/
 #gameRulesDiv {
-	margin-left: 100px;
+	margin-left: 2%;
 }
 
 #gameRulesDiv h2, #leaderboardDiv h2 {
@@ -188,6 +153,11 @@ h2 {
     width: 50%;
 }
 
+#gameRulesDiv ul {
+	padding-left: 150px;
+	font-family: monospace; 
+}
+
 /**-------Log In-------*/
 /* creates the background box on the log in and gameOptions divs */
 
@@ -195,13 +165,18 @@ h2 {
 	top: 50%;
 	left: 50%;
 	position: fixed;
+	max-height: 70%;
+	min-height: 70%;
+	min-width: 70%;
+	max-width: 70%;
 }
 
 .box {
-	width: 17%;
-	position: fixed;
-	top: 50%;
-	left: 50%;
+	max-height: 70%;
+	min-height: 50%;
+	min-width: 30%;
+	max-width: 30%;
+	position: absolute;
 	transform: translate(-50%, -50%);
 	background: rgb(235, 232, 232);
 	padding: 50px 50px;
@@ -246,6 +221,12 @@ input[type="button"]:hover {
 }
 
 /**-------Game Options-------*/
+
+#gameOptionsDiv {
+	top: 55%;
+	left: 50%;
+	position: fixed;
+}
 #gameOptionsDiv.box {
 	margin-top: -3%;
 	padding: 1% 5% 1% 5%;
@@ -257,11 +238,11 @@ input[type="button"]:hover {
 
 /**-------Game-------*/
 #gameDiv {
-	position: relative;
-	display: block;
-	overflow-x: scroll;
-	margin-top: 5%;
-	margin-bottom: 20px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-height: 80%;
 }
 
 #game-board{
@@ -300,11 +281,21 @@ circle.winner {
 	50% {
 	  opacity: 0;
 	}
-  }
+}
+
+  /* turn text that shows on top of the game board */
+#turn {
+	color: rgb(56, 137, 234);
+	float: initial;
+	font-size: 40px;
+	text-align: center;
+	margin-bottom: 20px;
+}
 
 /**-------Leaderboard-------*/
 #leaderboardDiv {
 	margin-left: 40px;
+	max-height: 80%;
 }
 
 /* changes column style */
@@ -358,13 +349,6 @@ circle.winner {
 .number {
 	color: rgb(56, 137, 234);
 	font-weight: 900;
-}
-
-
-/**-------Game Rules--------*/
-#gameRulesDiv ul {
-	padding-left: 150px;
-	font-family: monospace; 
 }
 
 

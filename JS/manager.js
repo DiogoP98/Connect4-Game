@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv"];
+const divs = ["loginPageDiv","gameOptionsDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv", "dropdown"];
 var login;
 var ingame;
 var user;
@@ -38,7 +38,6 @@ function userLogin() {
         localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
     
     login = true;
-
     showGameOptions();
 }
 
@@ -59,18 +58,15 @@ function showGameOptions() {
  * Shows the game board 
  */
 function showGamePage() {
-    const manager = document.getElementById("managerDiv");
+    const game = document.getElementById("gameDiv");
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    document.getElementById("logout").disabled = true;
+    document.getElementById("logout").style.pointerEvents="none";
+    document.getElementById("logout").style.cursor="default";
 
     ingame = true; 
-    let leave = new leaveGameButton();
-
-    manager.appendChild(leave.element);
-    manager.style.display = "block";
-    document.getElementById("gameDiv").style.display = "block";
+    game.style.display = "block";
 }
 
 /**
@@ -110,6 +106,7 @@ function leaveGameButton() {
     this.element.type = "button";
     this.element.id = "leaveGame";
     this.element.value = "Leave Game";
+    this.element.style.width = "100%";
 
     this.element.addEventListener("click", function() {
         let leave = confirm("Are you sure you want to leave?");

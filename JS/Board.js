@@ -58,6 +58,9 @@ Board.prototype.setupBoard = function() {
             columnDiv.addSVG(id);
          }
     }
+
+    let leave = new leaveGameButton();
+    gameDiv.appendChild(leave.element);
 }
 
 /**

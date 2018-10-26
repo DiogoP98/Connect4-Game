@@ -67,7 +67,7 @@ html, body {
     z-index: 4;
 }
 
-.dropdown:hover .dropdown-content {
+#dropdown:hover .dropdown-content {
 	display: block;
 	text-align: initial;
 	width: 100%;
@@ -79,6 +79,10 @@ html, body {
 
 .dropdown-content p {
 	margin: 0;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 /* puts the list of options on the header in line*/

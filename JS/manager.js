@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv", "dropdown"];
+const divs = ["loginPageDiv","gameOptionsDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv"];
 var login;
 var ingame;
 var user;
@@ -10,12 +10,13 @@ var before = false; //check if the leaderboard was shown before
  * Shows login box, with the game name on top
  */
 function showLoginPage() {
+    document.getElementById("dropdown").style.visibility = "hidden";
+
     login= false;
     ingame = false;
-    console.log("here");
+
     resetDiv(document.getElementById("gameDiv"));
     resetDiv(document.getElementById("gameFinishDiv"));
-    console.log("here2");
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
@@ -38,6 +39,7 @@ function userLogin() {
         localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
     
     login = true;
+    document.getElementById("dropdown").style.visibility = "visible";
     showGameOptions();
 }
 
@@ -73,9 +75,6 @@ function showGamePage() {
  * Shows game rules
  */
 function showRules() {
-    if (ingame)
-        removeChild(document.getElementById("managerDiv"),7);
-
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
@@ -98,34 +97,13 @@ function returnToMain() {
 }
 
 /**
- * Adds the leave button to layout on the game page
- */
-function leaveGameButton() {
-    this.element = document.createElement("input");
-
-    this.element.type = "button";
-    this.element.id = "leaveGame";
-    this.element.value = "Leave Game";
-    this.element.style.width = "100%";
-
-    this.element.addEventListener("click", function() {
-        let leave = confirm("Are you sure you want to leave?");
-        if (leave)
-            gameFinish(1,game.ai.depth);
-    });
-}
-
-/**
  * Shows the leaderboard
  */
 function showLeaderboard() {
     const leaderboard = document.getElementById("leaderboardDiv");
 
-    if (ingame)
-        removeChild(document.getElementById("managerDiv"),7);
-
     if (before) 
-        removeChild(leaderboard,7);
+        remove(leaderboard,7);
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
@@ -163,7 +141,6 @@ function showLeaderboard() {
  */
 function gameFinish(player,difficulty) {
     resetDiv(document.getElementById("gameDiv"));
-    removeChild(document.getElementById("managerDiv"),7);
     document.getElementById("logout").disabled = false;
 
     ingame = false;
@@ -173,7 +150,6 @@ function gameFinish(player,difficulty) {
 
     showGameFinishPage(player,difficulty);
 
-    document.getElementById("managerDiv").style.display = "block";
     document.getElementById("gameFinishDiv").style.display = "block";
 }
 
@@ -257,8 +233,24 @@ function resetDiv(element){
  * @param element the element from which you want to remove the child element
  * @param id the element you want to remove 
  */
-function removeChild(element, id) {
-    element.removeChild(element.childNodes[id]);
+function remove(element, id) {
+    element.remove(element.childNodes[id]);
 }
 
+/**
+ * Adds the leave button to layout on the game page
+ */
+function leaveGameButton() {
+    this.element = document.createElement("input");
 
+    this.element.type = "button";
+    this.element.id = "leaveGame";
+    this.element.value = "Leave Game";
+    this.element.style.width = "100%";
+
+    this.element.addEventListener("click", function() {
+        let leave = confirm("Are you sure you want to leave?");
+        if (leave)
+            gameFinish(1,game.ai.depth);
+    });
+}

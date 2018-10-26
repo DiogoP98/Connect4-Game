@@ -33,15 +33,21 @@ html, body {
 .listFunctions {
 	text-align: center;
 	vertical-align: middle;
-	width: 50%;
+	width: 100%;
 	margin-top: 20px;
-	margin-left: -10px;  
+	margin-left: -60px;  
   	display: inline-block;
   	position: absolute;
 }
 
 .header-info {
 	display: inline;
+}
+
+#avatar {
+	width: 20px;
+	height: 20px;
+	float: right;
 }
 
 /* puts the list of options on the header in line*/

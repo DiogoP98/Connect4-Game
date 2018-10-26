@@ -334,7 +334,7 @@ circle.winner {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	margin-top: -5%;
+	max-height: 70%;
 }
 
 #scoreDiv {

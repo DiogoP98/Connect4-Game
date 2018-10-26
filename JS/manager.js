@@ -1,6 +1,6 @@
 "use strict";
 
-const divs = ["loginPageDiv","gameOptionsDiv","managerDiv","titleDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv"];
+const divs = ["loginPageDiv","gameOptionsDiv","gameDiv","gameRulesDiv","leaderboardDiv", "gameFinishDiv"];
 var login;
 var ingame;
 var user;
@@ -12,15 +12,15 @@ var before = false; //check if the leaderboard was shown before
 function showLoginPage() {
     login= false;
     ingame = false;
-
+    console.log("here");
     resetDiv(document.getElementById("gameDiv"));
     resetDiv(document.getElementById("gameFinishDiv"));
+    console.log("here2");
 
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
     
     document.getElementById("loginPageDiv").style.display = "block";
-    document.getElementById("titleDiv").style.display = "block";
 }
 
 /**

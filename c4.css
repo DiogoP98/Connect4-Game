@@ -10,12 +10,60 @@ html, body {
 	margin-bottom: -60px;
 }
 
-/**-------Header-------*/
-.header {
+/*-------Header--------*/
+/* puts the footer on the bootom of the page */
+#header {
+	background-color: rgb(235, 232, 232);
 	width: 100%;
-	position: fixed;
-	margin-top: 40px;
-	top: 0%;
+	display: inline-block;
+	position: relative;
+	height: 60px;
+	margin-bottom: 100px;
+}
+
+.header-title {
+	color: rgb(56, 137, 234);
+	font-size: 30px;
+	width: 25%;
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+.listFunctions {
+	text-align: center;
+	vertical-align: middle;
+	width: 50%;
+  	margin: 0 auto;
+  	display: inline-block;
+  	position: absolute;
+}
+
+.header-info {
+	display: inline;
+}
+
+/* puts the list of options on the header in line*/
+.header-info > li {
+	list-style-type: none;
+	margin: -1.8% 5% 0% 0%;
+	padding: 0.2%;
+	display: inline;
+}
+
+.header-info a {
+	color: rgb(156, 155, 155);
+	font-size: 20px;
+	margin: 0px;
+	text-decoration: none;
+}
+
+.header-info a:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+a:hover.header-title {
+	cursor: pointer;
 }
 
 /* changes the title style and letter */
@@ -56,7 +104,6 @@ html, body {
 #managerDiv {
 	float: right;
 	margin-right: 20px;
-	margin-top: -40px;
 }
 
 /* changes logout button size*/
@@ -101,20 +148,27 @@ h2 {
 
 /**-------Log In-------*/
 /* creates the background box on the log in and gameOptions divs */
+
+#loginPageDiv {
+	top: 50%;
+	left: 50%;
+	position: fixed;
+}
+
 .box {
-	width: 250px;
-	position: absolute;
+	width: 17%;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background: rgb(235, 232, 232);
 	padding: 50px 50px;
-	border-radius: 5px;
+	border-radius: 5%;
 }
 
 /* adds line below and changes configuration of the username and passwords boxes */
 #loginPageDiv > #login.box input[type="text"], #loginPageDiv > #login.box input[type="password"] {
-	width: 250px;
+	width: 100%;
 	background: transparent;
 	border: 0;
 	border-bottom: 1px solid black;
@@ -128,7 +182,7 @@ h2 {
 input[type="button"] {
 	background: rgb(56, 137, 234);
 	border: 0;
-	width: 250px;
+	width: 100%;
 	height: 40px;
 	border-radius: 3px;
 	color: white;
@@ -151,8 +205,8 @@ input[type="button"]:hover {
 
 /**-------Game Options-------*/
 #gameOptionsDiv.box {
-	margin-top: -30px;
-	padding: 20px 50px 30px 50px;
+	margin-top: -3%;
+	padding: 1% 5% 1% 5%;
 }
 
 #gameOptionsDiv > #submitDiv input[type="button"] {
@@ -161,11 +215,11 @@ input[type="button"]:hover {
 
 /**-------Game-------*/
 #gameDiv {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	margin-top: -30px;
+	position: relative;
+	display: block;
+	overflow-x: scroll;
+	margin-top: 5%;
+	margin-bottom: 20px;
 }
 
 #game-board{
@@ -269,55 +323,6 @@ circle.winner {
 #gameRulesDiv ul {
 	padding-left: 150px;
 	font-family: monospace; 
-}
-
-/*-------Footer--------*/
-/* puts the footer on the bootom of the page */
-#footer {
-	background-color: rgb(235, 232, 232);
-}
-
-/* puts the list of options on the footer in line*/
-.footer-info > li {
-	float: right;
-	list-style-type: none;
-	margin: -25px 70px 0px 0px;
-	padding: 2px;
-	display: block;
-}
-
-.footer-title {
-	padding-left: 20px;
-	padding-right: 20px;
-	color: rgb(56, 137, 234);
-	font-size: 30px;
-	margin: 10px 0px 0px 70px;
-	display: block;
-}
-
-.footer-info a {
-	color: rgb(156, 155, 155);
-	font-size: 20px;
-	margin: 0px;
-	text-decoration: none;
-}
-
-.footer-info a:hover {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-a:hover.footer-title {
-	cursor: pointer;
-}
-
-#push, #footer {
-	height: 60px;
-}
-
-ul,li { 
-	margin-top: 0;
-	padding: 0; 
 }
 
 

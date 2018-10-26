@@ -16,19 +16,19 @@
 </head>
 
 <body onload="showLoginPage()">
-	<div id="wrapper">
 		<!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
-		<div class="header">
-
-			<div id="titleDiv">
-				<span class = "game-name">Connect 4</span>
-			</div>
-
-			<div id="managerDiv">
-				<div id="usernameDiv"></div>
-				<input id="logout" type='button' value='Log Out' onclick='showLoginPage()'/>
-				<br>
-			</div>
+		<div id="header">
+				<a class="header-title" onclick="returnToMain()">Connect4</a>
+				<div class="listFunctions">
+					<ul class="header-info">
+						<li>
+							<a onclick="showRules()">Rules</a>
+						</li>
+						<li>
+							<a onclick="showLeaderboard()">Leaderboard</a>
+						</li>
+					</ul>
+				<div>
 		</div>
 
 		<!-- Login Div -->
@@ -118,9 +118,6 @@
 
 		<!-- Div that shows the game rules-->
 		<div id="gameRulesDiv">
-			<h2 class="small-title">Connect4</h2>
-			<hr>
-			<br>
 			<h2 class="first">Description</h2>
 			<p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same.
 				Sounds easy but it's not! The vertical strategy creates an unique challenge: you must think in a whole new way to block your opponent's moves!
@@ -135,45 +132,25 @@
 			<p>When the game finishes it shows up the game options screen again where you can start a new game if you wish.</p>
 			<h2>Score</h2>
 			<p>When the game finishes, it shows up on the screen the amout of points you got.
-				The points calculation is pretty simple. You have a mutiplier which works the following way:
+				The points calculation is pretty simple. You have a mutiplier which works the following way:</p>
 				<ul>
 					<li>Loss: <b class="number">0</b> </li>
 					<li>Draw: <b class="number">0.5</b> </li>
 					<li>Win:  &nbsp;<b class="number">1</b> </li>
 				</ul>
-			</p>
-			<p>Then you multiply it by the difficulty of the AI. The AI is divided in: 
-				<ul>
-					<li>Easy: &emsp; &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">3</b> </li>
-					<li>Medium: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">5</b> </li>
-					<li>Hard: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">7</b> </li>
-					<li>Legendary: &nbsp; &nbsp; &nbsp; &nbsp; <b class="number">8</b> </li>
-				</ul>
-			</p>
+			<p>Then you multiply it by the difficulty of the AI. The AI is divided in: </p>
+			<ul>
+				<li>Easy: &emsp; &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">3</b> </li>
+				<li>Medium: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">5</b> </li>
+				<li>Hard: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">7</b> </li>
+				<li>Legendary: &nbsp; &nbsp; &nbsp; &nbsp; <b class="number">8</b> </li>
+			</ul>
 		</div>
 
 		<!-- Shows the leaderboard -->
 		<div id="leaderboardDiv">
-			<h2 class="small-title">Connect4</h2>
-			<hr>
 			<h2 class= "first">LeaderBoard</h2>
 		</div>
-
-		<div id="push"></div>
-	</div>
-
-	<!-- Footer where there are the rules, name of the game and leaderboard -->
-	<div id="footer">
-		<a class="footer-title" onclick="returnToMain()">Connect4</a>
-		<ul class="footer-info">
-			<li>
-				<a onclick="showRules()">Rules</a>
-			</li>
-			<li>
-				<a onclick="showLeaderboard()">Leaderboard</a>
-			</li>
-		</ul>
-	</div>
 
 </body>
 </html>

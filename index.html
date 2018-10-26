@@ -27,10 +27,16 @@
 						<li>
 							<a onclick="showLeaderboard()">Leaderboard</a>
 						</li>
-						<li>
-							<img src="Images/avatar.png" id="avatar">
-						</li>
 					</ul>
+					<div class="dropdown">
+						<img src="Images/avatar.png" id="avatar">
+						<div class="dropdown-content">
+							<p>Signed in as</p>
+							<b id="username"></b>
+							<hr>
+							<a onclick="showLoginPage()" id="logout">Log Out</a>
+						</div>
+					</div>
 				<div>
 		</div>
 

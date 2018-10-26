@@ -32,7 +32,7 @@ function userLogin() {
     if(user == "")
         user = "User";
     
-    document.getElementById("usernameDiv").innerHTML = "<span>"+user+"</span>";
+    document.getElementById("username").innerHTML = user;
 
     if(localStorage[user] == null)
         localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
@@ -46,15 +46,11 @@ function userLogin() {
  * Shows the gameOptions 
  */
 function showGameOptions() {
-    if (ingame)
-        removeChild(document.getElementById("managerDiv"),7);
-
     ingame = false;
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
     document.getElementById("gameOptionsDiv").style.display = "block";
-    document.getElementById("managerDiv").style.display = "block";
     resetDiv(document.getElementById("gameDiv"));
     resetDiv(document.getElementById("gameFinishDiv"));
 }

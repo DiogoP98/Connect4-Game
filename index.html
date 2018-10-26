@@ -1,179 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
-	<meta charset="UTF-8">
-	<title>Connect 4</title>
+   <head>
+      <meta charset="UTF-8">
+      <title>Connect 4</title>
+      <!-- StyleSheets -->
+      <link rel="stylesheet" type="text/css" href="c4.css">
+      <!-- Scripts -->
+      <script src="JS/Manager.js"></script>
+      <script src="JS/Game.js"></script>
+      <script src="JS/AI.js"></script>
+      <script src="JS/Board.js"></script>
+   </head>
+   <body onload="showLoginPage()">
 
-	<!-- StyleSheets -->
-	<link rel="stylesheet" type="text/css" href="c4.css">
+      <!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
+      <div id='header'>
+         <a class='header-title' onclick="returnToMain()">Connect4</a>
+		 
+		 <div class='list-functions'>
+            <ul class='header-info'>
+               <li>
+                  <a onclick="showLeaderboard()">Leaderboard</a>
+               </li>
+               <li>
+                  <a onclick="showRules()">Rules</a>
+               </li>
+            </ul>
+		 </div>
+		 
+         <div id='dropdown'>
+            <img src='Images/avatar.png' alt='avatar' id='avatar'>
+            <div class='dropdown-content'>
+               <p>Signed in as</p>
+               <b id='username'></b>
+               <hr>
+               <a onclick="showLoginPage()" id='logout'>Log Out</a>
+            </div>
+         </div>
+	  </div>
+	  
+      <!-- Login Div -->
+      <div id='loginPageDiv'>
+         <div id='login' class='box'>
+		   
+			<form>
+               <h2>Welcome</h2>
+               <input id='user' name='username' placeholder='Username' type='text'/>
+               <input id='pw' name='password' placeholder='Password' type='password'/>
+               <input type='button' value='Sign In' onclick="userLogin()"/>
+               <input type='button' value='Sign Up'/>
+			</form>
 
-	<!-- Scripts -->
-	<script src="JS/Manager.js"></script>
-	<script src="JS/Game.js"></script>
-	<script src="JS/AI.js"></script>
-	<script src="JS/Board.js"></script>
-</head>
-
-<body onload="showLoginPage()">
-	<div id="wrapper">
-		<!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
-		<div class="header">
-
-			<div id="titleDiv">
-				<span class = "game-name">Connect 4</span>
-			</div>
-
-			<div id="managerDiv">
-				<div id="usernameDiv"></div>
-				<input id="logout" type='button' value='Log Out' onclick='showLoginPage()'/>
-				<br>
-			</div>
-		</div>
-
-		<!-- Login Div -->
-		<div id="loginPageDiv">
-			<div id="login" class="box">
-				<form>
-					<h2>Welcome</h2>
-					<input id='user' name='username' placeholder='Username' type='text'/>
-					<input id='pw' name='password' placeholder='Password' type='password'/>
-					<input type='button' value='Sign In' onclick="userLogin()"/>
-					<input type='button' value='Sign Up'/>
-				</form>
-			</div>
-		</div>
-
-		<!-- Div to choose the game options-->
-		<div id="gameOptionsDiv" class="box">
-			<div id="gameTypeDiv">
-				<p><strong class="form-text">Game Type</strong></p>
-				<form id='gameTypeForm' class="form-options">
-					<input type="radio" checked="checked" name="gametype" value="ai">
-					<span>Against Computer</span>
-					<br>
-					<input type="radio" name="gametype" value="pvp">
-					<span>Multiplayer</span>
-				</form>
-			</div>
-
-			<div id="playerOrderDiv">
-					<p><strong class="form-text">First to Play</strong></p>
-					<form id='playerorderForm' class="form-options">
-						<input type="radio" checked="checked" name="playerorder" value="me">
-						<span>You</span>
-						<br>
-						<input type="radio" name="playerorder" value="pc">
-						<span>Opponent</span>
-					</form>
-			</div>
-
-			<div id="difficultyDiv">
-					<p><strong class="form-text">Game Difficulty</strong></p>
-					<form id="difficultyForm" class="form-options">
-						<input type="radio" checked="checked" name="difficulty" value="easy">
-						<span>Easy</span>
-						<br>
-						<input type="radio" name="difficulty" value="medium">
-						<span>Medium</span>
-						<br>
-						<input type="radio" name="difficulty" value="hard">
-						<span>Hard</span>
-						<br>
-						<input type="radio" name="difficulty" value="legendary">
-						<span>Legendary</span>
-					</form>
-			</div>
-
-			<div id="boardSizeDiv">
-				<p><strong class="form-text">Board Size</strong></p>
-				<form id="sizeForm" class="form-options">
-					<input type="radio" checked="checked" name="size" value="6*5">
-					<span>6*5</span>
-					<br>
-					<input type="radio" name="size" value="7*6">
-					<span>7*6</span>
-					<br>
-					<input type="radio" name="size" value="8*7">
-					<span>8*7</span>
-					<br>
-				</form>
-			</div>
-
-			<div id="submitDiv">
-				<input type='button' value='Start Game' onclick="setupGame()"/>
-			</div>
-
-		</div>
-
-		<!-- Div where it is built the game board -->
-		<div id="gameDiv">
-			<span id="turn"></span>
-			<br>
-		</div>
-
-		<!-- Shows the number of points and result of the game that was played-->
-		<div id="gameFinishDiv">
-		</div>
-
-		<!-- Div that shows the game rules-->
-		<div id="gameRulesDiv">
-			<h2 class="small-title">Connect4</h2>
-			<hr>
-			<br>
-			<h2 class="first">Description</h2>
-			<p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same.
-				Sounds easy but it's not! The vertical strategy creates an unique challenge: you must think in a whole new way to block your opponent's moves!
-			</p>
-			<h2>How To Play</h2>
-			<p>After you login you're going to see the game options as you can see in the picture below.</p>
-			<img src="Images/gameOptions.png" alt="gameOption" class="gameRulesImgs">
-			<br>
-			<p>Here you can change the game options as you wish. After choosing all the options you can start the game by pressing the button.</p>
-			<p>Once in the game each player is going to have a turn, and you can only play once it is your turn. If you feel like quitting
-				the game you have a button near the log out button where you can do so.</p>
-			<p>When the game finishes it shows up the game options screen again where you can start a new game if you wish.</p>
-			<h2>Score</h2>
-			<p>When the game finishes, it shows up on the screen the amout of points you got.
-				The points calculation is pretty simple. You have a mutiplier which works the following way:
-				<ul>
-					<li>Loss: <b class="number">0</b> </li>
-					<li>Draw: <b class="number">0.5</b> </li>
-					<li>Win:  &nbsp;<b class="number">1</b> </li>
-				</ul>
-			</p>
-			<p>Then you multiply it by the difficulty of the AI. The AI is divided in: 
-				<ul>
-					<li>Easy: &emsp; &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">3</b> </li>
-					<li>Medium: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">5</b> </li>
-					<li>Hard: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class="number">7</b> </li>
-					<li>Legendary: &nbsp; &nbsp; &nbsp; &nbsp; <b class="number">8</b> </li>
-				</ul>
-			</p>
-		</div>
-
-		<!-- Shows the leaderboard -->
-		<div id="leaderboardDiv">
-			<h2 class="small-title">Connect4</h2>
-			<hr>
-			<h2 class= "first">LeaderBoard</h2>
-		</div>
-
-		<div id="push"></div>
-	</div>
-
-	<!-- Footer where there are the rules, name of the game and leaderboard -->
-	<div id="footer">
-		<a class="footer-title" onclick="returnToMain()">Connect4</a>
-		<ul class="footer-info">
-			<li>
-				<a onclick="showRules()">Rules</a>
-			</li>
-			<li>
-				<a onclick="showLeaderboard()">Leaderboard</a>
-			</li>
-		</ul>
-	</div>
-
-</body>
+         </div>
+	  </div>
+	  
+      <!-- Div to choose the game options-->
+      <div id='gameOptionsDiv' class='box'>
+		 
+		<div id='gameTypeDiv'>
+            <p><strong class='form-text'>Game Type</strong></p>
+            <form id='gameTypeForm' class='form-options'>
+               <input type='radio' checked='checked' name='gametype' value='ai'>
+               <span>Against Computer</span>
+               <br>
+               <input type='radio' name='gametype' value='pvp'>
+               <span>Multiplayer</span>
+            </form>
+		 </div>
+		 
+         <div id='playerOrderDiv'>
+            <p><strong class='form-text'>First to Play</strong></p>
+            <form id='playerorderForm' class='form-options'>
+               <input type='radio' checked='checked' name='playerorder' value='me'>
+               <span>You</span>
+               <br>
+               <input type='radio' name='playerorder' value='pc'>
+               <span>Opponent</span>
+            </form>
+		 </div>
+		 
+         <div id='difficultyDiv'>
+            <p><strong class='form-text'>Game Difficulty</strong></p>
+            <form id='difficultyForm' class='form-options'>
+               <input type='radio' checked='checked' name='difficulty' value='easy'>
+               <span>Easy</span>
+               <br>
+               <input type='radio' name='difficulty' value='medium'>
+               <span>Medium</span>
+               <br>
+               <input type='radio' name='difficulty' value='hard'>
+               <span>Hard</span>
+               <br>
+               <input type='radio' name='difficulty' value='legendary'>
+               <span>Legendary</span>
+            </form>
+		 </div>
+		 
+         <div id='boardSizeDiv'>
+            <p><strong class='form-text'>Board Size</strong></p>
+            <form id='sizeForm' class='form-options'>
+               <input type='radio' checked='checked' name='size' value='6*5'>
+               <span>6*5</span>
+               <br>
+               <input type='radio' name='size' value='7*6'>
+               <span>7*6</span>
+               <br>
+               <input type='radio' name='size' value='8*7'>
+               <span>8*7</span>
+               <br>
+            </form>
+		 </div>
+		 
+         <div id='submitDiv'>
+            <input type='button' value='Start Game' onclick="setupGame()"/>
+         </div>
+	  </div>
+	  
+      <!-- Div where it is built the game board -->
+      <div id='gameDiv'>
+         <span id='turn'></span>
+         <br>
+	  </div>
+	  
+      <!-- Shows the number of points and result of the game that was played-->
+      <div id='gameFinishDiv'>
+	  </div>
+	  
+      <!-- Div that shows the game rules-->
+      <div id='gameRulesDiv'>
+         <h2 class='first'>Description</h2>
+         <p>Connect 4 is a two-players game. The rules are simple: Try to build a row of four checkers while keeping your opponent from doing the same.
+            Sounds easy but it's not! The vertical strategy creates an unique challenge: you must think in a whole new way to block your opponent's moves!
+         </p>
+         <h2>How To Play</h2>
+         <p>After you login you're going to see the game options as you can see in the picture below.</p>
+         <img src='Images/gameOptions.png' alt='gameOption' class='gameRulesImgs'>
+         <br>
+         <p>Here you can change the game options as you wish. After choosing all the options you can start the game by pressing the button.</p>
+         <p>Once in the game each player is going to have a turn, and you can only play once it is your turn. If you feel like quitting
+            the game you have a button near the log out button where you can do so.
+         </p>
+         <p>When the game finishes it shows up the game options screen again where you can start a new game if you wish.</p>
+         <h2>Score</h2>
+         <p>When the game finishes, it shows up on the screen the amout of points you got.
+            The points calculation is pretty simple. You have a mutiplier which works the following way:
+         </p>
+         <ul>
+            <li>Loss: <b class='number'>0</b> </li>
+            <li>Draw: <b class='number'>0.5</b> </li>
+            <li>Win:  &nbsp;<b class='number'>1</b> </li>
+         </ul>
+         <p>Then you multiply it by the difficulty of the AI. The AI is divided in: </p>
+         <ul>
+            <li>Easy: &emsp; &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class='number'>3</b> </li>
+            <li>Medium: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class='number'>5</b> </li>
+            <li>Hard: &emsp; &emsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<b class='number'>7</b> </li>
+            <li>Legendary: &nbsp; &nbsp; &nbsp; &nbsp; <b class='number'>8</b> </li>
+         </ul>
+	  </div>
+	  
+      <!-- Shows the leaderboard -->
+      <div id='leaderboardDiv'>
+	  </div>
+	  
+   </body>
 </html>

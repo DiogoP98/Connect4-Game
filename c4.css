@@ -136,8 +136,6 @@ h2 {
 /**-------Game Rules-------*/
 #gameRulesDiv {
 	margin-left: 2%;
-	max-height: 70%;
-	position: fixed;
 }
 
 #gameRulesDiv h2, #leaderboardDiv h2 {
@@ -304,7 +302,6 @@ circle.winner {
 /**-------Leaderboard-------*/
 #leaderboardDiv {
 	margin-left: 40px;
-	max-height: 80%;
 }
 
 /* changes column style */

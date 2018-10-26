@@ -64,8 +64,7 @@ function showGamePage() {
     for(let i=0; i<divs.length; i++)
         document.getElementById(divs[i]).style.display = "none";
 
-    document.getElementById("logout").style.pointerEvents="none";
-    document.getElementById("logout").style.cursor="default";
+    document.getElementById('logout').style.pointerEvents = 'none';
 
     ingame = true; 
     game.style.display = "block";
@@ -141,7 +140,8 @@ function showLeaderboard() {
  */
 function gameFinish(player,difficulty) {
     resetDiv(document.getElementById("gameDiv"));
-    document.getElementById("logout").disabled = false;
+    
+    document.getElementById('logout').style.pointerEvents = 'auto';
 
     ingame = false;
 

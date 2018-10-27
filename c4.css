@@ -170,22 +170,16 @@ h2 {
 	left: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
-	margin-left: 20%;
 	max-height: 50%;
 	min-height: 50%;
-	min-width: 70%;
-	max-width: 70%;
+	min-width: 30%;
+	max-width: 30%;
 	overflow: scroll;
 }
 
 .box {
-	max-height: 70%;
-	min-height: 70%;
-	min-width: 30%;
-	max-width: 30%;
-	position: absolute;
 	background: rgb(235, 232, 232);
-	padding: 50px 50px;
+	padding: 10% 10%;
 	border-radius: 5%;
 }
 
@@ -197,8 +191,8 @@ h2 {
 	border-bottom: 1px solid black;
 	outline: none;
 	color: #46485c;
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-top: 5%;
+	margin-bottom: 10%;
 }
 
 /* changes buttons background and overall look */
@@ -234,6 +228,10 @@ input[type="button"]:hover {
 	position: absolute;
 	transform: translate(-50%, -50%);
 	overflow-y: scroll;
+	max-height: 70%;
+	min-height: 20%;
+	min-width: 30%;
+	max-width: 30%;
 }
 
 #gameOptionsDiv.box {
@@ -242,7 +240,7 @@ input[type="button"]:hover {
 }
 
 #gameOptionsDiv > #submitDiv input[type="button"] {
-	margin-bottom: 5px;
+	margin-bottom: 2%;
 }
 
 /**-------Game-------*/

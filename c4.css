@@ -3,11 +3,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	background-color: whitesmoke;
-}
-
-#wrapper {
-	min-height: 100%;
-	margin-bottom: -60px;
+	overflow-y: scroll;
 }
 
 /*-------Header--------*/
@@ -171,20 +167,21 @@ h2 {
 #loginPageDiv {
 	top: 50%;
 	left: 50%;
-	position: fixed;
-	max-height: 60%;
-	min-height: 60%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	margin-left: 20%;
+	max-height: 50%;
+	min-height: 50%;
 	min-width: 70%;
 	max-width: 70%;
 }
 
 .box {
 	max-height: 70%;
-	min-height: 50%;
+	min-height: 70%;
 	min-width: 30%;
 	max-width: 30%;
 	position: absolute;
-	transform: translate(-50%, -50%);
 	background: rgb(235, 232, 232);
 	padding: 50px 50px;
 	border-radius: 5%;
@@ -232,8 +229,10 @@ input[type="button"]:hover {
 #gameOptionsDiv {
 	top: 55%;
 	left: 50%;
-	position: fixed;
+	position: absolute;
+	overflow-y: scroll;
 }
+
 #gameOptionsDiv.box {
 	margin-top: -3%;
 	padding: 1% 5% 1% 5%;
@@ -245,11 +244,11 @@ input[type="button"]:hover {
 
 /**-------Game-------*/
 #gameDiv {
-	position: fixed;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	max-height: 80%;
+	max-height: 85%;
 }
 
 #game-board{
@@ -336,7 +335,7 @@ circle.winner {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	max-height: 70%;
+    max-height: 70%;
 }
 
 #scoreDiv {

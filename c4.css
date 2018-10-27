@@ -14,25 +14,33 @@ html, body {
 	position: relative;
 	min-height: 8%;
 	max-height: 8%;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 	overflow: hidden;
 }
 
 .header-title {
+	text-align: center;
+	vertical-align: middle;
 	color: rgb(56, 137, 234);
 	font-size: 30px;
 	max-width: 20%;
 	margin-left: 20px;
-	margin-top: 1%;
+	top: 50%;
+	left: 50%;
 	display: inline-block;
 }
 
 .list-functions {
-	text-align: initial;
+	text-align: center;
 	vertical-align: middle;
-	max-width: 60%;
-	min-width: 60%; 
-	display: inline-block;
+	width: 50%;
+  	margin: 0 auto;
+  	display: inline-block;
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%,-50%);
+  	min-width: 550px;
 }
 
 .header-info {
@@ -42,17 +50,16 @@ html, body {
 #avatar {
 	width: 30px;
 	height: 30px;
+	margin-top: 1%;
 }
 
 #dropdown {
-	max-width: 10%;
-	min-width: 10%;
-	margin-left: 10%;
+	width: 10%;
+	left: 100%;
 	margin-top: 1%;
-	text-align: right;
-	display: inline-block;
-	position: fixed;
-	overflow: hidden;
+	margin-right: 2%; 
+	float: right;
+	z-index: 4;
 }
 
 .dropdown-content {
@@ -61,6 +68,7 @@ html, body {
     background-color: rgb(235, 232, 232);
 	min-width: 10%;
 	max-width: 10%;
+	margin-right: 30px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
     z-index: 4;
@@ -225,14 +233,14 @@ input[type="button"]:hover {
 	left: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
-	max-height: 75%;
+	max-height: 80%;
 	min-height: 20%;
 	min-width: 30%;
 	max-width: 100%;
 }
 
 #gameOptionsDiv.box {
-	padding: 1% 5% 1% 5%;
+	padding: 1% 6% 3% 6%;
 }
 
 #gameOptionsDiv > #submitDiv input[type="button"] {

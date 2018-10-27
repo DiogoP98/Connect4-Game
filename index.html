@@ -15,29 +15,29 @@
 
       <!-- Division for the name of the game and once the user logs in, shows up the username and logout button -->
       <div id='header'>
-         <a class='header-title' onclick="returnToMain()">Connect4</a>
+            <a class='header-title' onclick="returnToMain()">Connect4</a>
 		 
-		 <div class='list-functions'>
-            <ul class='header-info'>
-               <li>
-                  <a onclick="showLeaderboard()">Leaderboard</a>
-               </li>
-               <li>
-                  <a onclick="showRules()">Rules</a>
-               </li>
-            </ul>
-		 </div>
-		 
-         <div id='dropdown'>
-            <img src='Images/avatar.png' alt='avatar' id='avatar'>
-            <div class='dropdown-content'>
-               <p>Signed in as</p>
-               <b id='username'></b>
-               <hr>
-               <a onclick="showLoginPage()" id='logout'>Log Out</a>
+	      <div class='list-functions'>
+                  <ul class='header-info'>
+                  <li>
+                        <a onclick="showLeaderboard()">Leaderboard</a>
+                  </li>
+                  <li>
+                        <a onclick="showRules()">Rules</a>
+                  </li>
+                  </ul>
             </div>
-         </div>
-	  </div>
+            
+            <div id='dropdown'>
+                  <img src='Images/avatar.png' alt='avatar' id='avatar'>
+                  <div class='dropdown-content'>
+                        <p>Signed in as</p>
+                        <b id='username'></b>
+                        <hr>
+                        <a onclick="showLoginPage()" id='logout'>Log Out</a>
+                  </div>
+            </div>
+	</div>
 	  
       <!-- Login Div -->
       <div id='loginPageDiv'>

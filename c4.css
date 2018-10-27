@@ -16,6 +16,7 @@ html, body {
 	min-height: 8%;
 	max-height: 8%;
 	margin-bottom: 50px;
+	overflow: hidden;
 }
 
 .header-title {
@@ -174,6 +175,7 @@ h2 {
 	min-height: 50%;
 	min-width: 70%;
 	max-width: 70%;
+	overflow: scroll;
 }
 
 .box {
@@ -230,6 +232,7 @@ input[type="button"]:hover {
 	top: 55%;
 	left: 50%;
 	position: absolute;
+	transform: translate(-50%, -50%);
 	overflow-y: scroll;
 }
 

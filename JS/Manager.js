@@ -9,6 +9,57 @@ var loginInfo = {
     password: ""
 }
 var before = false; //check if the leaderboard was shown before
+const Connect4Api =  [
+    {
+		elemId: 'startGame',
+		eventName: 'submit',
+		callback: playGame
+	},
+	{
+		elemId: 'loginForm',
+		eventName: 'submit',
+		callback: (event) => {event.preventDefault()}
+	},
+	{
+		elemId: 'loginButton',
+		eventName: 'click',
+		callback: login
+	},
+	{
+		elemId: 'registerButton',
+		eventName: 'click',
+		callback: register
+	},
+	{
+		elemId: 'logoutbutton',
+		eventName: 'click',
+		callback: logout
+	},
+	{	elemId: 'adversary',
+		eventName: 'change',
+		callback: changeGameMode
+	},
+	{
+		elemId: 'returnToGame',
+		eventName: 'click',
+		callback: (event) => { navigate('#/game') }
+	},
+	{
+		elemId: 'offline-lb',
+		eventName: 'click',
+		callback: () => {OnChangeLeaderboardType("offline")} 
+	},
+	{
+		elemId: 'online-lb',
+		eventName: 'click',
+		callback: () => {OnChangeLeaderboardType("online")} 
+	}, 
+	{
+		elemId: 'rankingSize',
+		eventName: 'change',
+		callback: () => {OnChangeLeaderboardType("online")}
+	}
+];
 
 /**
  * Shows login box, with the game name on top
@@ -256,4 +307,14 @@ function leaveGameButton() {
         if (leave)
             gameFinish(1,game.ai.depth);
     });
+}
+
+window.onload = function() {
+    showLoginPage();
+
+    for(let i = 0; i < Connect4Api.length(); i++) {
+        var elem = document.getElementById(Connect4Api[i].elemId);
+        console.log(elem);
+        elem.addEventListener(Connect4Api[i].eventName, Connect4Api[i].callback);
+    }
 }

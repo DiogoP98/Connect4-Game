@@ -3,7 +3,11 @@
 const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv'];
 var login;
 var ingame;
-var user;
+var loginInfo = {
+	signedIn: false,
+    user: null,
+    password: ""
+}
 var before = false; //check if the leaderboard was shown before
 
 /**
@@ -27,19 +31,24 @@ function showLoginPage() {
  * Allows the user to login 
  */
 function userLogin() {
-    user = document.getElementById('user').value;
-    
-    if(user == "")
-        user = 'User';
+    loginInfo.user = document.getElementById('user').value;
+    loginInfo.password = document.getElementById('pw').value;
     
     document.getElementById('username').innerHTML = user;
 
     if(localStorage[user] == null)
         localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
     
-    login = true;
-    document.getElementById('dropdown').style.visibility = 'visible';
-    showGameOptions();
+    makeRequest("login", "POST", {nick: loginInfo.username, pass: loginInfo.password}, (status, data) => {
+        if(data.error){
+            throwJoinError(event.target.id);
+        }
+        else{
+            loginInfo.signedIn = true;
+            document.getElementById('dropdown').style.visibility = 'visible';
+            showGameOptions();
+            }
+        })
 }
 
 /**

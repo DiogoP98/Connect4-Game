@@ -1,5 +1,4 @@
-const host = "twserver.alunos.dcc.fc.up.pt"
-const port = 8008;
+
 
 /**
  * Makes a request to the specified command 

@@ -50,8 +50,10 @@ function userLogin() {
     register(JSON.stringify(js_obj))
     .then(function(response){
         if(response.ok) {
+
             if(localStorage[loginInfo.user] == null)
                 localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
+            
             response.text().then(console.log);
             document.getElementById('username').innerHTML = loginInfo.user;
             loginInfo.signedIn = true;
@@ -64,6 +66,10 @@ function userLogin() {
 
     })
     .catch(console.log);
+}
+
+function userRegister() {
+
 }
 
 async function register(login_info) {

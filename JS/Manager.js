@@ -1,65 +1,15 @@
 "use strict";
 
 const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv'];
-var login;
 var ingame;
 var loginInfo = {
 	signedIn: false,
-    user: null,
+    user: "",
     password: ""
 }
 var before = false; //check if the leaderboard was shown before
-const Connect4Api =  [
-    {
-		elemId: 'startGame',
-		eventName: 'submit',
-		callback: playGame
-	},
-	{
-		elemId: 'loginForm',
-		eventName: 'submit',
-		callback: (event) => {event.preventDefault()}
-	},
-	{
-		elemId: 'loginButton',
-		eventName: 'click',
-		callback: login
-	},
-	{
-		elemId: 'registerButton',
-		eventName: 'click',
-		callback: register
-	},
-	{
-		elemId: 'logoutbutton',
-		eventName: 'click',
-		callback: logout
-	},
-	{	elemId: 'adversary',
-		eventName: 'change',
-		callback: changeGameMode
-	},
-	{
-		elemId: 'returnToGame',
-		eventName: 'click',
-		callback: (event) => { navigate('#/game') }
-	},
-	{
-		elemId: 'offline-lb',
-		eventName: 'click',
-		callback: () => {OnChangeLeaderboardType("offline")} 
-	},
-	{
-		elemId: 'online-lb',
-		eventName: 'click',
-		callback: () => {OnChangeLeaderboardType("online")} 
-	}, 
-	{
-		elemId: 'rankingSize',
-		eventName: 'change',
-		callback: () => {OnChangeLeaderboardType("online")}
-	}
-];
+const host = "twserver.alunos.dcc.fc.up.pt";
+const port = 8008;
 
 /**
  * Shows login box, with the game name on top
@@ -67,7 +17,7 @@ const Connect4Api =  [
 function showLoginPage() {
     document.getElementById('dropdown').style.visibility = 'hidden';
 
-    login= false;
+    loginInfo.signedIn= false;
     ingame = false;
 
     resetDiv(document.getElementById('gameDiv'));
@@ -85,21 +35,42 @@ function userLogin() {
     loginInfo.user = document.getElementById('user').value;
     loginInfo.password = document.getElementById('pw').value;
     
-    document.getElementById('username').innerHTML = user;
+    if(loginInfo.user == "") {
+        alert("Please insert a valid username.");
+        return;
+    }
 
-    if(localStorage[user] == null)
-        localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
-    
-    makeRequest("login", "POST", {nick: loginInfo.username, pass: loginInfo.password}, (status, data) => {
-        if(data.error){
-            throwJoinError(event.target.id);
-        }
-        else{
+    if(loginInfo.password == "") {
+        alert("Please provide a password.");
+        return;
+    }
+
+    let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password};
+
+    register(JSON.stringify(js_obj))
+    .then(function(response){
+        if(response.ok) {
+            if(localStorage[loginInfo.user] == null)
+                localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
+            response.text().then(console.log);
+            document.getElementById('username').innerHTML = loginInfo.user;
             loginInfo.signedIn = true;
             document.getElementById('dropdown').style.visibility = 'visible';
             showGameOptions();
-            }
-        })
+        }
+
+        else
+            alert("Wrong username and password combination");
+
+    })
+    .catch(console.log);
+}
+
+async function register(login_info) {
+    return await fetch(`http://${host}:${port}/register`,{
+        method: "POST",
+        body: login_info
+    });
 }
 
 /**
@@ -226,9 +197,9 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[loginInfo.user])
 		json["games"]++;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else if (player == 2) {
         let text = "<h2>You Won!</h2>";
@@ -240,11 +211,11 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[loginInfo.user])
         json["games"]++;
         json["victories"]++;
         json["points"]+=difficulty;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else {
         let text = "<h2>Tied!</h2>";
@@ -256,10 +227,10 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
+        let json = JSON.parse(localStorage[loginInfo.user])
         json["games"]++;
         json["points"]+=difficulty*0.5;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
 
     let playAgainButton = document.createElement('input');
@@ -307,14 +278,4 @@ function leaveGameButton() {
         if (leave)
             gameFinish(1,game.ai.depth);
     });
-}
-
-window.onload = function() {
-    showLoginPage();
-
-    for(let i = 0; i < Connect4Api.length(); i++) {
-        var elem = document.getElementById(Connect4Api[i].elemId);
-        console.log(elem);
-        elem.addEventListener(Connect4Api[i].eventName, Connect4Api[i].callback);
-    }
 }

@@ -4,11 +4,11 @@ const port = 8008;
 /**
  * Makes a request to the specified command 
  * @param {String} command 
- * @param {String} method 
+ * @param {String} type 
  * @param {*} data 
  * @param {Function} callback 
  */
-function makeRequest(command, method, data, callback) {    
+function makeRequest(command, type, data, callback) {    
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -19,5 +19,7 @@ function makeRequest(command, method, data, callback) {
 
     xhr.open(method, `http://${host}:${port}/${command}`);
 
-    xhr.send(JSON.stringify(data))
+    xhr.send(JSON.stringify(data));
+
+    return fetch(`http://${host}:${port}`,{ method: type});
 }

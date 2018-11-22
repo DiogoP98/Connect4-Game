@@ -41,10 +41,12 @@ Board.prototype.setupBoard = function() {
     gameDiv.appendChild(turnDiv);
     gameDiv.appendChild(this.boardDiv);
 
-    if(turn == 1)
-        document.getElementById('turn').innerHTML = "AI's Turn";
-    else
-        document.getElementById('turn').innerHTML = "Your Turn";
+    if(this.game.type == 0) {
+        if(turn == 1)
+            document.getElementById('turn').innerHTML = "AI's Turn";
+        else
+            document.getElementById('turn').innerHTML = "Your Turn";
+    }
 
     for (let i = 0; i < this.columns; i++) {
         this.gameBoard[i] = new Array();

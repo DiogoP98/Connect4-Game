@@ -16,13 +16,13 @@ function setupGame() {
     let rows = size.charAt(2);
 
     if (type == "ai") {
-        game = new SinglePlayerGame(firstToPlay, difficulty, columns, rows);
+        game = new Connect4Game(firstToPlay, difficulty, columns, rows,0);
         showGamePage();
         game.startGame();
     }
 
     else {
-        game = new MultiplayerGame(firstToPlay, columns, rows);
+        game = new Connect4Game(firstToPlay, difficulty, columns, rows,1);
         showGamePage();
         game.setupBoard();
         game.createConnection();
@@ -35,30 +35,44 @@ function setupGame() {
  * Creates an instance of a single player game.
  * 
  * @constructor
- * @this {SinglePlayerGame}
+ * @this {Connect4Game}
  * @param {String} firstToPlay The person that starts the game. 
  * @param {Number} difficulty The level of difficulty.
  * @param {Number} columns The number of columns.
  * @param {Number} rows The number of rows.
+ * @param {Number} type Check if is is singleplayer or multiplayer
  */
-function SinglePlayerGame(firstToPlay, difficulty, columns, rows) {
-    this.firstToPlay = firstToPlay;
-    this.difficulty = difficulty;
-    this.columns = columns;
-    this.rows = rows;
-    this.score = 100000;
-    this.winning_array = [];
+function Connect4Game(firstToPlay, difficulty, columns, rows, type) {
+    this.type = type;
+    if(this.type == 0) {
+        this.firstToPlay = firstToPlay;
+        this.difficulty = difficulty;
+        this.columns = columns;
+        this.rows = rows;
+        this.score = 100000;
+        this.winning_array = [];
 
-    if (firstToPlay == "pc") 
-        turn = 1;
-    else
-        turn = 2;
+        if (firstToPlay == "pc") 
+            turn = 1;
+        else
+            turn = 2;
+    }
+
+    else {
+        this.columns = columns;
+        this.rows = rows;
+        this.groupNumber = 33;
+        this.winning_array = [];
+        this.gameID;
+    }
 }
+
+/*--------------------- Singleplayer Functions -------------------------*/
 
 /**
  * Creates a new board and setups AI.
  */
-SinglePlayerGame.prototype.startGame = function() {
+Connect4Game.prototype.startGame = function() {
     this.board = new Board(this, this.columns, this.rows);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
@@ -70,7 +84,7 @@ SinglePlayerGame.prototype.startGame = function() {
  * Checks if the game finished.
  * @return {Boolean} true if the game has finished or false otherwise
  */
-SinglePlayerGame.prototype.checkStatus = function() {
+Connect4Game.prototype.checkStatus = function() {
     if (this.board.score() == -this.score)
         return 2;
 
@@ -83,30 +97,14 @@ SinglePlayerGame.prototype.checkStatus = function() {
     return -1;
 }
 
-/**
- * Creates an instance of a single player game.
- * 
- * @constructor
- * @this {MultiplayerGame}
- * @param {String} firstToPlay The person that starts the game.
- * @param {Number} columns The number of columns.
- * @param {Number} rows The number of rows.
- */
-function MultiplayerGame(firstToPlay, columns, rows) {
-    this.firstToPlay = firstToPlay;
-    this.columns = columns;
-    this.rows = rows;
-    this.groupNumber = 33;
-    this.winning_array = [];
-    this.gameID;
-}
+/*--------------------- Multiplayer Functions -------------------------*/
 
-MultiplayerGame.prototype.setupBoard = function() {
+Connect4Game.prototype.setupBoard = function() {
     this.board = new Board(this, this.columns, this.rows);
     this.board.setupBoard();
 }
 
-MultiplayerGame.prototype.createConnection = function(){
+Connect4Game.prototype.createConnection = function(){
     var gameContent = document.getElementById("gameDiv");
 	this.spanner = document.createElement('div');
 	var prompt = document.createElement('div');
@@ -120,7 +118,7 @@ MultiplayerGame.prototype.createConnection = function(){
     }, false);
 
 	subtitle.id = "promptH3";
-	subtitle.innerHTML = "Your group id: "+this.groupNumber;
+	subtitle.innerHTML = "Your group id: "+ this.groupNumber;
 	title.id = "promptH2";
 	title.innerHTML = "Waiting for opponent";
 	this.spanner.className = "spanner";
@@ -128,7 +126,6 @@ MultiplayerGame.prototype.createConnection = function(){
     
     button.type = 'button';
     button.value = 'Cancel matchmaking';
-    button.style.width = '50%';
 	prompt.appendChild(title);
 	prompt.appendChild(subtitle);
 	prompt.appendChild(button);
@@ -136,7 +133,7 @@ MultiplayerGame.prototype.createConnection = function(){
     gameContent.appendChild(this.spanner);
 }
 
-MultiplayerGame.prototype.cancelMatchMaking = function(){
+Connect4Game.prototype.cancelMatchMaking = function(){
     let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": this.gameID};
     
     makeRequestFetch(JSON.stringify(js_obj), "leave")
@@ -148,7 +145,7 @@ MultiplayerGame.prototype.cancelMatchMaking = function(){
     .catch(console.log);
 }
 
-MultiplayerGame.prototype.joinGame = function(){
+Connect4Game.prototype.joinGame = function(){
     let js_obj = {"group": this.groupNumber, "nick": loginInfo.user, "pass": loginInfo.password, "size": { "rows": Number(this.rows), "columns": Number(this.columns)} };
 
 	makeRequestFetch(JSON.stringify(js_obj), "join")
@@ -171,7 +168,7 @@ MultiplayerGame.prototype.joinGame = function(){
     .catch(console.log);
 }
 
-MultiplayerGame.prototype.openServerEventListener = function() {
+Connect4Game.prototype.openServerEventListener = function() {
     this.eventSource = new EventSource(`http://${host}:${port}/update?nick=${loginInfo.user}&game=${this.gameID}`);
 
     this.eventSource.onmessage = function(event) {

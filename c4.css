@@ -350,6 +350,7 @@ circle.winner {
 }
 
 #prompt input[type="button"] {
+    width: 50%;	
 	left: 50%;
 	top: 70%;
 	position: absolute;
@@ -361,12 +362,41 @@ circle.winner {
 	margin-left: 40px;
 }
 
+.mode {
+    float: left;
+    border: 1px solid #e8e8e8;
+    border-bottom: none;
+    font-size: 1.3em;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: novecento_sansmedium, Arial, Helvetica, sans-serif;
+}
+
+.active {
+	color: rgb(56, 137, 234);
+}
+
+.onlineSizes {
+	float: left;
+	border: 1px solid #e8e8e8;
+    border-bottom: none;
+}
+
+#show-leaderboard {
+	clear: both;
+	margin: 0;
+}
+
 /* changes column style */
 #players {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
 	width: 75%;
-	margin-left: 60px;
 }
 
 #players td, #players th {

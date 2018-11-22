@@ -1,6 +1,7 @@
 "use strict";
 
-const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv'];
+const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv', 'sizes'];
+const leaderbBoardContent = ['Player', 'Games Played', 'W/L Ratio (%)', 'Points'];
 var ingame;
 var loginInfo = {
 	signedIn: false,
@@ -8,6 +9,7 @@ var loginInfo = {
     password: ""
 }
 var before = false; //check if the leaderboard was shown before
+var leaderboardType;
 
 /**
  * Shows login box, with the game name on top
@@ -122,38 +124,65 @@ function returnToMain() {
 /**
  * Shows the leaderboard
  */
-function showLeaderboard() {
-    let leaderboardDiv = document.getElementById('leaderboardDiv');
+function showLeaderboardDiv() {
+    hideDivs();
+    leaderboardDiv.style.display = 'block';
+}
+
+function changeType(type) {
+    leaderboardType = type;
+    if(type == 'offline') {
+        document.getElementById('offline-leaderboard').className = "mode active";
+        document.getElementById('online-leaderboard').className = "mode";
+        document.getElementById('sizes').style.display = 'none';
+        showOfflineLeaderBoard();
+    }
+    else {
+        document.getElementById('offline-leaderboard').className = "mode";
+        document.getElementById('online-leaderboard').className = "mode active";
+        document.getElementById('sizes').style.display = 'block';
+    }
+}
+
+function showOnlineLeaderBoard(size) {
+    
+}
+
+function showOfflineLeaderBoard() {
+    let leaderboard = document.getElementById('show-leaderboard');
 
     if (before) 
-        leaderboardDiv.innerHTML = "";
-
-    hideDivs();
+        resetDiv(leaderboard);
     
-    let finalText = "<h2 class= 'first'>LeaderBoard</h2>"
-    finalText += 
-			"<table id='players'>" +
-				"<tr>" +
-					"<th>Player</th>" +
-					"<th>Games Played</th>" +
-					"<th>W/L Ratio (%)</th>" +
-					"<th>Points</th>" +
-				"</tr>";
+    let table = document.createElement('table');
+    table.id = 'players';
+    let headerTr = document.createElement('tr');
+
+    for(let i = 0; i < leaderbBoardContent.length; i++) {
+        let th = document.createElement('th');
+        th.innerHTML = leaderbBoardContent[i];
+        headerTr.appendChild(th);   
+    }
+
+    table.appendChild(headerTr);
+
 	for(let i=0; i<localStorage.length; i++){
         let jsonUser = localStorage.key(i);
-		let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-		finalText += 
-			"<tr>" +
-				"<td>" + jsonUser + "</td>" +
-				"<td>" + json.games + "</td>" +
-				"<td>" + parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0) + "</td>" +
-				"<td>" + json.points + "</td>";
-		finalText += "</tr>";
+        let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        let jsonLeaderboard = [jsonUser,json.games,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
+        let tr = document.createElement('tr');
+
+        for(let j = 0; j < leaderbBoardContent.length; j++) {
+            let td = document.createElement('td');
+            td.innerHTML = jsonLeaderboard[j];
+            tr.appendChild(td); 
+        }
+
+        table.appendChild(tr);
 	}
-	finalText += "</table>"
     
-    leaderboardDiv.innerHTML += finalText;
-    leaderboardDiv.style.display = 'block';
+    leaderboard.appendChild(table);
+
     before = true;
 }
 

@@ -21,7 +21,7 @@
 	      <div class='list-functions'>
                   <ul class='header-info'>
                   <li>
-                        <a onclick="showLeaderboard()">Leaderboard</a>
+                        <a onclick="showLeaderboardDiv()">Leaderboard</a>
                   </li>
                   <li>
                         <a onclick="showRules()">Rules</a>
@@ -162,6 +162,18 @@
 	  
       <!-- Shows the leaderboard -->
       <div id='leaderboardDiv'>
+            <h2 class= 'first'>LeaderBoard</h2>
+            <div id="offline-leaderboard" class="mode" onclick="changeType('offline')">Offline</div>
+            <div id="online-leaderboard" class="mode" onclick="changeType('online')">Online</div>
+
+            <div id="sizes">
+                  <div id="size6*5" class="mode" onclick="showOnlineLeaderBoard(6,5)">6x5</div>
+                  <div id="size7*6" class="mode" onclick="showOnlineLeaderBoard(7,6)">7x6</div>
+                  <div id="size8*7" class="mode" onclick="showOnlineLeaderBoard(8,7)">8x7</div>
+            </div>
+            
+            <div id='show-leaderboard'>
+            </div>
 	</div>
 	  
    </body>

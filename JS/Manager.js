@@ -8,8 +8,6 @@ var loginInfo = {
     password: ""
 }
 var before = false; //check if the leaderboard was shown before
-const host = "twserver.alunos.dcc.fc.up.pt";
-const port = 8008;
 
 /**
  * Shows login box, with the game name on top
@@ -32,22 +30,25 @@ function showLoginPage() {
  * Allows the user to login 
  */
 function userLogin() {
+    let status = document.getElementById('login-status');
+    resetDiv(status);
+
     loginInfo.user = document.getElementById('user').value;
     loginInfo.password = document.getElementById('pw').value;
     
     if(loginInfo.user == "") {
-        alert("Please insert a valid username.");
+        status.innerHTML = "Please insert a valid username.";
         return;
     }
 
     if(loginInfo.password == "") {
-        alert("Please provide a password.");
+        status.innerHTML = "Please provide a password.";
         return;
     }
 
     let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password};
 
-    register(JSON.stringify(js_obj))
+    makeRequestFetch(JSON.stringify(js_obj), "register")
     .then(function(response){
         if(response.ok) {
 
@@ -61,22 +62,12 @@ function userLogin() {
             showGameOptions();
         }
 
-        else
-            alert("Wrong username and password combination");
+        else {
+            status.innerHTML = "Wrong username and password combination";
+        }
 
     })
     .catch(console.log);
-}
-
-function userRegister() {
-
-}
-
-async function register(login_info) {
-    return await fetch(`http://${host}:${port}/register`,{
-        method: "POST",
-        body: login_info
-    });
 }
 
 /**

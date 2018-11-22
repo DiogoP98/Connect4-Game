@@ -10,6 +10,7 @@
       <script src="JS/Game.js"></script>
       <script src="JS/AI.js"></script>
       <script src="JS/Board.js"></script>
+      <script src="JS/Connect4Api.js"></script>
    </head>
    <body onload="showLoginPage()">
 
@@ -41,18 +42,18 @@
 	  
       <!-- Login Div -->
       <div id='loginPageDiv'>
-         <div id='login' class='box'>
-		   
-		<form>
-               <h2>Welcome</h2>
-               <input id='user' name='username' placeholder='Username' type='text'/>
-               <input id='pw' name='password' placeholder='Password' type='password'/>
-               <input type='button' value='Sign In' onclick="userLogin()"/>
-               <input type='button' value='Sign Up' onclick="userRegister()"/>
-		</form>
+            <div id='login-status'></div>
+            <div id='login' class='box'>  
+                  <form>
+                        <h2>Welcome</h2>
+                        <input id='user' name='username' placeholder='Username' type='text'/>
+                        <input id='pw' name='password' placeholder='Password' type='password'/>
+                        <input type='button' value='Sign In' onclick="userLogin()"/>
+                        <input type='button' value='Sign Up' onclick="userRegister()"/>
+                  </form>
 
-         </div>
-	  </div>
+            </div>
+	</div>
 	  
       <!-- Div to choose the game options-->
       <div id='gameOptionsDiv' class='box'>

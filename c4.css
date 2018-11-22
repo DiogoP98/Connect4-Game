@@ -227,6 +227,14 @@ input[type="button"]:hover {
 	margin-left: 30px;
 }
 
+#login-status {
+	color: red;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-weight: 800;
+}
+
 /**-------Game Options-------*/
 
 #gameOptionsDiv {
@@ -302,6 +310,50 @@ circle.winner {
 	font-size: 40px;
 	text-align: center;
 	margin-bottom: 20px;
+}
+
+/*-------------Waiting for opponent---------------------*/
+
+#prompt {
+    background-color: rgb(235, 232, 232);
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 160px;
+    width: 340px;
+    margin-top: -130px;
+    margin-left: -170px;
+	z-index: 20;
+	align-items: center;
+	justify-content: center;
+}
+
+#promptH2{
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.95312em;
+    font-family: novecento_sansmedium;
+    line-height: 1.2;
+    color: #3889EA;
+    margin: 10px;
+}
+
+#promptH3{
+    margin-top: 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1em;
+    font-family: novecento_sansmedium;
+    line-height: 1.2;
+    color: #b4b4b4;
+}
+
+#prompt input[type="button"] {
+	left: 50%;
+	top: 70%;
+	position: absolute;
+	transform: translate(-50%, -50%);
 }
 
 /**-------Leaderboard-------*/

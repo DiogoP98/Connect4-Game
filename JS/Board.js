@@ -102,17 +102,8 @@ Board.prototype.changePositionValue = function(i,j) {
         },3000); 
     }
 
-    else {
-        if(turn == 1) {
-            turn = 2;
-            turnDiv.innerHTML = "Your Turn";
-        }
-        else {
-            turn = 1;
-            turnDiv.innerHTML = "AI's Turn";
-            game.ai.play(game);
-        }
-    }
+    else 
+        this.changeTurn("AI");
 }
 
 /**
@@ -123,6 +114,32 @@ Board.prototype.changePositionValue = function(i,j) {
  */
 Board.prototype.changePositionValueForAi = function(i,j, turnAI) {
     this.gameBoard[i][j] = turnAI; 
+}
+
+Board.prototype.changeTurn = function(name) {
+    let turnDiv = document.getElementById("turn");
+    
+    if(this.game.type == 0) {
+        if(turn == 1) {
+            turn = 2;
+            turnDiv.innerHTML = "Your Turn";
+        }
+        else {
+            turn = 1;
+            turnDiv.innerHTML = name + "'s Turn";
+            game.ai.play(game);
+        }
+    }
+    else {
+        if(turn == 1) {
+            turn = 2;
+            turnDiv.innerHTML = "Your Turn";
+        }
+        else {
+            turn = 1;
+            turnDiv.innerHTML = name+ "'s Turn";
+        }
+    }   
 }
 
 /**

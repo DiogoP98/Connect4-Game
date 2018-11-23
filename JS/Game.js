@@ -24,7 +24,6 @@ function setupGame() {
     else {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,1);
         showGamePage();
-        game.setupBoard();
         game.createConnection();
         game.joinGame();
         //game.cancelMatchMaking();
@@ -64,6 +63,7 @@ function Connect4Game(firstToPlay, difficulty, columns, rows, type) {
         this.groupNumber = 33;
         this.winning_array = [];
         this.gameID;
+        this.isConnected = false;
     }
 }
 
@@ -105,32 +105,31 @@ Connect4Game.prototype.setupBoard = function() {
 }
 
 Connect4Game.prototype.createConnection = function(){
-    var gameContent = document.getElementById("gameDiv");
-	this.spanner = document.createElement('div');
-	var prompt = document.createElement('div');
-	var title = document.createElement('h2');
-    var subtitle = document.createElement('h3');
+    let gameContent = document.getElementById("gameDiv");
+	let spanner = document.createElement('div');
+    let prompt = document.createElement('div');
+    let loader = document.createElement('div');
+	let title = document.createElement('h2');
     let button = document.createElement('input');
-    var context = this;
+    let context = this;
     
 	button.addEventListener('click', function() {
 		context.cancelMatchMaking();
     }, false);
 
-	subtitle.id = "promptH3";
-	subtitle.innerHTML = "Your group id: "+ this.groupNumber;
 	title.id = "promptH2";
 	title.innerHTML = "Waiting for opponent";
-	this.spanner.className = "spanner";
+	spanner.className = "spanner";
     prompt.id = "prompt";
+    loader.className = 'loader';
     
     button.type = 'button';
     button.value = 'Cancel matchmaking';
-	prompt.appendChild(title);
-	prompt.appendChild(subtitle);
+    prompt.appendChild(title); 
+    prompt.appendChild(loader);
 	prompt.appendChild(button);
-	this.spanner.appendChild(prompt);
-    gameContent.appendChild(this.spanner);
+	spanner.appendChild(prompt);
+    gameContent.appendChild(spanner);
 }
 
 Connect4Game.prototype.cancelMatchMaking = function(){
@@ -140,6 +139,7 @@ Connect4Game.prototype.cancelMatchMaking = function(){
     .then(function(response){
         gameInProgress = false;
         //console.log(response);
+        document.getElementById('logout').style.pointerEvents = 'auto';
         showGameOptions();
     })
     .catch(console.log);
@@ -172,25 +172,47 @@ Connect4Game.prototype.openServerEventListener = function() {
     this.eventSource = new EventSource(`http://${host}:${port}/update?nick=${loginInfo.user}&game=${this.gameID}`);
 
     this.eventSource.onmessage = function(event) {
-        console.log(event);
+        if(event.data == "{}")
+            return;
+        
+        if(!game.isConnected) {
+            game.isConnected = true;
+            game.establishConnection();
+            game.hideSpanner();
+        }
+
+        game.onUpdate(JSON.parse(event.data));
     }
 }
-/** 
-//we wait for updates to do stuff
-this.eventSource = new EventSource(`http://${host}:${port}/update?nick=${this.userName}&game=${gameId}`);
-var context = this;
-this.eventSource.onmessage = function(event) {
-    console.log("RECEIVED AN UPDATE!")
-    console.log(event)
-    if(event.data == "{}")
-        return
-    if(!this.isConnected){
-        //here we let the user know somebody is ready to play.
-            this.isConnected = true;
-            context.toggleConnecting();		
+
+Connect4Game.prototype.establishConnection = function() {
+    game.setupBoard();
+    /*
+    let loader = document.createElement('div');
+    loader.class = 'loader';
+    */
+}
+
+Connect4Game.prototype.onUpdate = function(data) {
+    if(data.error) {
+        console.log(data);
+        return;
     }
 
-    var data = JSON.parse(event.data);
-    context.onReceiveUpdate(data);
+    if(data.turn !== undefined && data.turn !== loginInfo.user) {
+        document.getElementById('turn').innerHTML = data.turn + "'s Turn";
+        turn = 1;
+    }
+    else {
+        document.getElementById('turn').innerHTML = "Your Turn";
+        turn = 0;
+    }
+    
+    console.log(data);
 }
-*/
+
+Connect4Game.prototype.hideSpanner = function() {
+    let element = document.getElementById('gameDiv');
+
+    element.removeChild(element.childNodes[0]);
+} 

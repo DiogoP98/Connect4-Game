@@ -315,7 +315,6 @@ circle.winner {
 /*-------------Waiting for opponent---------------------*/
 
 #prompt {
-    background-color: rgb(235, 232, 232);
     opacity: 1;
     position: fixed;
     top: 50%;
@@ -324,7 +323,6 @@ circle.winner {
     width: 340px;
     margin-top: -130px;
     margin-left: -170px;
-	z-index: 20;
 	align-items: center;
 	justify-content: center;
 }
@@ -336,17 +334,7 @@ circle.winner {
     font-family: novecento_sansmedium;
     line-height: 1.2;
     color: #3889EA;
-    margin: 10px;
-}
-
-#promptH3{
-    margin-top: 0;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1em;
-    font-family: novecento_sansmedium;
-    line-height: 1.2;
-    color: #b4b4b4;
+	margin: 10px;
 }
 
 #prompt input[type="button"] {
@@ -355,6 +343,24 @@ circle.winner {
 	top: 70%;
 	position: absolute;
 	transform: translate(-50%, -50%);
+}
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+	height: 20px;
+	position: absolute;
+	left: 40%;
+	top: 30%;
+	transform: translate(-50%, -50%);
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /**-------Leaderboard-------*/

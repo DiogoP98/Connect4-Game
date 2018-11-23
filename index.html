@@ -60,7 +60,7 @@
 		 
 		<div id='gameTypeDiv'>
                   <p><strong class='form-text'>Game Type</strong></p>
-                  <form id='gameTypeForm' class='form-options'>
+                  <form id='gameTypeForm' class='form-options' onchange="checktype()">
                         <input type='radio' checked='checked' name='gametype' value='ai'>
                         <span>Against Computer</span>
                         <br>
@@ -119,8 +119,6 @@
 	  
       <!-- Div where it is built the game board -->
       <div id='gameDiv'>
-         <span id='turn'></span>
-         <br>
 	</div>
 	  
       <!-- Shows the number of points and result of the game that was played-->
@@ -171,7 +169,7 @@
                   <div id="size7*6" class="mode" onclick="showOnlineLeaderBoard(7,6)">7x6</div>
                   <div id="size8*7" class="mode" onclick="showOnlineLeaderBoard(8,7)">8x7</div>
             </div>
-            
+
             <div id='show-leaderboard'>
             </div>
 	</div>

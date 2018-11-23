@@ -18,7 +18,7 @@ function showLoginPage() {
     document.getElementById('dropdown').style.visibility = 'hidden';
 
     loginInfo.signedIn= false;
-    ingame = false;
+    gameInProgress = false;
 
     resetDiv(document.getElementById('gameDiv'));
     resetDiv(document.getElementById('gameFinishDiv'));
@@ -76,7 +76,7 @@ function userLogin() {
  * Shows the gameOptions 
  */
 function showGameOptions() {
-    ingame = false;
+    gameInProgress = false;
     hideDivs();
 
     document.getElementById('gameOptionsDiv').style.display = 'block';
@@ -93,7 +93,7 @@ function showGamePage() {
 
     document.getElementById('logout').style.pointerEvents = 'none';
 
-    ingame = true; 
+    gameInProgress = true; 
     game.style.display = 'block';
 }
 
@@ -110,11 +110,11 @@ function showRules() {
  * Returns to the default position. If not logged in it's the login page. Ohterwise, if in a game is the game page, if not is the options page.
  */
 function returnToMain() {
-    if (!login) {
+    if (!loginInfo.signedIn) {
         showLoginPage();
     }
     else {
-        if (!ingame)
+        if (!gameInProgress)
             showGameOptions();
         else 
             showGamePage();
@@ -125,6 +125,9 @@ function returnToMain() {
  * Shows the leaderboard
  */
 function showLeaderboardDiv() {
+    if (before) 
+        resetDiv(document.getElementById('show-leaderboard'));
+    changeType("none");
     hideDivs();
     leaderboardDiv.style.display = 'block';
 }
@@ -137,10 +140,15 @@ function changeType(type) {
         document.getElementById('sizes').style.display = 'none';
         showOfflineLeaderBoard();
     }
-    else {
+    else if(type == 'online'){
         document.getElementById('offline-leaderboard').className = "mode";
         document.getElementById('online-leaderboard').className = "mode active";
         document.getElementById('sizes').style.display = 'block';
+    }
+    else {
+        document.getElementById('offline-leaderboard').className = "mode";
+        document.getElementById('online-leaderboard').className = "mode";
+        document.getElementById('sizes').style.display = 'none';
     }
 }
 
@@ -301,7 +309,18 @@ function leaveGameButton() {
 
     this.element.addEventListener("click", function() {
         let leave = confirm("Are you sure you want to leave?");
-        if (leave)
-            gameFinish(1,game.ai.depth);
+        if (leave) {
+            if(game.type == 0)
+                gameFinish(1,game.ai.depth);
+            else {
+                game.cancelMatchMaking();
+                gameFinish(1,1);
+            }
+        }
     });
+}
+
+//TODO hide useless forms
+function checktype() {
+    let value = document.getElementById("gameTypeForm").elements["gametype"].value;
 }

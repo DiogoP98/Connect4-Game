@@ -343,10 +343,11 @@ circle.winner {
 	top: 70%;
 	position: absolute;
 	transform: translate(-50%, -50%);
+	margin-top: 20px;
 }
 
 .loader {
-	border: 16px solid #f3f3f3; /* Light grey */
+	border: 16px solid #adadad;
     border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;
     width: 20px;

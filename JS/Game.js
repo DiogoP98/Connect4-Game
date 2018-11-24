@@ -3,6 +3,7 @@
 var game;
 var turn;
 var gameInProgress;
+var myTurn;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -138,7 +139,7 @@ Connect4Game.prototype.cancelMatchMaking = function(){
     makeRequestFetch(JSON.stringify(js_obj), "leave")
     .then(function(response){
         gameInProgress = false;
-        //console.log(response);
+        game.isConnected = false;
         document.getElementById('logout').style.pointerEvents = 'auto';
         showGameOptions();
     })
@@ -154,7 +155,6 @@ Connect4Game.prototype.joinGame = function(){
             return response.json()
             .then(function(json) {
                 game.gameID = json.game;
-                gameInProgress = true;
                 game.openServerEventListener();
             })
         }
@@ -179,6 +179,7 @@ Connect4Game.prototype.openServerEventListener = function() {
             game.isConnected = true;
             game.establishConnection();
             game.hideSpanner();
+            gameInProgress = true;
         }
 
         game.onUpdate(JSON.parse(event.data));
@@ -186,7 +187,8 @@ Connect4Game.prototype.openServerEventListener = function() {
 }
 
 Connect4Game.prototype.establishConnection = function() {
-    game.setupBoard();
+    game.board = new Board(game, game.columns, game.rows);
+    game.board.setupBoard();
     /*
     let loader = document.createElement('div');
     loader.class = 'loader';
@@ -199,16 +201,49 @@ Connect4Game.prototype.onUpdate = function(data) {
         return;
     }
 
-    if(data.turn !== undefined && data.turn !== loginInfo.user) {
-        document.getElementById('turn').innerHTML = data.turn + "'s Turn";
-        turn = 1;
+    if(data.turn !== undefined) {
+        if(data.turn == loginInfo.user)
+            myTurn = true;
+        else
+            myTurn = false;
+
+        this.board.changeTurn(data.turn);
     }
-    else {
-        document.getElementById('turn').innerHTML = "Your Turn";
-        turn = 0;
+
+    if(data.winner != undefined) {
+        let color;
+
+        if(data.winner == loginInfo.user)
+            color = 1;
+        else
+            color = 2;
+
+        for(let i = 0; i < this.rows; i++) {
+            if(this.board.gameBoard[data.column][i] !== data.board[data.column][this.rows-i]) {
+                this.board.onlinePlay(document.getElementById("column-" + data.column), i, color);
+                this.board.gameBoard[data.column][i] = data.board[data.column][this.rows-i];
+                break;
+            }
+        } 
+
+        this.board.onlineWinningArray();
     }
     
     console.log(data);
+    if(data.board !== undefined && data.column != undefined){
+        let color;
+        if(myTurn)
+            color = 1;
+        else
+            color = 2;
+        for(let i = 0; i < this.rows; i++) {
+            if(this.board.gameBoard[data.column][i] !== data.board[data.column][this.rows-i]) {
+                this.board.onlinePlay(document.getElementById("column-" + data.column), i, color);
+                this.board.gameBoard[data.column][i] = data.board[data.column][this.rows-i];
+                break;
+            }
+        }
+    }
 }
 
 Connect4Game.prototype.hideSpanner = function() {

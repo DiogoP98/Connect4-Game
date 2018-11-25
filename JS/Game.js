@@ -4,6 +4,7 @@ var game;
 var turn;
 var gameInProgress;
 var myTurn;
+var isOnline;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -18,6 +19,7 @@ function setupGame() {
 
     if (type == "ai") {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,0);
+        isOnline = false;
         showGamePage();
         game.startGame();
     }
@@ -26,8 +28,8 @@ function setupGame() {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,1);
         showGamePage();
         game.createConnection();
+        isOnline = true;
         game.joinGame();
-        //game.cancelMatchMaking();
     }
 }
 
@@ -196,6 +198,7 @@ Connect4Game.prototype.establishConnection = function() {
 }
 
 Connect4Game.prototype.onUpdate = function(data) {
+    console.log("-------------------");
     if(data.error) {
         console.log(data);
         return;
@@ -209,40 +212,37 @@ Connect4Game.prototype.onUpdate = function(data) {
 
         this.board.changeTurn(data.turn);
     }
+    else myTurn = !myTurn;
 
-    if(data.winner != undefined) {
-        let color;
-
-        if(data.winner == loginInfo.user)
-            color = 1;
-        else
-            color = 2;
-
-        for(let i = 0; i < this.rows; i++) {
-            if(this.board.gameBoard[data.column][i] !== data.board[data.column][this.rows-i]) {
-                this.board.onlinePlay(document.getElementById("column-" + data.column), i, color);
-                this.board.gameBoard[data.column][i] = data.board[data.column][this.rows-i];
-                break;
-            }
-        } 
-
-        this.board.onlineWinningArray();
-    }
-    
-    console.log(data);
     if(data.board !== undefined && data.column != undefined){
         let color;
+
         if(myTurn)
-            color = 1;
-        else
             color = 2;
-        for(let i = 0; i < this.rows; i++) {
-            if(this.board.gameBoard[data.column][i] !== data.board[data.column][this.rows-i]) {
-                this.board.onlinePlay(document.getElementById("column-" + data.column), i, color);
-                this.board.gameBoard[data.column][i] = data.board[data.column][this.rows-i];
-                break;
+        else
+            color = 1;
+        
+
+        this.board.onlinePlay(data.column, document.getElementById("column-" + data.column), this.board.findFirstFreeRow(data.column), color);
+    }
+
+    if(data.winner != undefined) {
+        this.eventSource.close();
+
+        for(let i = 0; i < this.columns; i++) {
+            for(let j = 0; j < this.rows; j++) {
+                console.log(this.board.gameBoard[i][j] + "   ");
             }
+            console.log("\n");
         }
+
+        this.board.onlineWinningArray();
+
+        setTimeout(function() {
+            gameFinish(data.winner,0);
+        },3000);
+
+        return;
     }
 }
 

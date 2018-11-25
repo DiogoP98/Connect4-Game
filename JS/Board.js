@@ -292,14 +292,10 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
         let rowNumber = row.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == freeRow) {
             let child = row.childNodes[0];
-            if (turn == 1) {
+            if (turn == 1) 
                 child.className.baseVal = "yellow";
-                console.log("here");
-            }
-            else {
+            else 
                 child.className.baseVal = "red";
-                console.log("here2");
-            }
         } 
     }
 
@@ -307,24 +303,23 @@ Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
         this.changePositionValue(columnNumber,freeRow);
 }
 
-Board.prototype.onlinePlay = function(columnDiv, row, color) {
+Board.prototype.onlinePlay = function(column, columnDiv, row, color) {
     let childDivs = columnDiv.childNodes;
     for (let k = childDivs.length-1; k >=0 ; k--) {
         let rows = childDivs[k];
         let rowNumber = rows.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == row) {
             let child = rows.childNodes[0];
-            if (color == 1) {
+            if (color == 1)
                 child.className.baseVal = "yellow";
-                console.log("here");
-            }
-            else {
+            else 
                 child.className.baseVal = "red";
-                console.log("here2");
-            }
+            
+            break;
         } 
     }
 
+    this.gameBoard[column][row] = color;
 }
 
 Board.prototype.onlineWinningArray = function() {

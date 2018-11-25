@@ -204,11 +204,14 @@ function gameFinish(player,difficulty) {
     
     document.getElementById('logout').style.pointerEvents = 'auto';
 
-    ingame = false;
+    gameInProgress = false;
 
     hideDivs();
 
-    showGameFinishPage(player,difficulty);
+    if(!isOnline)
+        showGameFinishPage(player,difficulty);
+    else
+        showGameFinishOnline(player);
 
     document.getElementById('gameFinishDiv').style.display = 'block';
 }
@@ -227,7 +230,7 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
         scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
         scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <b class='number'>0</b></p>";
+        scoreDiv+= "<p>Total points obtained:           <b class='number'>0</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -241,7 +244,7 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ difficulty+"</bold></p>";
         scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
         scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+difficulty+"</b></p>";
+        scoreDiv+= "<p>Total points obtained:           <bold class='number'>"+difficulty+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -257,7 +260,7 @@ function showGameFinishPage(player,difficulty) {
         scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
         scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
         scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*difficulty+"</b></p>";
+        scoreDiv+= "<p>Total points obtained:           <b class='number'>"+0.5*difficulty+"</b></p>";
         scoreDiv+= "</div>";
 
         div.innerHTML = text + scoreDiv;
@@ -265,6 +268,42 @@ function showGameFinishPage(player,difficulty) {
         json["games"]++;
         json["points"]+=difficulty*0.5;
 		localStorage[loginInfo.user] = JSON.stringify(json);
+    }
+
+    let playAgainButton = document.createElement('input');
+
+    playAgainButton.type = 'button';
+    playAgainButton.value = 'Play Again';
+
+    playAgainButton.addEventListener("click", function() {
+        showGameOptions();
+    });
+
+    div.appendChild(playAgainButton);
+}
+
+function showGameFinishOnline(player) {
+    const div = document.getElementById('gameFinishDiv');
+
+    if(player == loginInfo.user) {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Won!";
+        const scoreDiv = document.createElement("div");
+        scoreDiv.innerHTML+= "<p>Total points obtained:           <b class='number'>1</b></p>";
+        scoreDiv.innerHTML+= "</div>";
+
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
+    }
+    else {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Lost!";
+        const scoreDiv = document.createElement("div");
+        scoreDiv.innerHTML+= "<p>Total points obtained:           <b class='number'>0</b></p>";
+        scoreDiv.innerHTML+= "</div>";
+
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
     }
 
     let playAgainButton = document.createElement('input');

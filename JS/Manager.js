@@ -58,16 +58,14 @@ function userLogin() {
             if(localStorage[loginInfo.user] == null)
                 localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
             
-            response.text().then(console.log);
             document.getElementById('username').innerHTML = loginInfo.user;
             loginInfo.signedIn = true;
             document.getElementById('dropdown').style.visibility = 'visible';
             showGameOptions();
         }
 
-        else {
+        else 
             status.innerHTML = "Wrong username and password combination";
-        }
 
     })
     .catch(console.log);
@@ -94,7 +92,6 @@ function showGamePage() {
 
     document.getElementById('logout').style.pointerEvents = 'none';
 
-    gameInProgress = true; 
     game.style.display = 'block';
 }
 
@@ -257,7 +254,7 @@ function gameFinish(player,difficulty) {
 
     hideDivs();
 
-    if(!isOnline)
+    if(game.type == 0)
         showGameFinishPage(player,difficulty);
     else
         showGameFinishOnline(player);
@@ -383,24 +380,30 @@ function leaveGameButton() {
     this.element = document.createElement('input');
 
     this.element.type = 'button';
-    this.element.id = 'leaveGame';
+    this.element.id = 'leave-game';
     this.element.value = 'Leave Game';
-    this.element.style.width = '100%';
 
     this.element.addEventListener("click", function() {
         let leave = confirm("Are you sure you want to leave?");
         if (leave) {
             if(game.type == 0)
                 gameFinish(1,game.ai.depth);
-            else {
+            else 
                 game.cancelMatchMaking();
-                gameFinish(1,1);
-            }
         }
     });
 }
 
-//TODO hide useless forms
 function checktype() {
     let value = document.getElementById("gameTypeForm").elements["gametype"].value;
+
+    if(value == "pvp") {
+        document.getElementById("difficultyDiv").style.display = "none";
+        document.getElementById("playerOrderDiv").style.display = "none";
+    } 
+
+    else {
+        document.getElementById("difficultyDiv").style.display = "block";
+        document.getElementById("playerOrderDiv").style.display = "block";
+    }
 }

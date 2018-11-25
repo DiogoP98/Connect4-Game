@@ -312,6 +312,10 @@ circle.winner {
 	margin-bottom: 20px;
 }
 
+#leave-game {
+	width: 100%;
+}
+
 /*-------------Waiting for opponent---------------------*/
 
 #prompt {

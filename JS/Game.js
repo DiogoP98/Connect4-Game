@@ -4,7 +4,6 @@ var game;
 var turn;
 var gameInProgress;
 var myTurn;
-var isOnline;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -19,7 +18,6 @@ function setupGame() {
 
     if (type == "ai") {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,0);
-        isOnline = false;
         showGamePage();
         game.startGame();
     }
@@ -28,7 +26,6 @@ function setupGame() {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,1);
         showGamePage();
         game.createConnection();
-        isOnline = true;
         game.joinGame();
     }
 }
@@ -140,10 +137,11 @@ Connect4Game.prototype.cancelMatchMaking = function(){
     
     makeRequestFetch(JSON.stringify(js_obj), "leave")
     .then(function(response){
-        gameInProgress = false;
         game.isConnected = false;
         document.getElementById('logout').style.pointerEvents = 'auto';
-        showGameOptions();
+        if(!gameInProgress)
+            showGameOptions();
+        gameInProgress = false;
     })
     .catch(console.log);
 }
@@ -154,7 +152,7 @@ Connect4Game.prototype.joinGame = function(){
 	makeRequestFetch(JSON.stringify(js_obj), "join")
     .then(function(response){
         if(response.ok) {
-            return response.json()
+            response.json()
             .then(function(json) {
                 game.gameID = json.game;
                 game.openServerEventListener();
@@ -176,8 +174,12 @@ Connect4Game.prototype.openServerEventListener = function() {
     this.eventSource.onmessage = function(event) {
         if(event.data == "{}")
             return;
-        
+
         if(!game.isConnected) {
+            if(JSON.parse(event.data).winner !== undefined) {
+                showGameOptions();
+                return;
+            }
             game.isConnected = true;
             game.establishConnection();
             game.hideSpanner();
@@ -198,7 +200,6 @@ Connect4Game.prototype.establishConnection = function() {
 }
 
 Connect4Game.prototype.onUpdate = function(data) {
-    console.log("-------------------");
     if(data.error) {
         console.log(data);
         return;
@@ -226,15 +227,8 @@ Connect4Game.prototype.onUpdate = function(data) {
         this.board.onlinePlay(data.column, document.getElementById("column-" + data.column), this.board.findFirstFreeRow(data.column), color);
     }
 
-    if(data.winner != undefined) {
+    if(data.winner !== undefined) {
         this.eventSource.close();
-
-        for(let i = 0; i < this.columns; i++) {
-            for(let j = 0; j < this.rows; j++) {
-                console.log(this.board.gameBoard[i][j] + "   ");
-            }
-            console.log("\n");
-        }
 
         this.board.onlineWinningArray();
 

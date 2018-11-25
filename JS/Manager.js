@@ -1,7 +1,8 @@
 "use strict";
 
 const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv', 'sizes'];
-const leaderbBoardContent = ['Player', 'Games Played', 'W/L Ratio (%)', 'Points'];
+const leaderBoardOfflineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)', 'Points'];
+const leaderBoardOnlineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)'];
 var ingame;
 var loginInfo = {
 	signedIn: false,
@@ -152,8 +153,56 @@ function changeType(type) {
     }
 }
 
-function showOnlineLeaderBoard(size) {
+function showOnlineLeaderBoard(columns, rows) {
+    let js_obj = {"size": {"rows": rows, "columns": columns}};
+
+    makeRequestFetch(JSON.stringify(js_obj), "ranking")
+    .then(function(response) {
+        if(response.ok) {
+            return response.json()
+            .then(function(json) {
+                buildOnlineLeaderBoard(json);
+            })
+        }
+    })
+}
+
+function buildOnlineLeaderBoard(json) {
+    let leaderboard = document.getElementById('show-leaderboard');
+
+    if (before) 
+        resetDiv(leaderboard);
     
+    let table = document.createElement('table');
+    table.id = 'players';
+    let headerTr = document.createElement('tr');
+
+    for(let i = 0; i < leaderBoardOnlineContent.length; i++) {
+        let th = document.createElement('th');
+        th.innerHTML = leaderBoardOnlineContent[i];
+        headerTr.appendChild(th);   
+    }
+
+    table.appendChild(headerTr);
+    
+    for(let i = 0; i < json.ranking.length; i++) {
+        let WL = parseFloat(Math.round((json.ranking[i].victories/json.ranking[i].games*100) * 100) / 100).toFixed(0);
+        const jsonLeaderboard = [json.ranking[i].nick,json.ranking[i].games,json.ranking[i].victories, WL];
+
+        let tr = document.createElement('tr');
+
+        for(let j = 0; j < leaderBoardOnlineContent.length; j++) {
+            let td = document.createElement('td');
+            td.innerHTML = jsonLeaderboard[j];
+            tr.appendChild(td); 
+        }
+
+        table.appendChild(tr);
+    }
+
+    leaderboard.appendChild(table);
+
+    before = true;
 }
 
 function showOfflineLeaderBoard() {
@@ -166,9 +215,9 @@ function showOfflineLeaderBoard() {
     table.id = 'players';
     let headerTr = document.createElement('tr');
 
-    for(let i = 0; i < leaderbBoardContent.length; i++) {
+    for(let i = 0; i < leaderBoardOfflineContent.length; i++) {
         let th = document.createElement('th');
-        th.innerHTML = leaderbBoardContent[i];
+        th.innerHTML = leaderBoardOfflineContent[i];
         headerTr.appendChild(th);   
     }
 
@@ -177,10 +226,10 @@ function showOfflineLeaderBoard() {
 	for(let i=0; i<localStorage.length; i++){
         let jsonUser = localStorage.key(i);
         let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        let jsonLeaderboard = [jsonUser,json.games,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
+        let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
         let tr = document.createElement('tr');
 
-        for(let j = 0; j < leaderbBoardContent.length; j++) {
+        for(let j = 0; j < leaderBoardOfflineContent.length; j++) {
             let td = document.createElement('td');
             td.innerHTML = jsonLeaderboard[j];
             tr.appendChild(td); 
@@ -288,22 +337,14 @@ function showGameFinishOnline(player) {
     if(player == loginInfo.user) {
         let text = document.createElement("h2");
         text.innerHTML = "You Won!";
-        const scoreDiv = document.createElement("div");
-        scoreDiv.innerHTML+= "<p>Total points obtained:           <b class='number'>1</b></p>";
-        scoreDiv.innerHTML+= "</div>";
 
         div.appendChild(text);
-        div.appendChild(scoreDiv);
     }
     else {
         let text = document.createElement("h2");
         text.innerHTML = "You Lost!";
-        const scoreDiv = document.createElement("div");
-        scoreDiv.innerHTML+= "<p>Total points obtained:           <b class='number'>0</b></p>";
-        scoreDiv.innerHTML+= "</div>";
 
         div.appendChild(text);
-        div.appendChild(scoreDiv);
     }
 
     let playAgainButton = document.createElement('input');

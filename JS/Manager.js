@@ -223,12 +223,16 @@ function showOfflineLeaderBoard() {
 	for(let i=0; i<localStorage.length; i++){
         let jsonUser = localStorage.key(i);
         let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        
         let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
         let tr = document.createElement('tr');
 
         for(let j = 0; j < leaderBoardOfflineContent.length; j++) {
             let td = document.createElement('td');
-            td.innerHTML = jsonLeaderboard[j];
+            if(j == 3 && isNaN(jsonLeaderboard[j]))
+                td.innerHTML = "--------";
+            else
+                td.innerHTML = jsonLeaderboard[j];
             tr.appendChild(td); 
         }
 

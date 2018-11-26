@@ -226,16 +226,22 @@ Connect4Game.prototype.onUpdate = function(data) {
 
         this.board.onlinePlay(data.column, document.getElementById("column-" + data.column), this.board.findFirstFreeRow(data.column), color);
     }
+    
+    console.log(data);
 
     if(data.winner !== undefined) {
         this.eventSource.close();
 
-        this.board.onlineWinningArray();
+        if(data.winner !== null) {
+            this.board.onlineWinningArray();
 
-        setTimeout(function() {
+            setTimeout(function() {
+                gameFinish(data.winner,0);
+            },3000);
+        }
+        else
             gameFinish(data.winner,0);
-        },3000);
-
+        
         return;
     }
 }

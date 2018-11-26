@@ -223,7 +223,7 @@ function showOfflineLeaderBoard() {
 	for(let i=0; i<localStorage.length; i++){
         let jsonUser = localStorage.key(i);
         let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        
+
         let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
         let tr = document.createElement('tr');
 
@@ -335,9 +335,17 @@ function showGameFinishPage(player,difficulty) {
 function showGameFinishOnline(player) {
     const div = document.getElementById('gameFinishDiv');
 
+    console.log(player);
+
     if(player == loginInfo.user) {
         let text = document.createElement("h2");
         text.innerHTML = "You Won!";
+
+        div.appendChild(text);
+    }
+    else if(player == null){
+        let text = document.createElement("h2");
+        text.innerHTML = "It's a draw!";
 
         div.appendChild(text);
     }

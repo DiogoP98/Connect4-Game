@@ -254,7 +254,8 @@ function gameFinish(player,difficulty) {
     
     document.getElementById('logout').style.pointerEvents = 'auto';
 
-    gameInProgress = false;
+    if(game.type == 0)
+        gameInProgress = false;
 
     hideDivs();
 

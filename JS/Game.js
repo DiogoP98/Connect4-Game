@@ -141,6 +141,7 @@ Connect4Game.prototype.cancelMatchMaking = function(){
         context.eventSource.close();
         context.isConnected = false;
         document.getElementById('logout').style.pointerEvents = 'auto';
+        console.log(gameInProgress);
         if(!gameInProgress)
             showGameOptions();
         gameInProgress = false;
@@ -202,7 +203,7 @@ Connect4Game.prototype.onUpdate = function(data) {
         console.log(data);
         return;
     }
-
+    console.log(gameInProgress);
     if(data.turn !== undefined) {
         if(data.turn == loginInfo.user)
             myTurn = true;
@@ -228,7 +229,7 @@ Connect4Game.prototype.onUpdate = function(data) {
     if(data.winner !== undefined) {
         this.eventSource.close();
 
-        if(data.winner !== null) {
+        if(data.winner !== null && data.board !== undefined) {
             this.board.onlineWinningArray();
 
             setTimeout(function() {

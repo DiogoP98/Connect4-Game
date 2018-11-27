@@ -134,10 +134,12 @@ Connect4Game.prototype.createConnection = function(){
 
 Connect4Game.prototype.cancelMatchMaking = function(){
     let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": this.gameID};
-    
+    let context = this;
+
     makeRequestFetch(JSON.stringify(js_obj), "leave")
     .then(function(response){
-        game.isConnected = false;
+        context.eventSource.close();
+        context.isConnected = false;
         document.getElementById('logout').style.pointerEvents = 'auto';
         if(!gameInProgress)
             showGameOptions();
@@ -170,7 +172,7 @@ Connect4Game.prototype.joinGame = function(){
 
 Connect4Game.prototype.openServerEventListener = function() {
     this.eventSource = new EventSource(`http://${host}:${port}/update?nick=${loginInfo.user}&game=${this.gameID}`);
-
+    
     this.eventSource.onmessage = function(event) {
         if(event.data == "{}")
             return;
@@ -193,10 +195,6 @@ Connect4Game.prototype.openServerEventListener = function() {
 Connect4Game.prototype.establishConnection = function() {
     game.board = new Board(game, game.columns, game.rows);
     game.board.setupBoard();
-    /*
-    let loader = document.createElement('div');
-    loader.class = 'loader';
-    */
 }
 
 Connect4Game.prototype.onUpdate = function(data) {
@@ -226,8 +224,6 @@ Connect4Game.prototype.onUpdate = function(data) {
 
         this.board.onlinePlay(data.column, document.getElementById("column-" + data.column), this.board.findFirstFreeRow(data.column), color);
     }
-    
-    console.log(data);
 
     if(data.winner !== undefined) {
         this.eventSource.close();

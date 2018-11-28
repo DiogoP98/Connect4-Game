@@ -204,6 +204,21 @@ function buildOnlineLeaderBoard(json) {
 
 function showOfflineLeaderBoard() {
     let leaderboard = document.getElementById('show-leaderboard');
+    
+    let localArray = new Array(localStorage.length);
+
+    for(let i = 0; i < localStorage.length; i++) {
+        localArray[i] = new Array(5);
+        let jsonUser = localStorage.key(i);
+        let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
+        localArray[i] = jsonLeaderboard.slice(0);
+    }
+
+    //orders the leaderboard by number of points
+    localArray.sort(function(a,b) {
+            return b[4] - a[4];
+    });
 
     if (before) 
         resetDiv(leaderboard);
@@ -220,19 +235,15 @@ function showOfflineLeaderBoard() {
 
     table.appendChild(headerTr);
 
-	for(let i=0; i<localStorage.length; i++){
-        let jsonUser = localStorage.key(i);
-        let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-
-        let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
+	for(let i=0; i<localArray.length; i++){
         let tr = document.createElement('tr');
 
         for(let j = 0; j < leaderBoardOfflineContent.length; j++) {
             let td = document.createElement('td');
-            if(j == 3 && isNaN(jsonLeaderboard[j]))
+            if(j == 3 && isNaN(localArray[i][j]))
                 td.innerHTML = "--------";
             else
-                td.innerHTML = jsonLeaderboard[j];
+                td.innerHTML = localArray[i][j];
             tr.appendChild(td); 
         }
 

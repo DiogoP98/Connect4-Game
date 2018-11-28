@@ -287,47 +287,53 @@ function showGameFinishPage(player,difficulty) {
     const div = document.getElementById('gameFinishDiv');
     
     if (player == 1) {
-        let text = "<h2>You Lost!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
-        scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obtained:           <b class='number'>0</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "You Lost!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>0</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>0</b></p>";
 
-        div.innerHTML = text + scoreDiv;
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
         let json = JSON.parse(localStorage[loginInfo.user])
 		json["games"]++;
 		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else if (player == 2) {
-        let text = "<h2>You Won!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ difficulty+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obtained:           <bold class='number'>"+difficulty+"</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "You Won!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty +"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>1</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>"+ difficulty + "</b></p>";
 
-        div.innerHTML = text + scoreDiv;
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
         let json = JSON.parse(localStorage[loginInfo.user])
-        json["games"]++;
+		json["games"]++;
         json["victories"]++;
         json["points"]+=difficulty;
 		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else {
-        let text = "<h2>Tied!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
-        scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obtained:           <b class='number'>"+0.5*difficulty+"</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "It's a draw!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>0.5</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>"+ 0.5 * difficulty + "</b></p>";
 
-        div.innerHTML = text + scoreDiv;
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
         let json = JSON.parse(localStorage[loginInfo.user])
-        json["games"]++;
+		json["games"]++;
         json["points"]+=difficulty*0.5;
 		localStorage[loginInfo.user] = JSON.stringify(json);
     }

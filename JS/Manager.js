@@ -164,6 +164,10 @@ function showOnlineLeaderBoard(columns, rows) {
     })
 }
 
+/**
+ * Builds the online LeaderBoard ordered by number of victories
+ * @param {Json} json Server file with information of players stats 
+ */
 function buildOnlineLeaderBoard(json) {
     let leaderboard = document.getElementById('show-leaderboard');
 
@@ -202,6 +206,9 @@ function buildOnlineLeaderBoard(json) {
     before = true;
 }
 
+/**
+ * Builds the offline Leaderboard ordered by number of points
+ */
 function showOfflineLeaderBoard() {
     let leaderboard = document.getElementById('show-leaderboard');
     
@@ -240,7 +247,7 @@ function showOfflineLeaderBoard() {
 
         for(let j = 0; j < leaderBoardOfflineContent.length; j++) {
             let td = document.createElement('td');
-            if(j == 3 && isNaN(localArray[i][j]))
+            if(j == 3 && isNaN(localArray[i][j])) //when the user hasn't played any games yet
                 td.innerHTML = "--------";
             else
                 td.innerHTML = localArray[i][j];
@@ -350,10 +357,12 @@ function showGameFinishPage(player,difficulty) {
     div.appendChild(playAgainButton);
 }
 
+/**
+ * Shows the outcome of the match.
+ * @param {String} player Username of the player who won the game. Nothing when it is a draw. 
+ */
 function showGameFinishOnline(player) {
     const div = document.getElementById('gameFinishDiv');
-
-    console.log(player);
 
     if(player == loginInfo.user) {
         let text = document.createElement("h2");
@@ -424,6 +433,9 @@ function leaveGameButton() {
     });
 }
 
+/**
+ * Checks the game type form selection. If it is multiplayer removes useless forms.
+ */
 function checktype() {
     let value = document.getElementById("gameTypeForm").elements["gametype"].value;
 

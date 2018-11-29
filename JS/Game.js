@@ -203,7 +203,7 @@ Connect4Game.prototype.onUpdate = function(data) {
         console.log(data);
         return;
     }
-    console.log(gameInProgress);
+     
     if(data.turn !== undefined) {
         if(data.turn == loginInfo.user)
             myTurn = true;

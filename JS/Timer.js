@@ -9,12 +9,17 @@ const lineWidth = 5;
 const fontSize = 15;
 const size = 50;
 
-function Timer(domEllement){
+
+/**
+ * Creates a new game Timer.
+ * @param apElement the div where we append the timer 
+ */
+function Timer(apElement){
 	this.frozen = false;
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = size;
 	this.canvas.height = size;
-	domEllement.appendChild(this.canvas);
+	apElement.appendChild(this.canvas);
 
 	this.context=this.canvas.getContext("2d");
 
@@ -45,6 +50,9 @@ function Timer(domEllement){
 	this.drawTimer();
 }
 
+/**
+ * Setups the style of the timer.
+ */
 Timer.prototype.initializeStyle = function(){
 	this.center = size/2;
 	this.radius = size/2 - lineWidth;
@@ -56,11 +64,17 @@ Timer.prototype.initializeStyle = function(){
 	this.context.fillStyle = positiveColor;
 }
 
+/**
+ * Clears previous animation.
+ */
 Timer.prototype.clearCanvas = function(){
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   	this.context.beginPath();	
 }
 
+/**
+ * Restarts the timer.
+ */
 Timer.prototype.resetTimer = function(){
 	this.startTime = new Date().getTime();
 	this.currentTime = this.startTime;
@@ -69,6 +83,9 @@ Timer.prototype.resetTimer = function(){
 	this.endTime = this.currentTime + (60*this.minutes+this.seconds)*1000;
 }
 
+/**
+ * Writes the time left.
+ */
 Timer.prototype.writeTime = function(){
 	if(this.seconds<10){
 		if(this.minutes < 1) {
@@ -80,17 +97,26 @@ Timer.prototype.writeTime = function(){
   		this.context.fillText(`${this.minutes}:${this.seconds}`,this.center,this.center);
 }
 
+/**
+ * If it's not a players turn then the timer doesn't change.
+ */
 Timer.prototype.freeze = function(){
 	this.resetTimer();
 	this.frozen = true;
 }
 
+/**
+ * If it is a players turn then the timer is activated.
+ */
 Timer.prototype.unFreeze = function(){
 	this.frozen = false;
 	this.resetTimer();
 	this.drawTimer();
 }
 
+/**
+ * It drwas the timer circle
+ */
 Timer.prototype.drawArc = function(start,end,color){
 	this.context.strokeStyle = color;
 	this.context.arc(this.center,this.center,this.radius,start,end);
@@ -99,6 +125,9 @@ Timer.prototype.drawArc = function(start,end,color){
 	this.context.closePath();
 }
 
+/**
+ * Prints the timer accordingly to his characteristics 
+ */
 Timer.prototype.drawTimer = function(){
 	this.clearCanvas();
 	this.writeTime();	

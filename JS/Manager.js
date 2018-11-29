@@ -10,6 +10,7 @@ var loginInfo = {
 }
 var before = false; //check if the leaderboard was shown before
 var leaderboardType;
+const supportStorage = ((typeof window.localStorage) !== 'undefined')
 
 /**
  * Shows login box, with the game name on top
@@ -54,8 +55,9 @@ function userLogin() {
     .then(function(response){
         if(response.ok) {
 
-            if(localStorage[loginInfo.user] == null)
-                localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
+            if(supportStorage)
+                if(localStorage[loginInfo.user] == null )
+                    localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
             
             document.getElementById('username').innerHTML = loginInfo.user;
             loginInfo.signedIn = true;
@@ -171,6 +173,12 @@ function showOnlineLeaderBoard(columns, rows) {
  * Builds the offline Leaderboard ordered by number of points
  */
 function showOfflineLeaderBoard() {
+    if(!supportStorage) {
+        alert("Your version of the browser doesn't support localStorage"); 
+        return;
+    }
+    console.log(supportStorage);
+    
     let leaderboard = document.getElementById('show-leaderboard');
     
     let localArray = new Array(localStorage.length);

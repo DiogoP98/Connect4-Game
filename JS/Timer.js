@@ -1,9 +1,15 @@
 "use strict";
 
-function Timer(minutes,seconds,domEllement,size){
+const startingMinute = 2;
+const startingSecond = 0;
+const positiveColor = "rgb(56, 137, 234)";
+const neutralColor = "rgb(120,120,120)";
+const negativeColor = "rgb(255,0,0)";
+const lineWidth = 5;
+const fontSize = 15;
+const size = 50;
 
-	this.minutesLock = minutes;
-	this.secondsLock = seconds;
+function Timer(domEllement){
 	this.frozen = false;
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = size;
@@ -12,36 +18,34 @@ function Timer(minutes,seconds,domEllement,size){
 
 	this.context=this.canvas.getContext("2d");
 
-	this.initializeStyle(size,"#3889EA","#e9e9e9",5,20);
+	this.initializeStyle();
 	
-	this.totalTime = (minutes*60+seconds)*1000;
+	this.totalTime = (startingMinute*60)*1000;
 	this.startTime = new Date().getTime();
-	this.endTime = this.startTime + this.totalTime; // convert the second to ms
+	this.endTime = this.startTime + this.totalTime;
 	this.currentTime = this.startTime;
 
-	this.minutes = minutes;
-	this.seconds = seconds;
+	this.minutes = startingMinute;
+	this.seconds = startingSecond;
+
 	this.circleInterval = 2*Math.PI;
 
-	var timerContext = this;
+	var timer = this;
 
 	this.runTimer = setInterval(function(){
 		if(!this.frozen){
 			var currentTime = new Date().getTime();
-			var distance = timerContext.endTime-currentTime;
+			var distance = timer.endTime-currentTime;
 			distance = Math.round(distance / 100) * 100;
-			timerContext.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			timerContext.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			timer.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			timer.seconds = Math.floor((distance % (1000 * 60)) / 1000);
 		}	
 	},1000);
 
 	this.drawTimer();
 }
 
-Timer.prototype.initializeStyle = function(size,positiveColor,negativeColor,lineWidth,fontSize){
-	this.positiveColor = positiveColor;
-	this.negativeColor = negativeColor;
-	this.lineWidth = lineWidth;
+Timer.prototype.initializeStyle = function(){
 	this.center = size/2;
 	this.radius = size/2 - lineWidth;
 	this.context.lineWidth=lineWidth;
@@ -60,18 +64,20 @@ Timer.prototype.clearCanvas = function(){
 Timer.prototype.resetTimer = function(){
 	this.startTime = new Date().getTime();
 	this.currentTime = this.startTime;
-	this.minutes = this.minutesLock;
-	this.seconds = this.secondsLock;
+	this.minutes = startingMinute;
+	this.seconds = startingSecond;
 	this.endTime = this.currentTime + (60*this.minutes+this.seconds)*1000;
 }
 
 Timer.prototype.writeTime = function(){
 	if(this.seconds<10){
+		if(this.minutes < 1) {
+			this.context.fillStyle = negativeColor;
+		}
   		this.context.fillText(`${this.minutes}:0${this.seconds}`,this.center,this.center);
   	}
-  	else{
+  	else
   		this.context.fillText(`${this.minutes}:${this.seconds}`,this.center,this.center);
-  	}
 }
 
 Timer.prototype.freeze = function(){
@@ -94,8 +100,6 @@ Timer.prototype.drawArc = function(start,end,color){
 }
 
 Timer.prototype.drawTimer = function(){
-
-
 	this.clearCanvas();
 	this.writeTime();	
 
@@ -107,9 +111,12 @@ Timer.prototype.drawTimer = function(){
 	var decrease = unPercentage/100*this.circleInterval;
 	var increase = percentage/100*this.circleInterval;
 
-	this.drawArc(-0.5*Math.PI,1.5*Math.PI-decrease,this.positiveColor);
+	if(this.minutes < 1 && this.seconds < 10)
+		this.drawArc(-0.5*Math.PI,1.5*Math.PI-decrease,negativeColor);
+	else
+		this.drawArc(-0.5*Math.PI,1.5*Math.PI-decrease,positiveColor);
 
-	this.drawArc(1.5*Math.PI+increase,1.5*Math.PI,this.negativeColor);
+	this.drawArc(1.5*Math.PI+increase,1.5*Math.PI,neutralColor);
 
 
 	if(!this.frozen){
@@ -118,10 +125,10 @@ Timer.prototype.drawTimer = function(){
 
 	else{
 		this.clearCanvas();
-		this.context.fillStyle = this.negativeColor;
+		this.context.fillStyle = neutralColor;
 		this.writeTime();
-		this.context.fillStyle = this.positiveColor;
-		this.drawArc(-0.5*Math.PI,1.5*Math.PI,this.negativeColor);
+		this.context.fillStyle = positiveColor;
+		this.drawArc(-0.5*Math.PI,1.5*Math.PI,neutralColor);
 	}
 
 }

@@ -309,7 +309,12 @@ circle.winner {
 	float: initial;
 	font-size: 40px;
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: -15px;
+	margin-top: 10px;
+}
+
+#game-board {
+	margin-top: 20px;
 }
 
 #leave-game {
@@ -320,7 +325,7 @@ circle.winner {
     float:right;
     width: 50px;
 	height: 50px;
-	margin-top: -80px;
+	margin-top: -35px;
 }
 
 /*-------------Waiting for opponent---------------------*/

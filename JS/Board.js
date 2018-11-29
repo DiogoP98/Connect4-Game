@@ -30,7 +30,6 @@ function Board(game ,columns, rows) {
 Board.prototype.setupBoard = function() {
     let turnDiv = document.createElement("div");
     turnDiv.id = "turn";
-    game.timer = new Timer(2,0,game.timerCanvas,75);
     this.boardDiv = document.createElement("div");
     this.boardDiv.id = "game-board";
     this.boardDiv.className = "game-board";
@@ -40,7 +39,10 @@ Board.prototype.setupBoard = function() {
     const gameDiv = document.getElementById("gameDiv");
    
     gameDiv.appendChild(turnDiv);
-    gameDiv.appendChild(game.timerCanvas);
+    if(this.game.type == 1) {
+        game.timer = new Timer(game.timerCanvas);
+        gameDiv.appendChild(game.timerCanvas);
+    }
     gameDiv.appendChild(this.boardDiv);
 
     if(this.game.type == 0) {

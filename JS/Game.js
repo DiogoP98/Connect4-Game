@@ -214,6 +214,7 @@ Connect4Game.prototype.onUpdate = function(data) {
         }
         else {
             myTurn = false;
+            this.timer.resetTimer();
             this.timer.freeze();
         }
 
@@ -234,6 +235,7 @@ Connect4Game.prototype.onUpdate = function(data) {
     }
 
     if(data.winner !== undefined) {
+        this.timer.clearCanvas();
         this.eventSource.close();
 
         if(data.winner !== null && data.board !== undefined) {

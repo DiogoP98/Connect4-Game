@@ -30,7 +30,7 @@ function Board(game ,columns, rows) {
 Board.prototype.setupBoard = function() {
     let turnDiv = document.createElement("div");
     turnDiv.id = "turn";
-    game.timer = new Timer(game.timerCanvas);
+    game.timer = new Timer(2,0,game.timerCanvas,75);
     this.boardDiv = document.createElement("div");
     this.boardDiv.id = "game-board";
     this.boardDiv.className = "game-board";

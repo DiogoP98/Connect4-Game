@@ -1,35 +1,37 @@
-"use strict"
+"use strict";
 
-function Timer(div){
-	this.startingMinutes = 2;
-	this.startingSeconds = 0;
+function Timer(minutes,seconds,domEllement,size){
+
+	this.minutesLock = minutes;
+	this.secondsLock = seconds;
 	this.frozen = false;
 	this.canvas = document.createElement('canvas');
-
-	div.appendChild(this.canvas);
+	this.canvas.width = size;
+	this.canvas.height = size;
+	domEllement.appendChild(this.canvas);
 
 	this.context=this.canvas.getContext("2d");
 
-	this.initializeStyle(50,"#3889EA","#e9e9e9",5,20);
+	this.initializeStyle(size,"#3889EA","#e9e9e9",5,20);
 	
-	this.totalTime = (this.startingMinutes*60)*1000;
+	this.totalTime = (minutes*60+seconds)*1000;
 	this.startTime = new Date().getTime();
-	this.endTime = this.startTime + this.totalTime;
+	this.endTime = this.startTime + this.totalTime; // convert the second to ms
 	this.currentTime = this.startTime;
 
-	this.minutes = this.startingMinutes;
-	this.seconds = this.startingSeconds;
+	this.minutes = minutes;
+	this.seconds = seconds;
 	this.circleInterval = 2*Math.PI;
 
-	var timer = this;
+	var timerContext = this;
 
 	this.runTimer = setInterval(function(){
 		if(!this.frozen){
 			var currentTime = new Date().getTime();
-			var distance = timer.endTime-currentTime;
+			var distance = timerContext.endTime-currentTime;
 			distance = Math.round(distance / 100) * 100;
-			timer.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			timer.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			timerContext.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			timerContext.seconds = Math.floor((distance % (1000 * 60)) / 1000);
 		}	
 	},1000);
 

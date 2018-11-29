@@ -26,6 +26,9 @@ function setupGame() {
         game = new Connect4Game(firstToPlay, difficulty, columns, rows,1);
         showGamePage();
         game.createConnection();
+        game.timerCanvas = document.createElement('div');
+		game.timerCanvas.className = "timerCanvas";
+        game.timerCanvas.style.marginRight = 165-game.columnNumber+"px";
         game.joinGame();
     }
 }
@@ -205,10 +208,14 @@ Connect4Game.prototype.onUpdate = function(data) {
     }
      
     if(data.turn !== undefined) {
-        if(data.turn == loginInfo.user)
+        if(data.turn == loginInfo.user) {
             myTurn = true;
-        else
+            this.timer.unFreeze();
+        }
+        else {
             myTurn = false;
+            this.timer.freeze();
+        }
 
         this.board.changeTurn(data.turn);
     }
@@ -247,4 +254,4 @@ Connect4Game.prototype.hideSpanner = function() {
     let element = document.getElementById('gameDiv');
 
     element.removeChild(element.childNodes[0]);
-} 
+}

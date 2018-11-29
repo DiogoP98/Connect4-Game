@@ -30,6 +30,7 @@ function Board(game ,columns, rows) {
 Board.prototype.setupBoard = function() {
     let turnDiv = document.createElement("div");
     turnDiv.id = "turn";
+    game.timer = new Timer(game.timerCanvas);
     this.boardDiv = document.createElement("div");
     this.boardDiv.id = "game-board";
     this.boardDiv.className = "game-board";
@@ -39,6 +40,7 @@ Board.prototype.setupBoard = function() {
     const gameDiv = document.getElementById("gameDiv");
    
     gameDiv.appendChild(turnDiv);
+    gameDiv.appendChild(game.timerCanvas);
     gameDiv.appendChild(this.boardDiv);
 
     if(this.game.type == 0) {
@@ -322,6 +324,9 @@ Board.prototype.onlinePlay = function(column, columnDiv, row, color) {
     this.gameBoard[column][row] = color;
 }
 
+/**
+ * Checks online winner sequence.
+ */
 Board.prototype.onlineWinningArray = function() {
     for (let j = 0; j<this.rows-3 ; j++ ){
         for (let i = 0; i<this.columns; i++){

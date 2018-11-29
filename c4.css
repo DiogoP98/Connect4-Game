@@ -316,6 +316,13 @@ circle.winner {
 	width: 100%;
 }
 
+.timerCanvas{
+    float:right;
+    width: 50px;
+	height: 50px;
+	margin-top: -80px;
+}
+
 /*-------------Waiting for opponent---------------------*/
 
 #prompt {

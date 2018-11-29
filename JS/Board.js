@@ -449,7 +449,11 @@ Column.prototype.findPlaceToPlay = function() {
     else {
         let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": game.gameID, "column": columnNumber};
         makeRequestFetch(JSON.stringify(js_obj), "notify")
-        .then(response => console.log(response.json()))
+        .then(function(response){
+            if(!response.ok) {
+                alert("Column not valid! Please try another one");                
+            }
+        })
         .catch(console.log);
     }
 

@@ -4,6 +4,7 @@ var game;
 var turn;
 var gameInProgress;
 var myTurn;
+var findingGame;
 
 /**
  * Reads game information from gameSettings Div and starts a new game. 
@@ -76,6 +77,7 @@ function Connect4Game(firstToPlay, difficulty, columns, rows, type) {
  * Creates a new board and setups AI.
  */
 Connect4Game.prototype.startGame = function() {
+    gameInProgress = true;
     this.board = new Board(this, this.columns, this.rows);
     this.board.setupBoard();
     this.ai = new AI(this.difficulty);
@@ -102,11 +104,17 @@ Connect4Game.prototype.checkStatus = function() {
 
 /*--------------------- Multiplayer Functions -------------------------*/
 
+/**
+ * Setups the game board.
+ */
 Connect4Game.prototype.setupBoard = function() {
     this.board = new Board(this, this.columns, this.rows);
     this.board.setupBoard();
 }
 
+/**
+ * Creates the "Waiting for opponent" page.
+ */
 Connect4Game.prototype.createConnection = function(){
     let gameContent = document.getElementById("gameDiv");
 	let spanner = document.createElement('div');
@@ -135,6 +143,9 @@ Connect4Game.prototype.createConnection = function(){
     gameContent.appendChild(spanner);
 }
 
+/**
+ * Cancels or ends the connection.
+ */
 Connect4Game.prototype.cancelMatchMaking = function(){
     let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": this.gameID};
     let context = this;
@@ -144,14 +155,16 @@ Connect4Game.prototype.cancelMatchMaking = function(){
         context.eventSource.close();
         context.isConnected = false;
         document.getElementById('logout').style.pointerEvents = 'auto';
-        console.log(gameInProgress);
-        if(!gameInProgress)
+        if(findingGame)
             showGameOptions();
-        gameInProgress = false;
+        findingGame = false;
     })
     .catch(console.log);
 }
 
+/**
+ * Creates or joins a new game with the game options chosen by the player.
+ */
 Connect4Game.prototype.joinGame = function(){
     let js_obj = {"group": this.groupNumber, "nick": loginInfo.user, "pass": loginInfo.password, "size": { "rows": Number(this.rows), "columns": Number(this.columns)} };
 
@@ -161,19 +174,21 @@ Connect4Game.prototype.joinGame = function(){
             response.json()
             .then(function(json) {
                 game.gameID = json.game;
+                findingGame = true;
                 game.openServerEventListener();
             })
         }
 
-        else {
-            console.log(response.text());
+        else 
             showGameOptions();
-        }
 
     })
     .catch(console.log);
 }
 
+/**
+ * Creates the event Listener.
+ */
 Connect4Game.prototype.openServerEventListener = function() {
     this.eventSource = new EventSource(`http://${host}:${port}/update?nick=${loginInfo.user}&game=${this.gameID}`);
     
@@ -181,26 +196,32 @@ Connect4Game.prototype.openServerEventListener = function() {
         if(event.data == "{}")
             return;
 
-        if(!game.isConnected) {
+        if(findingGame) {
             if(JSON.parse(event.data).winner !== undefined) {
                 showGameOptions();
                 return;
             }
-            game.isConnected = true;
             game.establishConnection();
             game.hideSpanner();
             gameInProgress = true;
+            findingGame = false;
         }
 
         game.onUpdate(JSON.parse(event.data));
     }
 }
 
+/**
+ * When 2 players match it setups the board for both of them.
+ */
 Connect4Game.prototype.establishConnection = function() {
     game.board = new Board(game, game.columns, game.rows);
     game.board.setupBoard();
 }
 
+/**
+ * When a game event occurs it analyzes it.
+ */
 Connect4Game.prototype.onUpdate = function(data) {
     if(data.error) {
         console.log(data);
@@ -235,7 +256,7 @@ Connect4Game.prototype.onUpdate = function(data) {
     }
 
     if(data.winner !== undefined) {
-        this.timer.clearCanvas();
+        this.timer.freeze();
         this.eventSource.close();
 
         if(data.winner !== null && data.board !== undefined) {
@@ -252,6 +273,9 @@ Connect4Game.prototype.onUpdate = function(data) {
     }
 }
 
+/**
+ * When two players connect, it hides the "waiting for opponent" div.
+ */
 Connect4Game.prototype.hideSpanner = function() {
     let element = document.getElementById('gameDiv');
 

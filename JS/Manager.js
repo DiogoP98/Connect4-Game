@@ -3,7 +3,6 @@
 const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv', 'sizes'];
 const leaderBoardOfflineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)', 'Points'];
 const leaderBoardOnlineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)'];
-var ingame;
 var loginInfo = {
 	signedIn: false,
     user: "",
@@ -130,6 +129,10 @@ function showLeaderboardDiv() {
     leaderboardDiv.style.display = 'block';
 }
 
+/**
+ * Offline and Online leaderboard manager.
+ * @param {String} type 
+ */
 function changeType(type) {
     leaderboardType = type;
     if(type == 'offline') {
@@ -162,48 +165,6 @@ function showOnlineLeaderBoard(columns, rows) {
             })
         }
     })
-}
-
-/**
- * Builds the online LeaderBoard ordered by number of victories
- * @param {Json} json Server file with information of players stats 
- */
-function buildOnlineLeaderBoard(json) {
-    let leaderboard = document.getElementById('show-leaderboard');
-
-    if (before) 
-        resetDiv(leaderboard);
-    
-    let table = document.createElement('table');
-    table.id = 'players';
-    let headerTr = document.createElement('tr');
-
-    for(let i = 0; i < leaderBoardOnlineContent.length; i++) {
-        let th = document.createElement('th');
-        th.innerHTML = leaderBoardOnlineContent[i];
-        headerTr.appendChild(th);   
-    }
-
-    table.appendChild(headerTr);
-    
-    for(let i = 0; i < json.ranking.length; i++) {
-        let WL = parseFloat(Math.round((json.ranking[i].victories/json.ranking[i].games*100) * 100) / 100).toFixed(0);
-        const jsonLeaderboard = [json.ranking[i].nick,json.ranking[i].games,json.ranking[i].victories, WL];
-
-        let tr = document.createElement('tr');
-
-        for(let j = 0; j < leaderBoardOnlineContent.length; j++) {
-            let td = document.createElement('td');
-            td.innerHTML = jsonLeaderboard[j];
-            tr.appendChild(td); 
-        }
-
-        table.appendChild(tr);
-    }
-
-    leaderboard.appendChild(table);
-
-    before = true;
 }
 
 /**
@@ -272,8 +233,7 @@ function gameFinish(player,difficulty) {
     
     document.getElementById('logout').style.pointerEvents = 'auto';
 
-    if(game.type == 0)
-        gameInProgress = false;
+    gameInProgress = false;
 
     hideDivs();
 
@@ -358,44 +318,6 @@ function showGameFinishPage(player,difficulty) {
 }
 
 /**
- * Shows the outcome of the match.
- * @param {String} player Username of the player who won the game. Nothing when it is a draw. 
- */
-function showGameFinishOnline(player) {
-    const div = document.getElementById('gameFinishDiv');
-
-    if(player == loginInfo.user) {
-        let text = document.createElement("h2");
-        text.innerHTML = "You Won!";
-
-        div.appendChild(text);
-    }
-    else if(player == null){
-        let text = document.createElement("h2");
-        text.innerHTML = "It's a draw!";
-
-        div.appendChild(text);
-    }
-    else {
-        let text = document.createElement("h2");
-        text.innerHTML = "You Lost!";
-
-        div.appendChild(text);
-    }
-
-    let playAgainButton = document.createElement('input');
-
-    playAgainButton.type = 'button';
-    playAgainButton.value = 'Play Again';
-
-    playAgainButton.addEventListener("click", function() {
-        showGameOptions();
-    });
-
-    div.appendChild(playAgainButton);
-}
-
-/**
  * Eliminates every element of the board.
  * @param element the element from which you want to remove all the child elements
  */
@@ -448,4 +370,86 @@ function checktype() {
         document.getElementById("difficultyDiv").style.display = "block";
         document.getElementById("playerOrderDiv").style.display = "block";
     }
+}
+
+/*-----------------Online manager--------------*/
+
+/**
+ * Shows the outcome of the match.
+ * @param {String} player Username of the player who won the game. Nothing when it is a draw. 
+ */
+function showGameFinishOnline(player) {
+    const div = document.getElementById('gameFinishDiv');
+
+    if(player == loginInfo.user) {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Won!";
+
+        div.appendChild(text);
+    }
+    else if(player == null){
+        let text = document.createElement("h2");
+        text.innerHTML = "It's a draw!";
+
+        div.appendChild(text);
+    }
+    else {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Lost!";
+
+        div.appendChild(text);
+    }
+
+    let playAgainButton = document.createElement('input');
+
+    playAgainButton.type = 'button';
+    playAgainButton.value = 'Play Again';
+
+    playAgainButton.addEventListener("click", function() {
+        showGameOptions();
+    });
+
+    div.appendChild(playAgainButton);
+}
+
+/**
+ * Builds the online LeaderBoard ordered by number of victories
+ * @param {Json} json Server file with information of players stats 
+ */
+function buildOnlineLeaderBoard(json) {
+    let leaderboard = document.getElementById('show-leaderboard');
+
+    if (before) 
+        resetDiv(leaderboard);
+    
+    let table = document.createElement('table');
+    table.id = 'players';
+    let headerTr = document.createElement('tr');
+
+    for(let i = 0; i < leaderBoardOnlineContent.length; i++) {
+        let th = document.createElement('th');
+        th.innerHTML = leaderBoardOnlineContent[i];
+        headerTr.appendChild(th);   
+    }
+
+    table.appendChild(headerTr);
+    
+    for(let i = 0; i < json.ranking.length; i++) {
+        let WL = parseFloat(Math.round((json.ranking[i].victories/json.ranking[i].games*100) * 100) / 100).toFixed(0);
+        const jsonLeaderboard = [json.ranking[i].nick,json.ranking[i].games,json.ranking[i].victories, WL];
+
+        let tr = document.createElement('tr');
+
+        for(let j = 0; j < leaderBoardOnlineContent.length; j++) {
+            let td = document.createElement('td');
+            td.innerHTML = jsonLeaderboard[j];
+            tr.appendChild(td); 
+        }
+
+        table.appendChild(tr);
+    }
+
+    leaderboard.appendChild(table);
+
+    before = true;
 }

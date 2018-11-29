@@ -39,12 +39,18 @@ Board.prototype.setupBoard = function() {
     const gameDiv = document.getElementById("gameDiv");
    
     gameDiv.appendChild(turnDiv);
+    if(this.game.type == 1) {
+        game.timer = new Timer(game.timerCanvas);
+        gameDiv.appendChild(game.timerCanvas);
+    }
     gameDiv.appendChild(this.boardDiv);
 
-    if(turn == 1)
-        document.getElementById('turn').innerHTML = "AI's Turn";
-    else
-        document.getElementById('turn').innerHTML = "Your Turn";
+    if(this.game.type == 0) {
+        if(turn == 1)
+            document.getElementById('turn').innerHTML = "AI's Turn";
+        else
+            document.getElementById('turn').innerHTML = "Your Turn";
+    }
 
     for (let i = 0; i < this.columns; i++) {
         this.gameBoard[i] = new Array();
@@ -70,7 +76,7 @@ Board.prototype.setupBoard = function() {
  * @return {Number} the first freew row. -1 when column is full.
  */
 Board.prototype.findFirstFreeRow = function (id) {
-    for(let j = 0; j < this.gameBoard[id].length ; j++ ) {
+    for(let j = 0; j < game.board.gameBoard[id].length ; j++ ) {
         if (this.gameBoard[id][j] == 0)
             return j;
     }
@@ -100,17 +106,8 @@ Board.prototype.changePositionValue = function(i,j) {
         },3000); 
     }
 
-    else {
-        if(turn == 1) {
-            turn = 2;
-            turnDiv.innerHTML = "Your Turn";
-        }
-        else {
-            turn = 1;
-            turnDiv.innerHTML = "AI's Turn";
-            game.ai.play(game);
-        }
-    }
+    else 
+        this.changeTurn("AI");
 }
 
 /**
@@ -121,6 +118,28 @@ Board.prototype.changePositionValue = function(i,j) {
  */
 Board.prototype.changePositionValueForAi = function(i,j, turnAI) {
     this.gameBoard[i][j] = turnAI; 
+}
+
+Board.prototype.changeTurn = function(name) {
+    let turnDiv = document.getElementById("turn");
+
+    if(this.game.type == 0) {
+        if(turn == 1) {
+            turn = 2;
+            turnDiv.innerHTML = "Your Turn";
+        }
+        else {
+            turn = 1;
+            turnDiv.innerHTML = name + "'s Turn";
+            game.ai.play(game);
+        }
+    }
+    else {
+        if(name == loginInfo.user)
+            turnDiv.innerHTML = "Your Turn";
+        else
+            turnDiv.innerHTML = name+ "'s Turn";
+    }   
 }
 
 /**
@@ -272,20 +291,89 @@ Board.prototype.copy = function() {
  */
 Board.prototype.play = function(columnDiv, freeRow, columnNumber) {
     let childDivs = columnDiv.childNodes;
-
     for (let k = childDivs.length-1; k >=0 ; k--) {
         let row = childDivs[k];
         let rowNumber = row.className.baseVal.match(/\d+/g)[0];
         if (rowNumber == freeRow) {
             let child = row.childNodes[0];
-            if (turn == 1)
+            if (turn == 1) 
                 child.className.baseVal = "yellow";
             else 
                 child.className.baseVal = "red";
         } 
     }
 
-    this.changePositionValue(columnNumber,freeRow);
+    if(game.type == 0)
+        this.changePositionValue(columnNumber,freeRow);
+}
+
+Board.prototype.onlinePlay = function(column, columnDiv, row, color) {
+    let childDivs = columnDiv.childNodes;
+    for (let k = childDivs.length-1; k >=0 ; k--) {
+        let rows = childDivs[k];
+        let rowNumber = rows.className.baseVal.match(/\d+/g)[0];
+        if (rowNumber == row) {
+            let child = rows.childNodes[0];
+            if (color == 1)
+                child.className.baseVal = "yellow";
+            else 
+                child.className.baseVal = "red";
+            
+            break;
+        } 
+    }
+
+    this.gameBoard[column][row] = color;
+}
+
+/**
+ * Checks online winner sequence.
+ */
+Board.prototype.onlineWinningArray = function() {
+    for (let j = 0; j<this.rows-3 ; j++ ){
+        for (let i = 0; i<this.columns; i++){
+            let player = this.gameBoard[i][j];
+            if (player != 0 && this.gameBoard[i][j+1] == player && this.gameBoard[i][j+2] == player && this.gameBoard[i][j+3] == player){
+                this.game.winning_array = [[i,j],[i,j+1],[i,j+2],[i,j+3]];
+                this.highlightWinner();
+                return;
+            }           
+        }
+    }
+    // verticalCheck
+    for (let i = 0; i<this.columns-3 ; i++ ){
+        for (let j = 0; j<this.rows; j++){
+            let player = this.gameBoard[i][j];
+            if (player != 0 && this.gameBoard[i+1][j] == player && this.gameBoard[i+2][j] == player && this.gameBoard[i+3][j] == player) {
+                this.game.winning_array = [[i,j],[i+1,j],[i+2,j],[i+3,j]];
+                this.highlightWinner();
+                return;
+            }          
+        }
+    }
+    // ascendingDiagonalCheck 
+    for (let i=3; i<this.columns; i++){
+        for (let j=0; j<this.rows-3; j++){
+            let player = this.gameBoard[i][j];
+            if (player != 0 && this.gameBoard[i-1][j+1] == player && this.gameBoard[i-2][j+2] == player && this.gameBoard[i-3][j+3] == player){
+                this.game.winning_array = [[i,j],[i-1,j+1],[i-2,j+2],[i-3,j+3]];
+                this.highlightWinner();
+                return;
+            }
+        }
+    }
+    // descendingDiagonalCheck
+    for (let i=3; i<this.columns; i++){
+        for (let j=3; j<this.rows; j++){
+            let player = this.gameBoard[i][j];
+            if (player != 0 && this.gameBoard[i-1][j-1] == player && this.gameBoard[i-2][j-2] == player && this.gameBoard[i-3][j-3] == player) {
+                this.game.winning_array = [[i,j],[i-1,j-1],[i-2,j-2],[i-3,j-3]];
+                this.highlightWinner();
+                return;
+            }
+        }
+    }
+    return false;
 }
 
 /**
@@ -332,21 +420,42 @@ function Column(id) {
 }
 
 Column.prototype.findPlaceToPlay = function() {
-    if (turn == 1) {
-        alert("It's computer's turn.");
-        return;
+    if(game.type == 0) {
+        if (turn == 1) {
+            alert("It's Opponent's turn.");
+            return;
+        }
+    }
+    else {
+        if(!myTurn) {
+            alert("It's Opponent's turn.");
+            return;
+        }
     }
 
     let columnNumber = this.id.match(/\d+/g)[0];
-    let freeRow = game.board.findFirstFreeRow(columnNumber);
+    
+    if(game.type == 0 ) {
+        let freeRow = game.board.findFirstFreeRow(columnNumber);
+        if (freeRow == -1) {
+            alert("Invalid move! Try again.");
+            return;
+        }
 
-    if (freeRow == -1) {
-        alert("Invalid move! Try again.");
-        return;
+        if (game.checkStatus() == -1)
+            game.board.play(this, freeRow, columnNumber);
     }
 
-    if (game.checkStatus() == -1)
-        game.board.play(this, freeRow, columnNumber);
+    else {
+        let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": game.gameID, "column": columnNumber};
+        makeRequestFetch(JSON.stringify(js_obj), "notify")
+        .then(function(response){
+            if(!response.ok) {
+                alert("Column not valid! Please try another one");                
+            }
+        })
+        .catch(console.log);
+    }
 
 }
 

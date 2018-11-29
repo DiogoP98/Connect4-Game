@@ -10,6 +10,8 @@
       <script src="JS/Game.js"></script>
       <script src="JS/AI.js"></script>
       <script src="JS/Board.js"></script>
+      <script src="JS/Connect4Api.js"></script>
+      <script src="JS/Timer.js"></script>
    </head>
    <body onload="showLoginPage()">
 
@@ -20,7 +22,7 @@
 	      <div class='list-functions'>
                   <ul class='header-info'>
                   <li>
-                        <a onclick="showLeaderboard()">Leaderboard</a>
+                        <a onclick="showLeaderboardDiv()">Leaderboard</a>
                   </li>
                   <li>
                         <a onclick="showRules()">Rules</a>
@@ -41,25 +43,24 @@
 	  
       <!-- Login Div -->
       <div id='loginPageDiv'>
-         <div id='login' class='box'>
-		   
-		<form>
-               <h2>Welcome</h2>
-               <input id='user' name='username' placeholder='Username' type='text'/>
-               <input id='pw' name='password' placeholder='Password' type='password'/>
-               <input type='button' value='Sign In' onclick="userLogin()"/>
-               <input type='button' value='Sign Up'/>
-		</form>
+            <div id='login-status'></div>
+            <div id='login' class='box'>  
+                  <form>
+                        <h2>Welcome</h2>
+                        <input id='user' name='username' placeholder='Username' type='text'/>
+                        <input id='pw' name='password' placeholder='Password' type='password'/>
+                        <input type='button' value='Log In' onclick="userLogin()"/>
+                  </form>
 
-         </div>
-	  </div>
+            </div>
+	</div>
 	  
       <!-- Div to choose the game options-->
       <div id='gameOptionsDiv' class='box'>
 		 
 		<div id='gameTypeDiv'>
                   <p><strong class='form-text'>Game Type</strong></p>
-                  <form id='gameTypeForm' class='form-options'>
+                  <form id='gameTypeForm' class='form-options' onchange="checktype()">
                         <input type='radio' checked='checked' name='gametype' value='ai'>
                         <span>Against Computer</span>
                         <br>
@@ -118,8 +119,6 @@
 	  
       <!-- Div where it is built the game board -->
       <div id='gameDiv'>
-         <span id='turn'></span>
-         <br>
 	</div>
 	  
       <!-- Shows the number of points and result of the game that was played-->
@@ -161,6 +160,18 @@
 	  
       <!-- Shows the leaderboard -->
       <div id='leaderboardDiv'>
+            <h2 class= 'first'>LeaderBoard</h2>
+            <div id="offline-leaderboard" class="mode" onclick="changeType('offline')">Offline</div>
+            <div id="online-leaderboard" class="mode" onclick="changeType('online')">Online</div>
+
+            <div id="sizes">
+                  <div id="size6*5" class="mode" onclick="showOnlineLeaderBoard(6,5)">6x5</div>
+                  <div id="size7*6" class="mode" onclick="showOnlineLeaderBoard(7,6)">7x6</div>
+                  <div id="size8*7" class="mode" onclick="showOnlineLeaderBoard(8,7)">8x7</div>
+            </div>
+
+            <div id='show-leaderboard'>
+            </div>
 	</div>
 	  
    </body>

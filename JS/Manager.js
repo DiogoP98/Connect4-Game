@@ -1,10 +1,15 @@
 "use strict";
 
-const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv'];
-var login;
-var ingame;
-var user;
+const divs = ['loginPageDiv','gameOptionsDiv','gameDiv','gameRulesDiv','leaderboardDiv', 'gameFinishDiv', 'sizes'];
+const leaderBoardOfflineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)', 'Points'];
+const leaderBoardOnlineContent = ['Player', 'Games Played', 'Wins', 'W/L Ratio (%)'];
+var loginInfo = {
+	signedIn: false,
+    user: "",
+    password: ""
+}
 var before = false; //check if the leaderboard was shown before
+var leaderboardType;
 
 /**
  * Shows login box, with the game name on top
@@ -12,8 +17,8 @@ var before = false; //check if the leaderboard was shown before
 function showLoginPage() {
     document.getElementById('dropdown').style.visibility = 'hidden';
 
-    login= false;
-    ingame = false;
+    loginInfo.signedIn= false;
+    gameInProgress = false;
 
     resetDiv(document.getElementById('gameDiv'));
     resetDiv(document.getElementById('gameFinishDiv'));
@@ -27,26 +32,49 @@ function showLoginPage() {
  * Allows the user to login 
  */
 function userLogin() {
-    user = document.getElementById('user').value;
-    
-    if(user == "")
-        user = 'User';
-    
-    document.getElementById('username').innerHTML = user;
+    let status = document.getElementById('login-status');
+    resetDiv(status);
 
-    if(localStorage[user] == null)
-        localStorage[user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
+    loginInfo.user = document.getElementById('user').value;
+    loginInfo.password = document.getElementById('pw').value;
     
-    login = true;
-    document.getElementById('dropdown').style.visibility = 'visible';
-    showGameOptions();
+    if(loginInfo.user == "") {
+        status.innerHTML = "Please insert a valid username.";
+        return;
+    }
+
+    if(loginInfo.password == "") {
+        status.innerHTML = "Please provide a password.";
+        return;
+    }
+
+    let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password};
+
+    makeRequestFetch(JSON.stringify(js_obj), "register")
+    .then(function(response){
+        if(response.ok) {
+
+            if(localStorage[loginInfo.user] == null)
+                localStorage[loginInfo.user] = JSON.stringify({"victories": 0, "games": 0, "points":0});
+            
+            document.getElementById('username').innerHTML = loginInfo.user;
+            loginInfo.signedIn = true;
+            document.getElementById('dropdown').style.visibility = 'visible';
+            showGameOptions();
+        }
+
+        else 
+            status.innerHTML = "Wrong username and password combination";
+
+    })
+    .catch(console.log);
 }
 
 /**
  * Shows the gameOptions 
  */
 function showGameOptions() {
-    ingame = false;
+    gameInProgress = false;
     hideDivs();
 
     document.getElementById('gameOptionsDiv').style.display = 'block';
@@ -63,7 +91,6 @@ function showGamePage() {
 
     document.getElementById('logout').style.pointerEvents = 'none';
 
-    ingame = true; 
     game.style.display = 'block';
 }
 
@@ -80,11 +107,11 @@ function showRules() {
  * Returns to the default position. If not logged in it's the login page. Ohterwise, if in a game is the game page, if not is the options page.
  */
 function returnToMain() {
-    if (!login) {
+    if (!loginInfo.signedIn) {
         showLoginPage();
     }
     else {
-        if (!ingame)
+        if (!gameInProgress)
             showGameOptions();
         else 
             showGamePage();
@@ -94,38 +121,105 @@ function returnToMain() {
 /**
  * Shows the leaderboard
  */
-function showLeaderboard() {
-    let leaderboardDiv = document.getElementById('leaderboardDiv');
+function showLeaderboardDiv() {
+    if (before) 
+        resetDiv(document.getElementById('show-leaderboard'));
+    changeType("none");
+    hideDivs();
+    leaderboardDiv.style.display = 'block';
+}
+
+/**
+ * Offline and Online leaderboard manager.
+ * @param {String} type 
+ */
+function changeType(type) {
+    leaderboardType = type;
+    if(type == 'offline') {
+        document.getElementById('offline-leaderboard').className = "mode active";
+        document.getElementById('online-leaderboard').className = "mode";
+        document.getElementById('sizes').style.display = 'none';
+        showOfflineLeaderBoard();
+    }
+    else if(type == 'online'){
+        document.getElementById('offline-leaderboard').className = "mode";
+        document.getElementById('online-leaderboard').className = "mode active";
+        document.getElementById('sizes').style.display = 'block';
+    }
+    else {
+        document.getElementById('offline-leaderboard').className = "mode";
+        document.getElementById('online-leaderboard').className = "mode";
+        document.getElementById('sizes').style.display = 'none';
+    }
+}
+
+function showOnlineLeaderBoard(columns, rows) {
+    let js_obj = {"size": {"rows": rows, "columns": columns}};
+
+    makeRequestFetch(JSON.stringify(js_obj), "ranking")
+    .then(function(response) {
+        if(response.ok) {
+            return response.json()
+            .then(function(json) {
+                buildOnlineLeaderBoard(json);
+            })
+        }
+    })
+}
+
+/**
+ * Builds the offline Leaderboard ordered by number of points
+ */
+function showOfflineLeaderBoard() {
+    let leaderboard = document.getElementById('show-leaderboard');
+    
+    let localArray = new Array(localStorage.length);
+
+    for(let i = 0; i < localStorage.length; i++) {
+        localArray[i] = new Array(5);
+        let jsonUser = localStorage.key(i);
+        let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        let jsonLeaderboard = [jsonUser,json.games,json.victories,parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0),json.points];
+        localArray[i] = jsonLeaderboard.slice(0);
+    }
+
+    //orders the leaderboard by number of points
+    localArray.sort(function(a,b) {
+            return b[4] - a[4];
+    });
 
     if (before) 
-        leaderboardDiv.innerHTML = "";
+        resetDiv(leaderboard);
+    
+    let table = document.createElement('table');
+    table.id = 'players';
+    let headerTr = document.createElement('tr');
 
-    hideDivs();
-    
-    let finalText = "<h2 class= 'first'>LeaderBoard</h2>"
-    finalText += 
-			"<table id='players'>" +
-				"<tr>" +
-					"<th>Player</th>" +
-					"<th>Games Played</th>" +
-					"<th>W/L Ratio (%)</th>" +
-					"<th>Points</th>" +
-				"</tr>";
-	for(let i=0; i<localStorage.length; i++){
-        let jsonUser = localStorage.key(i);
-		let json = JSON.parse(localStorage.getItem(localStorage.key(i)));
-		finalText += 
-			"<tr>" +
-				"<td>" + jsonUser + "</td>" +
-				"<td>" + json.games + "</td>" +
-				"<td>" + parseFloat(Math.round((json.victories/json.games*100) * 100) / 100).toFixed(0) + "</td>" +
-				"<td>" + json.points + "</td>";
-		finalText += "</tr>";
+    for(let i = 0; i < leaderBoardOfflineContent.length; i++) {
+        let th = document.createElement('th');
+        th.innerHTML = leaderBoardOfflineContent[i];
+        headerTr.appendChild(th);   
+    }
+
+    table.appendChild(headerTr);
+
+	for(let i=0; i<localArray.length; i++){
+        let tr = document.createElement('tr');
+
+        for(let j = 0; j < leaderBoardOfflineContent.length; j++) {
+            let td = document.createElement('td');
+            if(j == 3 && isNaN(localArray[i][j])) //when the user hasn't played any games yet
+                td.innerHTML = "--------";
+            else
+                td.innerHTML = localArray[i][j];
+            tr.appendChild(td); 
+        }
+
+        table.appendChild(tr);
 	}
-	finalText += "</table>"
     
-    leaderboardDiv.innerHTML += finalText;
-    leaderboardDiv.style.display = 'block';
+    leaderboard.appendChild(table);
+
     before = true;
 }
 
@@ -139,11 +233,14 @@ function gameFinish(player,difficulty) {
     
     document.getElementById('logout').style.pointerEvents = 'auto';
 
-    ingame = false;
+    gameInProgress = false;
 
     hideDivs();
 
-    showGameFinishPage(player,difficulty);
+    if(game.type == 0)
+        showGameFinishPage(player,difficulty);
+    else
+        showGameFinishOnline(player);
 
     document.getElementById('gameFinishDiv').style.display = 'block';
 }
@@ -157,49 +254,55 @@ function showGameFinishPage(player,difficulty) {
     const div = document.getElementById('gameFinishDiv');
     
     if (player == 1) {
-        let text = "<h2>You Lost!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
-        scoreDiv+= "<p>Result factor:                   <b class='number'>0</b></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <b class='number'>0</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "You Lost!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>0</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>0</b></p>";
 
-        div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
+        let json = JSON.parse(localStorage[loginInfo.user])
 		json["games"]++;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else if (player == 2) {
-        let text = "<h2>You Won!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <bold class='number'>"+ difficulty+"</bold></p>";
-        scoreDiv+= "<p>Result factor:                   <bold class='number'>1</br></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <bold class='number'>"+difficulty+"</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "You Won!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty +"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>1</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>"+ difficulty + "</b></p>";
 
-        div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
-        json["games"]++;
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
+        let json = JSON.parse(localStorage[loginInfo.user])
+		json["games"]++;
         json["victories"]++;
         json["points"]+=difficulty;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
     else {
-        let text = "<h2>Tied!</h2>";
-        let scoreDiv = "<div id='scoreDiv'>"
-        scoreDiv+= "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
-        scoreDiv+= "<p>Result factor:                   <b class='number'>0.5</b></p>";
-        scoreDiv += '<hr>';
-        scoreDiv+= "<p>Total points obatined:           <b class='number'>"+0.5*difficulty+"</b></p>";
-        scoreDiv+= "</div>";
+        let text = document.createElement("h2");
+        text.innerHTML = "It's a draw!";
+        let scoreDiv = document.createElement("div");
+        scoreDiv.id = 'scoreDiv';
+        scoreDiv.innerHTML = "<p>Difficulty of the AI:            <b class='number'>"+ difficulty+"</b></p>";
+        scoreDiv.innerHTML += "<p>Result factor:                   <b class='number'>0.5</b></p>";
+        scoreDiv.innerHTML += '<hr>';
+        scoreDiv.innerHTML += "<p>Total points obtained:           <b class='number'>"+ 0.5 * difficulty + "</b></p>";
 
-        div.innerHTML = text + scoreDiv;
-        let json = JSON.parse(localStorage[user])
-        json["games"]++;
+        div.appendChild(text);
+        div.appendChild(scoreDiv);
+        let json = JSON.parse(localStorage[loginInfo.user])
+		json["games"]++;
         json["points"]+=difficulty*0.5;
-		localStorage[user] = JSON.stringify(json);
+		localStorage[loginInfo.user] = JSON.stringify(json);
     }
 
     let playAgainButton = document.createElement('input');
@@ -238,13 +341,115 @@ function leaveGameButton() {
     this.element = document.createElement('input');
 
     this.element.type = 'button';
-    this.element.id = 'leaveGame';
+    this.element.id = 'leave-game';
     this.element.value = 'Leave Game';
-    this.element.style.width = '100%';
 
     this.element.addEventListener("click", function() {
         let leave = confirm("Are you sure you want to leave?");
-        if (leave)
-            gameFinish(1,game.ai.depth);
+        if (leave) {
+            if(game.type == 0)
+                gameFinish(1,game.ai.depth);
+            else 
+                game.cancelMatchMaking();
+        }
     });
+}
+
+/**
+ * Checks the game type form selection. If it is multiplayer removes useless forms.
+ */
+function checktype() {
+    let value = document.getElementById("gameTypeForm").elements["gametype"].value;
+
+    if(value == "pvp") {
+        document.getElementById("difficultyDiv").style.display = "none";
+        document.getElementById("playerOrderDiv").style.display = "none";
+    } 
+
+    else {
+        document.getElementById("difficultyDiv").style.display = "block";
+        document.getElementById("playerOrderDiv").style.display = "block";
+    }
+}
+
+/*-----------------Online manager--------------*/
+
+/**
+ * Shows the outcome of the match.
+ * @param {String} player Username of the player who won the game. Nothing when it is a draw. 
+ */
+function showGameFinishOnline(player) {
+    const div = document.getElementById('gameFinishDiv');
+
+    if(player == loginInfo.user) {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Won!";
+
+        div.appendChild(text);
+    }
+    else if(player == null){
+        let text = document.createElement("h2");
+        text.innerHTML = "It's a draw!";
+
+        div.appendChild(text);
+    }
+    else {
+        let text = document.createElement("h2");
+        text.innerHTML = "You Lost!";
+
+        div.appendChild(text);
+    }
+
+    let playAgainButton = document.createElement('input');
+
+    playAgainButton.type = 'button';
+    playAgainButton.value = 'Play Again';
+
+    playAgainButton.addEventListener("click", function() {
+        showGameOptions();
+    });
+
+    div.appendChild(playAgainButton);
+}
+
+/**
+ * Builds the online LeaderBoard ordered by number of victories
+ * @param {Json} json Server file with information of players stats 
+ */
+function buildOnlineLeaderBoard(json) {
+    let leaderboard = document.getElementById('show-leaderboard');
+
+    if (before) 
+        resetDiv(leaderboard);
+    
+    let table = document.createElement('table');
+    table.id = 'players';
+    let headerTr = document.createElement('tr');
+
+    for(let i = 0; i < leaderBoardOnlineContent.length; i++) {
+        let th = document.createElement('th');
+        th.innerHTML = leaderBoardOnlineContent[i];
+        headerTr.appendChild(th);   
+    }
+
+    table.appendChild(headerTr);
+    
+    for(let i = 0; i < json.ranking.length; i++) {
+        let WL = parseFloat(Math.round((json.ranking[i].victories/json.ranking[i].games*100) * 100) / 100).toFixed(0);
+        const jsonLeaderboard = [json.ranking[i].nick,json.ranking[i].games,json.ranking[i].victories, WL];
+
+        let tr = document.createElement('tr');
+
+        for(let j = 0; j < leaderBoardOnlineContent.length; j++) {
+            let td = document.createElement('td');
+            td.innerHTML = jsonLeaderboard[j];
+            tr.appendChild(td); 
+        }
+
+        table.appendChild(tr);
+    }
+
+    leaderboard.appendChild(table);
+
+    before = true;
 }

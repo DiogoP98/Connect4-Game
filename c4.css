@@ -227,6 +227,14 @@ input[type="button"]:hover {
 	margin-left: 30px;
 }
 
+#login-status {
+	color: red;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-weight: 800;
+}
+
 /**-------Game Options-------*/
 
 #gameOptionsDiv {
@@ -301,7 +309,75 @@ circle.winner {
 	float: initial;
 	font-size: 40px;
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: -15px;
+	margin-top: 10px;
+}
+
+#game-board {
+	margin-top: 20px;
+}
+
+#leave-game {
+	width: 100%;
+}
+
+.timerCanvas{
+    float:right;
+    width: 50px;
+	height: 50px;
+	margin-top: -35px;
+}
+
+/*-------------Waiting for opponent---------------------*/
+
+#prompt {
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 160px;
+    width: 340px;
+    margin-top: -130px;
+    margin-left: -170px;
+	align-items: center;
+	justify-content: center;
+}
+
+#promptH2{
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.95312em;
+    font-family: novecento_sansmedium;
+    line-height: 1.2;
+    color: #3889EA;
+	margin: 10px;
+}
+
+#prompt input[type="button"] {
+    width: 50%;	
+	left: 50%;
+	top: 70%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	margin-top: 20px;
+}
+
+.loader {
+	border: 16px solid #adadad;
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+	height: 20px;
+	position: absolute;
+	left: 40%;
+	top: 30%;
+	transform: translate(-50%, -50%);
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /**-------Leaderboard-------*/
@@ -309,12 +385,41 @@ circle.winner {
 	margin-left: 40px;
 }
 
+.mode {
+    float: left;
+    border: 1px solid #e8e8e8;
+    border-bottom: none;
+    font-size: 1.3em;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: novecento_sansmedium, Arial, Helvetica, sans-serif;
+}
+
+.active {
+	color: rgb(56, 137, 234);
+}
+
+.onlineSizes {
+	float: left;
+	border: 1px solid #e8e8e8;
+    border-bottom: none;
+}
+
+#show-leaderboard {
+	clear: both;
+	margin: 0;
+}
+
 /* changes column style */
 #players {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
 	width: 75%;
-	margin-left: 60px;
 }
 
 #players td, #players th {

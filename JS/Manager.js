@@ -61,6 +61,7 @@ function userLogin() {
             
             document.getElementById('username').innerHTML = loginInfo.user;
             loginInfo.signedIn = true;
+            defaults();
             document.getElementById('dropdown').style.visibility = 'visible';
             showGameOptions();
         }
@@ -70,6 +71,19 @@ function userLogin() {
 
     })
     .catch(console.log);
+}
+
+function defaults() {
+    document.getElementById('user').value = '';
+    document.getElementById('pw').value = '';
+    if(document.getElementById("gameTypeForm").elements["gametype"].value == 'pvp') {
+        document.getElementById("difficultyDiv").style.display = "block";
+        document.getElementById("playerOrderDiv").style.display = "block";
+    }
+    document.getElementById('gameTypeForm').reset();
+    document.getElementById('playerorderForm').reset();
+    document.getElementById('difficultyForm').reset();
+    document.getElementById('sizeForm').reset();
 }
 
 /**
@@ -177,7 +191,6 @@ function showOfflineLeaderBoard() {
         alert("Your version of the browser doesn't support localStorage"); 
         return;
     }
-    console.log(supportStorage);
     
     let leaderboard = document.getElementById('show-leaderboard');
     

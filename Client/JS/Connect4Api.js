@@ -1,7 +1,7 @@
 "use strict";
 
 const host = "twserver.alunos.dcc.fc.up.pt";
-const port = 8008;
+const port = 8033;
 
 /**
  * Makes a POST fetch request.

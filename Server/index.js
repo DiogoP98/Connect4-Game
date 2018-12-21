@@ -1,9 +1,20 @@
-const config = require('./config.json');
+const config = require('./conf.js');
 const http = require('http');
-const routes = require('./Routing');
-const server = http.createServer(routes);
+var headers = require("./Modules/Headers.js");
+const processRequest = require("./Modules/ProcessRequest.js");
 
-server.on('listening', () => {
-    console.log(`Listening on http://127.0.0.1:${conf.port}`)
-})
-server.listen(config.port);
+http.createServer(function(request, response) {
+    console.log("connected");
+	switch(request.method){
+		case "GET":
+            processRequest.processGetRequest(request, response);
+			break;
+		case "POST":
+            processRequest.processPostRequest(request, response);
+			break;
+		default:
+			response.writeHead(501, headers["plain"]);
+			response.end();
+			break;
+	}
+}).listen(config.port);

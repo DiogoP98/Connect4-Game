@@ -6,7 +6,6 @@ var crypto = require('crypto');
 var updater = require("./Update.js");
 var headers = require("./Headers.js").headers;
 
-/*
 module.exports.processGetRequest = function(request, response){
 	let parsedUrl = url.parse(request.url, true);
 	let pathname = parsedUrl.pathname;
@@ -57,7 +56,8 @@ module.exports.processGetRequest = function(request, response){
 		response.end();
 	});
 }
-*/
+
+
 module.exports.processPostRequest = function(request, response){
 	var parsedUrl = url.parse(request.url, true);
 	var pathname = parsedUrl.pathname;
@@ -111,15 +111,13 @@ module.exports.processPostRequest = function(request, response){
 
                 break;
             case "/ranking":
-                console.log("aqui"); 
-                console.log(size);
 				if(query["size"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Undefined size"}));
 					response.end();
 					break;
 				}
-				else if(!Number.isInteger(parseInt(query["size"]))){
+				else if(!Number.isInteger(parseInt(query["size"]["rows"])) || !Number.isInteger(parseInt(query["size"]["columns"]))){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Invalid size"}));
 					response.end();
@@ -189,7 +187,7 @@ module.exports.processPostRequest = function(request, response){
 					response.end();
 					break;
 				}
-				else if(!Number.isInteger(parseInt(query["size"]))){
+				else if(!Number.isInteger(parseInt(query["size"]["rows"])) || !Number.isInteger(parseInt(query["size"]["columns"]))){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Invalid size"}));
 					response.end();
@@ -216,14 +214,14 @@ module.exports.processPostRequest = function(request, response){
 					break;
 				}
 
-				if(updater.nickSizeAlreadyWaiting(query["group"], query["nick"], query["size"])==true){
+				if(updater.nickSizeAlreadyWaiting(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"])==true){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Cannot play against yourself"}));
 					response.end();
 					break;
 				}
-				else if(updater.groupSizeAlreadyWaiting(query["group"], query["size"])==true){
-					var gameid = updater.joinGame(query["group"], query["nick"], query["size"]);
+				else if(updater.groupSizeAlreadyWaiting(query["group"], query["size"]["rows"], query["size"]["columns"])==true){
+					var gameid = updater.joinGame(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"] );
 					if(gameid!=null){
 						response.writeHead(200, headers["plain"]);
 						response.write(JSON.stringify({game: gameid}));
@@ -237,7 +235,7 @@ module.exports.processPostRequest = function(request, response){
 										.update(date.toString())
 										.digest('hex');
 
-						updater.remember(query["group"], query["nick"], query["size"], gameid);
+						updater.remember(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"], gameid);
 						response.writeHead(200, headers["plain"]);
 						response.write(JSON.stringify({game: gameid}));
 						response.end();
@@ -251,7 +249,7 @@ module.exports.processPostRequest = function(request, response){
 									.update(date.toString())
 									.digest('hex');
 
-					var ret = updater.remember(query["group"], query["nick"], query["size"], gameid);
+					var ret = updater.remember(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"], gameid);
 					response.writeHead(200, headers["plain"]);
 					response.write(JSON.stringify({game: gameid}));
 					response.end();
@@ -306,7 +304,8 @@ module.exports.processPostRequest = function(request, response){
 				}
 
 				break;
-			case "/notify":
+            case "/notify":
+                console.log("entrou entrou e entrou\n");
 				if(query["game"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Game is undefined"}));
@@ -325,7 +324,7 @@ module.exports.processPostRequest = function(request, response){
 					response.end();
 					break;
 				}
-				else if(query["stack"]==null){
+				else if(query["board"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Stack is undefined"}));
 					response.end();

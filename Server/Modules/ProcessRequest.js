@@ -138,8 +138,8 @@ module.exports.processPostRequest = function(request, response){
 				var array = [];
 				var i = 0;
 				for(i=0; i<fileData.length; i++){
-					if(fileData[i]["games"][query["size"]] != null)
-						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]]["victories"], games: fileData[i]["games"][query["size"]]["games"]});
+					if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
+						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});
 				}
 
 				var j=0;
@@ -305,7 +305,6 @@ module.exports.processPostRequest = function(request, response){
 
 				break;
             case "/notify":
-                console.log("entrou entrou e entrou\n");
 				if(query["game"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Game is undefined"}));
@@ -324,15 +323,9 @@ module.exports.processPostRequest = function(request, response){
 					response.end();
 					break;
 				}
-				else if(query["board"]==null){
+				else if(query["column"]==null){
 					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Stack is undefined"}));
-					response.end();
-					break;
-				}
-				else if(query["pieces"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Pieces is undefined"}));
+					response.write(JSON.stringify({error: "Column is undefined"}));
 					response.end();
 					break;
 				}
@@ -350,8 +343,8 @@ module.exports.processPostRequest = function(request, response){
 					response.end();
 					break;
 				}
-
-				ret = updater.play(query["game"], query["nick"], query["stack"], query["pieces"]);
+                
+				ret = updater.play(query["game"], query["nick"], query["column"]);
 
 				if(ret == 0){
 					response.writeHead(200, headers["plain"]);
@@ -365,12 +358,12 @@ module.exports.processPostRequest = function(request, response){
 				}
 				else if(ret == 2){
 					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Stack cannot have a negative number of pieces"}));
+					response.write(JSON.stringify({error: "Column reference is negative"}));
 					response.end();
 				}
 				else if(ret == 3){
 					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Not enough pieces in that stack"}));
+					response.write(JSON.stringify({error: "Column full"}));
 					response.end();
 				}
 				else{

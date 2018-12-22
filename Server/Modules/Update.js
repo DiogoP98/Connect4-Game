@@ -51,7 +51,53 @@ function waitIsOver(gameid){
 	}
 }
 
-function insertScore(winner, looser, size){
+
+function insertScoreDraw(nick1, nick2, columns, rows) {
+    try{
+		var fileData = fs.readFileSync("Data/users.json");
+		fileData = JSON.parse(fileData.toString())["users"];
+	}
+	catch(err){
+		console.log(err);
+		return 1;
+	}
+
+	for(var i=0; i<fileData.length; i++){
+		if(fileData[i]["nick"]==nick1){
+			if(fileData[i]["games"][columns][rows] == null){
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
+			}
+			else{
+				fileData[i]["games"][columns][rows]["games"]++;
+			}
+		}
+		else if(fileData[i]["nick"]==nick2){
+			if(fileData[i]["games"][columns][rows] == null){
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
+			}
+			else
+				fileData[i]["games"][columns][rows]["games"]++;
+		}
+	}
+
+	fileData = {users: fileData};
+	try{
+		fs.writeFileSync("Data/users.json", JSON.stringify(fileData));
+	}
+	catch(err){
+		console.log("Error writing to file 'users.json'.");
+		console.log(err);
+		return 2;
+	}
+
+	return 0;
+}
+
+function insertScore(winner, looser, columns, rows){
 	try{
 		var fileData = fs.readFileSync("Data/users.json");
 		fileData = JSON.parse(fileData.toString())["users"];
@@ -63,24 +109,24 @@ function insertScore(winner, looser, size){
 
 	for(var i=0; i<fileData.length; i++){
 		if(fileData[i]["nick"]==winner){
-			if(fileData[i]["games"][size] == null){
-				fileData[i]["games"][size] = {};
-				fileData[i]["games"][size]["games"] = 1;
-				fileData[i]["games"][size]["victories"] = 1;
+			if(fileData[i]["games"][columns][rows] == null){
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 1;
 			}
 			else{
-				fileData[i]["games"][size]["games"]++;
-				fileData[i]["games"][size]["victories"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
+				fileData[i]["games"][columns][rows]["victories"]++;
 			}
 		}
 		else if(fileData[i]["nick"]==looser){
-			if(fileData[i]["games"][size] == null){
-				fileData[i]["games"][size] = {};
-				fileData[i]["games"][size]["games"] = 1;
-				fileData[i]["games"][size]["victories"] = 0;
+			if(fileData[i]["games"][columns][rows] == null){
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
 			}
 			else
-				fileData[i]["games"][size]["games"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
 		}
 	}
 
@@ -150,31 +196,44 @@ module.exports.leaveGame = function(gameid, nick){
 	return 1;
 }
 
-module.exports.play = function(gameid, nick, stack, pieces){
+module.exports.play = function(gameid, nick, column){
 	for(var i=0; i<games.length; i++){
 		if(games[i].gameid == gameid && games[i].active == true){
 			clearTimeout(games[i].timeout);
-			if(games[i].turn != nick){
+			if(games[i].turn != nick)
 				return 1;
-			}
-			else if(pieces < 0){
+			else if(column < 0)
 				return 2;
-			}
-			else if(pieces >= games[i].board[stack]){
-				return 3;
-			}
 			else{
-				games[i].board[stack] = pieces;
-				if(checkEndGame(games[i].board) == true){
-					update(JSON.stringify({winner: nick, rack: games[i].board, stack: stack, pieces: pieces}), games[i].responses.response1, games[i].responses.response2);
+                let valid = false;
+                console.log("aquiiiiiii");
+                console.log(column);
+                for(let j = 0; j < games[i].size.rows; j++) {
+                    if(games[i].board[column][j] == null) {
+                        games[i].board[column][j] = nick;
+                        valid = true;
+                        break;
+                    }
+                }
+                if(!valid)
+                    return 3;
+				if(checkEndGame(games[i]) == true){
+					update(JSON.stringify({winner: nick, board: games[i].board, column: column}), games[i].responses.response1, games[i].responses.response2);
 					games[i].responses.response1.end();
 					games[i].responses.response2.end();
 					if(games[i].nick1 == nick)
-						insertScore(nick, games[i].nick2, games[i].board.length);
+						insertScore(nick, games[i].nick2, games[i].size.columns, games[i].size.rows);
 					else
-						insertScore(nick, games[i].nick1, games[i].board.length);
+						insertScore(nick, games[i].nick1, games[i].size.columns, games[i].size.rows);
 					games.splice(i,1);
-				}
+                }
+                else if(checkFull(games[i] == true)) {
+                    update(JSON.stringify({winner: null, board: games[i].board, column: column}), games[i].responses.response1, games[i].responses.response2);
+                    games[i].responses.response1.end();
+                    games[i].responses.response2.end();
+                    insertScoreDraw(games[i].nick1, games[i].nick2, games[i].board.length);
+                    games.splice(i,1);
+                }
 				else{
 					if(games[i].turn == games[i].nick1)
 						games[i].turn = games[i].nick2;
@@ -184,7 +243,7 @@ module.exports.play = function(gameid, nick, stack, pieces){
 						waitIsOver(gameid);
 					}, 120000);
 					games[i].timeout = timeout;
-					update(JSON.stringify({turn: games[i].turn, rack: games[i].board, stack: stack, pieces: pieces}), games[i].responses.response1, games[i].responses.response2);
+					update(JSON.stringify({turn: games[i].turn, board: games[i].board, column: column}), games[i].responses.response1, games[i].responses.response2);
 				}
 				return 0;
 			}
@@ -202,13 +261,60 @@ function startGame(i){
 	update(JSON.stringify({turn: games[i].turn, rack: games[i].board}), games[i].responses.response1, games[i].responses.response2);
 }
 
-function checkEndGame(board){
-	for(let i = 0; i<board.length; i++){
-		if(board[i]>0)
-			return false;
-	}
 
-	return true;
+function checkFull(game) {
+    const rows = game.size.rows;
+    const columns = game.size.columns;
+    const board = game.board;
+
+    for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+            if (board[i][j] == null)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+function checkEndGame(game){
+    const rows = game.size.rows;
+    const columns = game.size.columns;
+    const board = game.board;
+
+	for (let j = 0; j<rows-3 ; j++ ){
+        for (let i = 0; i<columns; i++){
+            let player = board[i][j];
+            if (player != 0 && board[i][j+1] == player && board[i][j+2] == player && board[i][j+3] == player)
+                return true;         
+        }
+    }
+    // verticalCheck
+    for (let i = 0; i<columns-3 ; i++ ){
+        for (let j = 0; j<rows; j++){
+            let player = board[i][j];
+            if (player != 0 && board[i+1][j] == player && board[i+2][j] == player && board[i+3][j] == player)
+                return true;         
+        }
+    }
+    // ascendingDiagonalCheck 
+    for (let i=3; i<columns; i++){
+        for (let j=0; j<rows-3; j++){
+            let player = board[i][j];
+            if (player != 0 && board[i-1][j+1] == player && board[i-2][j+2] == player && board[i-3][j+3] == player)
+                return true;
+        }
+    }
+    // descendingDiagonalCheck
+    for (let i=3; i<columns; i++){
+        for (let j=3; j<rows; j++){
+            let player = board[i][j];
+            if (player != 0 && board[i-1][j-1] == player && board[i-2][j-2] == player && board[i-3][j-3] == player)
+                return true;
+        }
+    }
+
+    return false;
 }
 
 module.exports.insertConnection = function(gameid, nick, response){

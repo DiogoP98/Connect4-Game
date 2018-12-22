@@ -1,6 +1,6 @@
 "use strict";
 
-const host = "twserver.alunos.dcc.fc.up.pt";
+const host = "localhost"
 const port = 8033;
 
 /**

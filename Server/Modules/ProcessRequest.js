@@ -6,24 +6,56 @@ const crypto = require('crypto');
 const updater = require("./Update.js");
 const headers = require("./Headers.js").headers;
 const serverStatic = require("./static.js");
-const path = require('path');
 
 module.exports.processGetRequest = function(request, response){
     let parsedUrl = url.parse(request.url, true);
-    let pathname = request.url.pathname;
+    let pathname = parsedUrl.pathname;
 	let query = parsedUrl.query;
     let body = "";
 
 	request.on("data", function(chunk){
 		body += chunk;
     });
-    
+    console.log(pathname);
 	request.on("end", function(){
 		switch(pathname){
-            case undefined:
-                serverStatic(parsedUrl.pathname, request,response);
+            case "/":
+                serverStatic(pathname, request,response);
                 break;
-			case "update":
+            case "/index.html":
+                serverStatic(pathname, request,response);
+                break;
+            case "/c4.css":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/AI.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/Board.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/Connect4Api.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/Game.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/Manager.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/JS/Timer.js":
+                serverStatic(pathname, request,response);
+                break;
+            case "/Images/avatar.png":
+                serverStatic(pathname, request,response);
+                break;
+            case "/Images/gameOptions.png":
+                serverStatic(pathname, request,response);
+                break;
+            case "/favicon.ico":
+                serverStatic(pathname, request,response);
+                break;
+			case "/update":
 				if(query["game"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Game is undefined"}));

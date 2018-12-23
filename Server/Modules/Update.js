@@ -327,7 +327,7 @@ module.exports.insertConnection = function(gameid, nick, response){
 											'Cache-Control': 'no-cache',
 											'Access-Control-Allow-Origin': '*',
 											'Connection': 'keep-alive'
-										});
+                                        });                    
 				return 0;
 			}
 			else if(games[i].nick2 == nick && games[i].responses.response2 == null){

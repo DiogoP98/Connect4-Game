@@ -2,10 +2,10 @@ const config = require('./conf.js');
 const http = require('http');
 const headers = require("./Modules/Headers.js");
 const processRequest = require("./Modules/ProcessRequest.js");
-const static = require("./Modules/static.js")
 
 http.createServer(function(request, response) {
     console.log("connected");
+    console.log(request.method);
 	switch(request.method){
 		case "GET":
             processRequest.processGetRequest(request, response);

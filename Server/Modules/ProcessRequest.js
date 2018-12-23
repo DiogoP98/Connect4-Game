@@ -1,16 +1,18 @@
 "use strict";
 
-var url = require("url");
-var fs = require("fs");
-var crypto = require('crypto');
-var updater = require("./Update.js");
-var headers = require("./Headers.js").headers;
+const url = require("url");
+const fs = require("fs");
+const crypto = require('crypto');
+const updater = require("./Update.js");
+const headers = require("./Headers.js").headers;
+const serverStatic = require("./static.js");
+const path = require('path');
 
 module.exports.processGetRequest = function(request, response){
-	let parsedUrl = url.parse(request.url, true);
-	let pathname = parsedUrl.pathname;
+    let parsedUrl = url.parse(request.url, true);
+    let pathname = request.url.pathname;
 	let query = parsedUrl.query;
-	let body = "";
+    let body = "";
 
 	request.on("data", function(chunk){
 		body += chunk;
@@ -18,7 +20,10 @@ module.exports.processGetRequest = function(request, response){
     
 	request.on("end", function(){
 		switch(pathname){
-			case "/update":
+            case undefined:
+                serverStatic(parsedUrl.pathname, request,response);
+                break;
+			case "update":
 				if(query["game"]==null){
 					response.writeHead(400, headers["plain"]);
 					response.write(JSON.stringify({error: "Game is undefined"}));
@@ -62,7 +67,7 @@ module.exports.processPostRequest = function(request, response){
 	var parsedUrl = url.parse(request.url, true);
 	var pathname = parsedUrl.pathname;
 	var body = "";
-
+    console.log(pathname);
 	request.on("data", function(chunk){
 		body += chunk;
 	});

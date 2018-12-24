@@ -6,6 +6,8 @@ const crypto = require('crypto');
 const updater = require("./Update.js");
 const headers = require("./Headers.js").headers;
 const serverStatic = require("./static.js");
+const userMan = require("./user.js");
+const gameMan = require("./game.js");
 
 module.exports.processGetRequest = function(request, response){
     let parsedUrl = url.parse(request.url, true);
@@ -57,24 +59,18 @@ module.exports.processGetRequest = function(request, response){
                 break;
 			case "/update":
 				if(query["game"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Game is undefined"}));
-					response.end();
+					gameMan.gameUndefined(response);
 					break;
 				}
 				else if(query["nick"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Nick is undefined"}));
-					response.end();
+					userMan.nickUndefined(response);
 					break;
 				}
 
 				var ret = updater.insertConnection(query["game"], query["nick"], response);
 
 				if(ret == 1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Invalid game reference"}));
-					response.end();
+					gameMan.invalidGame(response);
 				}
 
 				break;
@@ -117,47 +113,31 @@ module.exports.processPostRequest = function(request, response){
 		switch(pathname){
             case "/register":
 				if(query["nick"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Nick is undefined"}));
-					response.end();
+					userMan.nickUndefined(response);
 					break;
 				}
 				else if(query["pass"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Pass is undefined"}));
-					response.end();
+					userMan.passUndefined(response);
 					break;
 				}
 
-				var ret = checkCredentials(query["nick"], query["pass"]);
+				var ret = userMan.checkCredentials(query["nick"], query["pass"]);
 
-				if(ret==2){
-					response.writeHead(500, headers["plain"]);
-					response.end();
-				}
-				else if(ret==1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "User registered with a different password"}));
-					response.end();
-				}
-				else{
-					response.writeHead(200, headers["plain"]);
-					response.write(JSON.stringify({}));
-					response.end();
-				}
+				if(ret==2)
+					userMan.fileError(response);
+				else if(ret==1)
+					userMan.wrongPassword(response);
+				else
+					userMan.ok(response);
 
                 break;
             case "/ranking":
-				if(query["size"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Undefined size"}));
-					response.end();
+				if(query["size"]["columns"] == null || query["size"]["rows"] == null){
+                    gameMan.sizeUndefined(response);
 					break;
 				}
 				else if(!Number.isInteger(parseInt(query["size"]["rows"])) || !Number.isInteger(parseInt(query["size"]["columns"]))){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Invalid size"}));
-					response.end();
+                    gameMan.invalidSize(response);
 					break;
 				}
 
@@ -194,220 +174,130 @@ module.exports.processPostRequest = function(request, response){
 
 				array = {ranking: array};
 
-				response.writeHead(200, headers["plain"]);
-				response.write(JSON.stringify(array));
-				response.end();
+				userMan.ok(response);
 
 				break;
-			case "/join":
+            case "/join":
 				if(query["group"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Group is undefined"}));
-					response.end();
+                    gameMan.groupUndefined(response);
 					break;
 				}
 				else if(query["nick"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Nick is undefined"}));
-					response.end();
+					userMan.nickUndefined(response);
 					break;
 				}
 				else if(query["pass"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Pass is undefined"}));
-					response.end();
+					userMan.passUndefined(response);
 					break;
-				}
-				else if(query["size"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Size is undefined"}));
-					response.end();
+                }
+				else if(query["size"]["columns"] ==null || query["size"]["rows"] == null){
+					gameMan.sizeUndefined(response);
 					break;
 				}
 				else if(!Number.isInteger(parseInt(query["size"]["rows"])) || !Number.isInteger(parseInt(query["size"]["columns"]))){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Invalid size"}));
-					response.end();
+					gameMan.invalidSize(response);
 					break;
 				}
 				else if(!Number.isInteger(parseInt(query["group"]))){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Invalid group"}));
-					response.end();
+					gameMan.invalidGroup(response);
 					break;
-				}
+                }
+                
+				var ret = userMan.checkCredentials(query["nick"], query["pass"]);
 
-				var ret = checkCredentials(query["nick"], query["pass"]);
-
-				if(ret==2){
-					response.writeHead(500, headers["plain"]);
-					response.end();
-					break;
-				}
-				else if(ret==1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "User registered with a different password"}));
-					response.end();
-					break;
-				}
+				if(ret==2)
+					userMan.fileError(response);
+				else if(ret==1)
+					userMan.wrongPassword(response);
 
 				if(updater.nickSizeAlreadyWaiting(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"])==true){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Cannot play against yourself"}));
-					response.end();
+					gameMan.playYourself(response);
 					break;
 				}
 				else if(updater.groupSizeAlreadyWaiting(query["group"], query["size"]["rows"], query["size"]["columns"])==true){
 					var gameid = updater.joinGame(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"] );
-					if(gameid!=null){
-						response.writeHead(200, headers["plain"]);
-						response.write(JSON.stringify({game: gameid}));
-						response.end();
-					}
-					else{
-						var date = new Date();
-						date = date.getTime();
-						var gameid = crypto
-										.createHash('md5')
-										.update(date.toString())
-										.digest('hex');
+					if(gameid!=null)
+                        gameMan.gameok(response, gameid);
+                    break;
 
-						updater.remember(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"], gameid);
-						response.writeHead(200, headers["plain"]);
-						response.write(JSON.stringify({game: gameid}));
-						response.end();
-					}
-				}
-				else{
-					var date = new Date();
-					date = date.getTime();
-					var gameid = crypto
-									.createHash('md5')
-									.update(date.toString())
-									.digest('hex');
+                }
 
-					var ret = updater.remember(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"], gameid);
-					response.writeHead(200, headers["plain"]);
-					response.write(JSON.stringify({game: gameid}));
-					response.end();
-				}
+				var date = new Date();
+				date = date.getTime();
+				var gameid = crypto.createHash('md5').update(date.toString()).digest('hex');
+
+				var ret = updater.remember(query["group"], query["nick"], query["size"]["rows"], query["size"]["columns"], gameid);
+				gameMan.gameok(response, gameid);
 
 				break;
 			case "/leave":
 				if(query["nick"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Nick is undefined"}));
-					response.end();
+					userMan.nickUndefined(response);
 					break;
 				}
 				else if(query["pass"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Pass is undefined"}));
-					response.end();
+					userMan.passUndefined(response);
 					break;
 				}
 				else if(query["game"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Game is undefined"}));
-					response.end();
+					gameMan.gameUndefined(response);
 					break;
 				}
 
-				var ret = checkCredentials(query["nick"], query["pass"]);
+				var ret = userMan.checkCredentials(query["nick"], query["pass"]);
 
-				if(ret==2){
-					response.writeHead(500, headers["plain"]);
-					response.end();
-					break;
-				}
-				else if(ret==1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "User registered with a different password"}));
-					response.end();
-					break;
-				}
+				if(ret==2)
+					userMan.fileError(response);
+				else if(ret==1)
+					userMan.wrongPassword(response);
 
 				ret = updater.leaveGame(query["game"], query["nick"]);
 
 				if(ret==1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Invalid game reference"}));
-					response.end();
+                    gameMan.invalidGame(response);
+                    break;
 				}
-				else{
-					response.writeHead(200, headers["plain"]);
-					response.write(JSON.stringify({}));
-					response.end();
-				}
+				
+                userMan.ok(response);
 
 				break;
             case "/notify":
 				if(query["game"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Game is undefined"}));
-					response.end();
+					gameMan.gameUndefined(response);
 					break;
 				}
 				else if(query["nick"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Nick is undefined"}));
-					response.end();
+					userMan.nickUndefined(response);
 					break;
 				}
 				else if(query["pass"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Pass is undefined"}));
-					response.end();
+					userMan.passUndefined(response);
 					break;
 				}
 				else if(query["column"]==null){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Column is undefined"}));
-					response.end();
+					gameMan.columnUndefined(response);
 					break;
 				}
 
-				var ret = checkCredentials(query["nick"], query["pass"]);
+				var ret = userMan.checkCredentials(query["nick"], query["pass"]);
 
-				if(ret==2){
-					response.writeHead(500, headers["plain"]);
-					response.end();
-					break;
-				}
-				else if(ret==1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "User registered with a different password"}));
-					response.end();
-					break;
-				}
+				if(ret==2)
+					userMan.fileError(response);
+				else if(ret==1)
+					userMan.wrongPassword(response);
                 
 				ret = updater.play(query["game"], query["nick"], query["column"]);
 
-				if(ret == 0){
-					response.writeHead(200, headers["plain"]);
-					response.write(JSON.stringify({}));
-					response.end();
-				}
-				else if(ret == 1){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Not your turn to play"}));
-					response.end();
-				}
-				else if(ret == 2){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Column reference is negative"}));
-					response.end();
-				}
-				else if(ret == 3){
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Column full"}));
-					response.end();
-				}
-				else{
-					response.writeHead(400, headers["plain"]);
-					response.write(JSON.stringify({error: "Game not found"}));
-					response.end();
-				}
+				if(ret == 0)
+					userMan.ok(response);
+				else if(ret == 1)
+					gameMan.notTurn(response);
+				else if(ret == 2)
+					gameMan.negativeColumn(response);
+				else if(ret == 3)
+					gameMan.fullColumn(response);
+				else
+					gameMan.notFound(response);
 
                 break;
 			default:
@@ -421,52 +311,4 @@ module.exports.processPostRequest = function(request, response){
 		response.writeHead(400, headers["plain"]);
 		response.end();
 	});
-}
-
-function checkCredentials(nick, pass){
-	if(nick == "" || pass == ""){
-		return 1;
-	}
-
-	pass = crypto
-				.createHash('md5')
-				.update(pass)
-				.digest('hex');
-
-	try{
-		var fileData = fs.readFileSync("Data/users.json");
-		fileData = JSON.parse(fileData.toString())["users"];
-	}
-	catch(err){
-		console.log(err);
-		return 2;
-	}
-
-	var found = false;
-	var i;
-	for(i=0; i<fileData.length; i++){
-		if(fileData[i]["nick"] == nick){
-			found = true;
-			break;
-		}
-	}
-	if(found==false){
-		fileData.push({nick: nick, pass: pass, games: {}});
-		fileData = {users: fileData};
-		try{
-			fs.writeFileSync("Data/users.json", JSON.stringify(fileData));
-		}
-		catch(err){
-			console.log("Error writing to file 'users.json'.");
-			console.log(err);
-			return 2;
-		}
-	}
-	else{
-		if(fileData[i]["pass"] == pass){
-			return 0;
-		}
-		else
-			return 1;
-	}
 }

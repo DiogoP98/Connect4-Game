@@ -4,8 +4,6 @@ const headers = require("./Modules/Headers.js");
 const processRequest = require("./Modules/ProcessRequest.js");
 
 http.createServer(function(request, response) {
-    console.log("connected");
-    console.log(request.method);
 	switch(request.method){
 		case "GET":
             processRequest.processGetRequest(request, response);

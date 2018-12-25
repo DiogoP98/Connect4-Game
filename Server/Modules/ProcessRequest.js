@@ -18,7 +18,7 @@ module.exports.processGetRequest = function(request, response){
 	request.on("data", function(chunk){
 		body += chunk;
     });
-    console.log(pathname);
+    
 	request.on("end", function(){
 		switch(pathname){
             case "/":
@@ -95,7 +95,6 @@ module.exports.processPostRequest = function(request, response){
 	var parsedUrl = url.parse(request.url, true);
 	var pathname = parsedUrl.pathname;
 	var body = "";
-    console.log(pathname);
 	request.on("data", function(chunk){
 		body += chunk;
 	});
@@ -171,11 +170,9 @@ module.exports.processPostRequest = function(request, response){
 				}
 
 				array = array.slice(0, 10);
-
 				array = {ranking: array};
-
-				userMan.ok(response);
-
+                userMan.ok(response);
+                
 				break;
             case "/join":
 				if(query["group"]==null){

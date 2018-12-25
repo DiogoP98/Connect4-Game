@@ -206,8 +206,6 @@ module.exports.play = function(gameid, nick, column){
 				return 2;
 			else{
                 let valid = false;
-                console.log("aquiiiiiii");
-                console.log(column);
                 for(let j = 0; j < games[i].size.rows; j++) {
                     if(games[i].board[column][j] == null) {
                         games[i].board[column][j] = nick;
@@ -227,10 +225,10 @@ module.exports.play = function(gameid, nick, column){
 						insertScore(nick, games[i].nick1, games[i].size.columns, games[i].size.rows);
 					games.splice(i,1);
                 }
-                else if(checkFull(games[i] == true)) {
+                else if(checkFull(games[i]) == true) {
                     update(JSON.stringify({winner: null, board: games[i].board, column: column}), games[i].responses.response1, games[i].responses.response2);
                     games[i].responses.response1.end();
-                    games[i].responses.response2.end();
+					games[i].responses.response2.end();
                     insertScoreDraw(games[i].nick1, games[i].nick2, games[i].board.length);
                     games.splice(i,1);
                 }
@@ -283,9 +281,9 @@ function checkEndGame(game){
     const board = game.board;
 
 	for (let j = 0; j<rows-3 ; j++ ){
-        for (let i = 0; i<columns; i++){
+        for (let i = 0; i< columns; i++){
             let player = board[i][j];
-            if (player != 0 && board[i][j+1] == player && board[i][j+2] == player && board[i][j+3] == player)
+            if (player != null && board[i][j+1] == player && board[i][j+2] == player && board[i][j+3] == player)
                 return true;         
         }
     }
@@ -293,7 +291,7 @@ function checkEndGame(game){
     for (let i = 0; i<columns-3 ; i++ ){
         for (let j = 0; j<rows; j++){
             let player = board[i][j];
-            if (player != 0 && board[i+1][j] == player && board[i+2][j] == player && board[i+3][j] == player)
+            if (player != null && board[i+1][j] == player && board[i+2][j] == player && board[i+3][j] == player)
                 return true;         
         }
     }
@@ -301,7 +299,7 @@ function checkEndGame(game){
     for (let i=3; i<columns; i++){
         for (let j=0; j<rows-3; j++){
             let player = board[i][j];
-            if (player != 0 && board[i-1][j+1] == player && board[i-2][j+2] == player && board[i-3][j+3] == player)
+            if (player != null && board[i-1][j+1] == player && board[i-2][j+2] == player && board[i-3][j+3] == player)
                 return true;
         }
     }
@@ -309,7 +307,7 @@ function checkEndGame(game){
     for (let i=3; i<columns; i++){
         for (let j=3; j<rows; j++){
             let player = board[i][j];
-            if (player != 0 && board[i-1][j-1] == player && board[i-2][j-2] == player && board[i-3][j-3] == player)
+            if (player != null && board[i-1][j-1] == player && board[i-2][j-2] == player && board[i-3][j-3] == player)
                 return true;
         }
     }

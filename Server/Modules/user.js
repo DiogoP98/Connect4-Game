@@ -3,6 +3,11 @@ const crypto = require('crypto');
 const headers = require("./Headers.js").headers;
 
 module.exports = {
+    /**
+     * Checks the user's input credentials
+     * @param {String} nick Username given by the user 
+     * @param {String} pass Password given by the user
+     */
     checkCredentials: function(nick, pass){
         if(nick == "" || pass == ""){
             return 1;

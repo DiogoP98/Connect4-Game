@@ -68,6 +68,7 @@ function Connect4Game(firstToPlay, difficulty, columns, rows, type) {
         this.winning_array = [];
         this.gameID;
         this.isConnected = false;
+        this.timer;
     }
 }
 
@@ -148,16 +149,9 @@ Connect4Game.prototype.createConnection = function(){
  */
 Connect4Game.prototype.cancelMatchMaking = function(){
     let js_obj = {"nick": loginInfo.user, "pass": loginInfo.password, "game": this.gameID};
-    let context = this;
 
     makeRequestFetch(JSON.stringify(js_obj), "leave")
     .then(function(response){
-        context.eventSource.close();
-        context.isConnected = false;
-        document.getElementById('logout').style.pointerEvents = 'auto';
-        if(findingGame)
-            showGameOptions();
-        findingGame = false;
     })
     .catch(console.log);
 }
@@ -257,6 +251,7 @@ Connect4Game.prototype.onUpdate = function(data) {
 
     if(data.winner !== undefined) {
         this.timer.freeze();
+        
         this.eventSource.close();
 
         if(data.winner !== null && data.board !== undefined) {

@@ -254,10 +254,16 @@ function gameFinish(player,difficulty) {
     
     document.getElementById('logout').style.pointerEvents = 'auto';
 
-    gameInProgress = false;
-
     hideDivs();
 
+    if(!gameInProgress && findingGame){
+        findingGame = false;
+        showGameOptions();
+        return;
+    }
+    else
+        gameInProgress = false;
+    
     if(game.type == 0)
         showGameFinishPage(player,difficulty);
     else

@@ -63,23 +63,25 @@ function insertScoreDraw(nick1, nick2, columns, rows) {
 
 	for(var i=0; i<fileData.length; i++){
 		if(fileData[i]["nick"]==nick1){
-			if(fileData[i]["games"][[columns],[rows]] == null){
-				fileData[i]["games"][[columns],[rows]] = {};
-				fileData[i]["games"][[columns],[rows]]["games"] = 1;
-				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
+			if(fileData[i]["games"][columns] == null){
+				fileData[i]["games"][columns] = {};
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
 			}
 			else{
-				fileData[i]["games"][[columns],[rows]]["games"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
 			}
 		}
 		else if(fileData[i]["nick"]==nick2){
-			if(fileData[i]["games"][[columns],[rows]] == null){
-				fileData[i]["games"][[columns],[rows]] = {};
-				fileData[i]["games"][[columns],[rows]]["games"] = 1;
-				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
+			if(fileData[i]["games"][columns] == null){
+				fileData[i]["games"][columns] = {};
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
 			}
 			else
-				fileData[i]["games"][[columns],[rows]]["games"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
 		}
 	}
 
@@ -108,24 +110,26 @@ function insertScore(winner, looser, columns, rows){
 
 	for(var i=0; i<fileData.length; i++){
 		if(fileData[i]["nick"]==winner){
-			if(fileData[i]["games"][[columns],[rows]] == null){
-				fileData[i]["games"][[columns],[rows]] = {};
-				fileData[i]["games"][[columns],[rows]]["games"] = 1;
-				fileData[i]["games"][[columns],[rows]]["victories"] = 1;
+			if(fileData[i]["games"][columns] == null){
+				fileData[i]["games"][columns] = {};
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 1;
 			}
 			else{
-				fileData[i]["games"][[columns],[rows]]["games"]++;
-				fileData[i]["games"][[columns],[rows]]["victories"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
+				fileData[i]["games"][columns][rows]["victories"]++;
 			}
 		}
 		else if(fileData[i]["nick"]==looser){
-			if(fileData[i]["games"][[columns],[rows]] == null){
-				fileData[i]["games"][[columns],[rows]] = {};
-				fileData[i]["games"][[columns],[rows]]["games"] = 1;
-				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
+			if(fileData[i]["games"][columns] == null){
+				fileData[i]["games"][columns] = {};
+				fileData[i]["games"][columns][rows] = {};
+				fileData[i]["games"][columns][rows]["games"] = 1;
+				fileData[i]["games"][columns][rows]["victories"] = 0;
 			}
 			else
-				fileData[i]["games"][[columns],[rows]]["games"]++;
+				fileData[i]["games"][columns][rows]["games"]++;
 		}
 	}
 
@@ -180,7 +184,7 @@ module.exports.leaveGame = function(gameid, nick){
 					winner = games[i].nick1;
 					looser = games[i].nick2;
 				}
-				insertScore(winner, looser, games[i].board.length);
+				insertScore(winner, looser, games[i].size.columns, games[i].size.rows);
 			}
 			update(JSON.stringify({winner: winner}), games[i].responses.response1, games[i].responses.response2);
 			if(games[i].responses.response1 != null)

@@ -10,6 +10,11 @@ const userMan = require("./user.js");
 const gameMan = require("./game.js");
 const rankingMan = require("./rankings.js");
 
+/**
+ * Handles HTTP Get Requests
+ * @param request Request informations
+ * @param response The response with the information requested 
+ */
 module.exports.processGetRequest = function(request, response){
     let parsedUrl = url.parse(request.url, true);
     let pathname = parsedUrl.pathname;
@@ -91,7 +96,11 @@ module.exports.processGetRequest = function(request, response){
 	});
 }
 
-
+/**
+ * Handles HTTP Post Requests
+ * @param request Request informations
+ * @param response The response given to the client
+ */
 module.exports.processPostRequest = function(request, response){
 	var parsedUrl = url.parse(request.url, true);
 	var pathname = parsedUrl.pathname;
@@ -154,9 +163,13 @@ module.exports.processPostRequest = function(request, response){
 
 				var array = [];
 				var i = 0;
+
 				for(i=0; i<fileData.length; i++){
-					if(fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]] != null)
-						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]]["victories"], games: fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]]["games"]});
+					if(fileData[i]["games"][query["size"]["columns"]] == null)
+						break;
+
+					if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
+						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});
 				}
 
 				var j=0;

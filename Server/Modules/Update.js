@@ -20,7 +20,6 @@ module.exports.remember = function(group, nick, rowsa, columnsa, gameid){
 }
 
 module.exports.joinGame = function(group, nick, rows, columns){
-    console.log("here");
 	for(let i=0; i<games.length; i++){
 		if(games[i].group == group && games[i].size.rows == rows && games[i].size.columns == columns && games[i].active == false){
 			games[i].nick2 = nick;
@@ -64,23 +63,23 @@ function insertScoreDraw(nick1, nick2, columns, rows) {
 
 	for(var i=0; i<fileData.length; i++){
 		if(fileData[i]["nick"]==nick1){
-			if(fileData[i]["games"][columns][rows] == null){
-				fileData[i]["games"][columns][rows] = {};
-				fileData[i]["games"][columns][rows]["games"] = 1;
-				fileData[i]["games"][columns][rows]["victories"] = 0;
+			if(fileData[i]["games"][[columns],[rows]] == null){
+				fileData[i]["games"][[columns],[rows]] = {};
+				fileData[i]["games"][[columns],[rows]]["games"] = 1;
+				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
 			}
 			else{
-				fileData[i]["games"][columns][rows]["games"]++;
+				fileData[i]["games"][[columns],[rows]]["games"]++;
 			}
 		}
 		else if(fileData[i]["nick"]==nick2){
-			if(fileData[i]["games"][columns][rows] == null){
-				fileData[i]["games"][columns][rows] = {};
-				fileData[i]["games"][columns][rows]["games"] = 1;
-				fileData[i]["games"][columns][rows]["victories"] = 0;
+			if(fileData[i]["games"][[columns],[rows]] == null){
+				fileData[i]["games"][[columns],[rows]] = {};
+				fileData[i]["games"][[columns],[rows]]["games"] = 1;
+				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
 			}
 			else
-				fileData[i]["games"][columns][rows]["games"]++;
+				fileData[i]["games"][[columns],[rows]]["games"]++;
 		}
 	}
 
@@ -109,24 +108,24 @@ function insertScore(winner, looser, columns, rows){
 
 	for(var i=0; i<fileData.length; i++){
 		if(fileData[i]["nick"]==winner){
-			if(fileData[i]["games"][columns][rows] == null){
-				fileData[i]["games"][columns][rows] = {};
-				fileData[i]["games"][columns][rows]["games"] = 1;
-				fileData[i]["games"][columns][rows]["victories"] = 1;
+			if(fileData[i]["games"][[columns],[rows]] == null){
+				fileData[i]["games"][[columns],[rows]] = {};
+				fileData[i]["games"][[columns],[rows]]["games"] = 1;
+				fileData[i]["games"][[columns],[rows]]["victories"] = 1;
 			}
 			else{
-				fileData[i]["games"][columns][rows]["games"]++;
-				fileData[i]["games"][columns][rows]["victories"]++;
+				fileData[i]["games"][[columns],[rows]]["games"]++;
+				fileData[i]["games"][[columns],[rows]]["victories"]++;
 			}
 		}
 		else if(fileData[i]["nick"]==looser){
-			if(fileData[i]["games"][columns][rows] == null){
-				fileData[i]["games"][columns][rows] = {};
-				fileData[i]["games"][columns][rows]["games"] = 1;
-				fileData[i]["games"][columns][rows]["victories"] = 0;
+			if(fileData[i]["games"][[columns],[rows]] == null){
+				fileData[i]["games"][[columns],[rows]] = {};
+				fileData[i]["games"][[columns],[rows]]["games"] = 1;
+				fileData[i]["games"][[columns],[rows]]["victories"] = 0;
 			}
 			else
-				fileData[i]["games"][columns][rows]["games"]++;
+				fileData[i]["games"][[columns],[rows]]["games"]++;
 		}
 	}
 

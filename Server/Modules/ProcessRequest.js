@@ -8,6 +8,7 @@ const headers = require("./Headers.js").headers;
 const serverStatic = require("./static.js");
 const userMan = require("./user.js");
 const gameMan = require("./game.js");
+const rankingMan = require("./rankings.js");
 
 module.exports.processGetRequest = function(request, response){
     let parsedUrl = url.parse(request.url, true);
@@ -154,8 +155,8 @@ module.exports.processPostRequest = function(request, response){
 				var array = [];
 				var i = 0;
 				for(i=0; i<fileData.length; i++){
-					if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
-						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});
+					if(fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]] != null)
+						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]]["victories"], games: fileData[i]["games"][[query["size"]["columns"]],[query["size"]["rows"]]]["games"]});
 				}
 
 				var j=0;
@@ -171,7 +172,7 @@ module.exports.processPostRequest = function(request, response){
 
 				array = array.slice(0, 10);
 				array = {ranking: array};
-                userMan.ok(response);
+                rankingMan.ok(array,response);
                 
 				break;
             case "/join":

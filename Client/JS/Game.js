@@ -68,6 +68,7 @@ function Connect4Game(firstToPlay, difficulty, columns, rows, type) {
         this.winning_array = [];
         this.gameID;
         this.isConnected = false;
+        this.timer;
     }
 }
 
@@ -152,12 +153,6 @@ Connect4Game.prototype.cancelMatchMaking = function(){
 
     makeRequestFetch(JSON.stringify(js_obj), "leave")
     .then(function(response){
-        context.eventSource.close();
-        context.isConnected = false;
-        document.getElementById('logout').style.pointerEvents = 'auto';
-        if(findingGame)
-            showGameOptions();
-        findingGame = false;
     })
     .catch(console.log);
 }

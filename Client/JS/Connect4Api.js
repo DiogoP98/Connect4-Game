@@ -1,7 +1,7 @@
 "use strict";
 
-const host = "localhost"
-const port = 8033;
+const host = location.hostname || "twserver.alunos.dcc.fc.up.pt"
+const port = location.port ||  8133
 
 /**
  * Makes a POST fetch request.

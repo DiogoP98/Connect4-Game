@@ -15,6 +15,10 @@ const mediaTypes = {
 
 const root = config.documentRoot.replace("/", path.sep)
 
+/**
+ * Builds file pathname
+ * @param {String} purl pathname from the request
+ */
 function getPathname(purl) {    
     let pathname = path.normalize(path.join("." + path.sep, root, purl));
     if(!pathname.startsWith(root))  
@@ -22,11 +26,20 @@ function getPathname(purl) {
     return pathname;
 }
 
+/**
+ * Checks the mediaType of the object
+ * @param {String} mediaType 
+ */
 function isText(mediaType) {
     var isText = !mediaType.startsWith("image") && !mediaType.startsWith("font") && !mediaType.startsWith("application/vnd.ms-fontobject");
     return isText;
 }
 
+/**
+ * Send the requested file if found.
+ * @param {String} pathname pathname of the file
+ * @param response response sent 
+ */
 function doGetPathname(pathname, response) {
     var mediaType = mediaTypes[path.extname(pathname).toLowerCase()] || "application/octet-stream";
     var encoding = isText(mediaType) ? "utf8" : null;
@@ -46,7 +59,12 @@ function doGetPathname(pathname, response) {
     });
 }
 
-module.exports = (purl, request, response) => {
+/**
+ * Handles static part of the server.
+ * @param {String} purl pathname from the request
+ * @param response response sent 
+ */
+module.exports = (purl, response) => {
     var pathname = getPathname(purl);
     if (pathname === null) {
         response.writeHead(403); // Forbidden 

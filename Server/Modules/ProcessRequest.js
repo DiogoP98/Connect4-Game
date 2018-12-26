@@ -28,40 +28,40 @@ module.exports.processGetRequest = function(request, response){
 	request.on("end", function(){
 		switch(pathname){
             case "/":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/index.html":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/c4.css":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/AI.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/Board.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/Connect4Api.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/Game.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/Manager.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/JS/Timer.js":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/Images/avatar.png":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/Images/gameOptions.png":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
             case "/favicon.ico":
-                serverStatic(pathname, request,response);
+                serverStatic(pathname, response);
                 break;
 			case "/update":
 				if(query["game"]==null){

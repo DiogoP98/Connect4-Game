@@ -257,14 +257,6 @@ function gameFinish(player,difficulty) {
     gameInProgress = false;
 
     hideDivs();
-
-    if(!gameInProgress && findingGame){
-        findingGame = false;
-        showGameOptions();
-        return;
-    }
-    else
-        gameInProgress = false;
     
     if(game.type == 0)
         showGameFinishPage(player,difficulty);

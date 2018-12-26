@@ -192,6 +192,7 @@ Connect4Game.prototype.openServerEventListener = function() {
 
         if(findingGame) {
             if(JSON.parse(event.data).winner !== undefined) {
+                this.close();
                 showGameOptions();
                 return;
             }

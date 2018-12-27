@@ -9,7 +9,6 @@ const port = location.port ||  8133
  * @param {String} command The type of request we want to do.
  */
 async function makeRequestFetch(data,command) {
-    console.log(host + "  " + port);
     return await fetch(`http://${host}:${port}/${command}`,{
         method: "POST",
         body: data

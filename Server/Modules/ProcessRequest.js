@@ -166,7 +166,7 @@ module.exports.processPostRequest = function(request, response){
 
 				for(i=0; i<fileData.length; i++){
 					if(fileData[i]["games"][query["size"]["columns"]] == null)
-						break;
+						continue;
 
 					if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
 						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});

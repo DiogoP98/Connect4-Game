@@ -1,4 +1,5 @@
 const fs = require("fs");
+const config = require("../conf.js");
 const crypto = require('crypto');
 const headers = require("./Headers.js").headers;
 
@@ -16,7 +17,7 @@ module.exports = {
         pass = crypto.createHash('md5').update(pass).digest('hex');
     
         try{
-            var fileData = fs.readFileSync("Data/users.json");
+            var fileData = fs.readFileSync(config.UserStorage);
             fileData = JSON.parse(fileData.toString())["users"];
         }
         catch(err){
@@ -36,7 +37,7 @@ module.exports = {
             fileData.push({nick: nick, pass: pass, games: {}});
             fileData = {users: fileData};
             try{
-                fs.writeFileSync("Data/users.json", JSON.stringify(fileData));
+                fs.writeFileSync(config.UserStorage, JSON.stringify(fileData));
             }
             catch(err){
                 console.log("Error writing to file 'users.json'.");

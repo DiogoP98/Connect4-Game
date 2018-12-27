@@ -4,6 +4,7 @@ const url = require("url");
 const fs = require("fs");
 const crypto = require('crypto');
 const updater = require("./Update.js");
+const config = require("../conf.js");
 const headers = require("./Headers.js").headers;
 const serverStatic = require("./static.js");
 const userMan = require("./user.js");
@@ -150,42 +151,45 @@ module.exports.processPostRequest = function(request, response){
 					break;
 				}
 
-				try{
-					var fileData = fs.readFileSync("Data/users.json");
-					fileData = JSON.parse(fileData.toString())["users"];
-				}
-				catch(err){
-					console.log(err);
-					response.writeHead(500, headers["plain"]);
-					response.end();
-					break;
-				}
+				fs.readFile(config.UserStorage, (err, data) => {
+					if(err){
+						console.log("WARNING: Failed to load ranking file\n" + err.message);
+						return;
+					}
+					else{
+						try {
+							let fileData = JSON.parse(data)["users"];
+							var array = [];
+							var i = 0;
 
-				var array = [];
-				var i = 0;
+							for(i=0; i<fileData.length; i++){
+								if(fileData[i]["games"][query["size"]["columns"]] == null)
+									continue;
 
-				for(i=0; i<fileData.length; i++){
-					if(fileData[i]["games"][query["size"]["columns"]] == null)
-						continue;
+								if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
+									array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});
+							}
 
-					if(fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]] != null)
-						array.push({nick: fileData[i]["nick"], victories: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["victories"], games: fileData[i]["games"][query["size"]["columns"]][query["size"]["rows"]]["games"]});
-				}
+							var j=0;
+							for(i=0; i<array.length; i++){
+								for(j=i+1; j<array.length; j++){
+									if(array[j]["victories"] > array[i]["victories"]){
+										var temp = array[i];
+										array[i] = array[j];
+										array[j] = temp;
+									}
+								}
+							}
 
-				var j=0;
-				for(i=0; i<array.length; i++){
-					for(j=i+1; j<array.length; j++){
-						if(array[j]["victories"] > array[i]["victories"]){
-							var temp = array[i];
-							array[i] = array[j];
-							array[j] = temp;
+							array = array.slice(0, 10);
+							array = {ranking: array};
+							rankingMan.ok(array,response);
+						} catch (error) {
+							console.log("WARNING: Failed to parse saved ranking, ignoring file\n"+ error.message)
+							return;
 						}
 					}
-				}
-
-				array = array.slice(0, 10);
-				array = {ranking: array};
-                rankingMan.ok(array,response);
+				});
                 
 				break;
             case "/join":

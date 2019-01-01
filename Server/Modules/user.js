@@ -67,7 +67,7 @@ module.exports = {
     },
 
     wrongPassword: function(response) {
-        response.writeHead(400, headers["plain"]);
+        response.writeHead(401, headers["plain"]);
 		response.write(JSON.stringify({error: "User registered with a different password"}));
 		response.end();
     },
